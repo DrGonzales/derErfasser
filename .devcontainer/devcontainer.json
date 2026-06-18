@@ -1,0 +1,30 @@
+{
+    "name": "ubuntu-dev",
+    "image": "pi:5000/devcontainer/ubuntu-dev:dev",
+    "updateRemoteUserUID": true,
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "ms-python.python",
+                "ms-vscode.vscode-node-azure-pack",
+                "eamodio.gitlens",
+                "redhat.vscode-yaml",
+                "vmware.vscode-boot-dev-pack",
+                "ms-azuretools.vscode-containers"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "zsh"
+            }
+        }
+    },
+    "runArgs": [
+        "--group-add",
+        "${localEnv:DOCKER_GID:986}"
+    ],
+    "mounts": [
+        "source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig,type=bind,readonly",
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+        "source=${localEnv:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,readonly"
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "derErfasser",
+  "short_name": "Erfasser",
+  "description": "Offlinefaehige App zum Speichern von Daten und Bildern in IndexedDB.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f7f4",
+  "theme_color": "#235347",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
