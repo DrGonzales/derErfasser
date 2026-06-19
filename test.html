@@ -276,10 +276,160 @@
                 link.click();
             };
         }
+        async function restoreZip() {
 
+            try {
+
+                const input =
+                    document.createElement("input");
+
+                input.type = "file";
+                input.accept = ".zip";
+
+                input.onchange = async () => {
+
+                    const file =
+                        input.files[0];
+
+                    if (!file) {
+                        return;
+                    }
+
+                    // ZIP laden
+
+                    const zip =
+                        await JSZip.loadAsync(file);
+
+                    // data.json lesen
+
+                    const dataFile =
+                        zip.file("data.json");
+
+                    if (!dataFile) {
+
+                        alert(
+                            "data.json nicht gefunden"
+                        );
+
+                        return;
+                    }
+
+                    const jsonText =
+                        await dataFile.async(
+                            "text"
+                        );
+
+                    const backup =
+                        JSON.parse(jsonText);
+
+                    if (!backup.objects) {
+
+                        alert(
+                            "Ungültiges Backup"
+                        );
+
+                        return;
+                    }
+
+                    // Alle Objekte vorbereiten
+                    // WICHTIG:
+                    // Noch keine Transaction öffnen
+
+                    const restoredObjects = [];
+
+                    for (const obj of backup.objects) {
+
+                        let imageBlob = null;
+
+                        if (obj.imageFile) {
+
+                            const imageEntry =
+                                zip.file(
+                                    "photos/" +
+                                    obj.imageFile
+                                );
+
+                            if (imageEntry) {
+
+                                imageBlob =
+                                    await imageEntry
+                                        .async("blob");
+                            }
+                        }
+
+                        restoredObjects.push({
+                            id: obj.id,
+                            name: obj.name,
+                            imageBlob
+                        });
+                    }
+
+                    // Jetzt Transaction öffnen
+
+                    const tx =
+                        db.transaction(
+                            "objects",
+                            "readwrite"
+                        );
+
+                    const store =
+                        tx.objectStore(
+                            "objects"
+                        );
+
+                    store.clear();
+
+                    for (const obj of restoredObjects) {
+
+                        store.put(obj);
+                    }
+
+                    await new Promise(
+                        (resolve, reject) => {
+
+                            tx.oncomplete =
+                                resolve;
+
+                            tx.onerror =
+                                reject;
+
+                            tx.onabort =
+                                reject;
+                        }
+                    );
+
+                    await loadObjects();
+
+                    alert(
+                        "Restore erfolgreich\n\n" +
+                        restoredObjects.length +
+                        " Objekte importiert"
+                    );
+                };
+
+                input.click();
+
+            } catch (err) {
+
+                console.error(err);
+
+                alert(
+                    "Restore fehlgeschlagen:\n" +
+                    err.message
+                );
+            }
+        }
     </script>
     <button onclick="backupZip()">
         Backup ZIP
+    </button>
+
+    <hr>
+
+    <input type="file" id="restoreFile" accept=".zip">
+
+    <button onclick="restoreZip()">
+        Restore ZIP
     </button>
 </body>
 
