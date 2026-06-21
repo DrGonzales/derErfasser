@@ -1,0 +1,70 @@
+{
+    "id": "122342232",  # Eindeutige ID für den Datensatz
+    "objekte": [
+        {
+            "metainformation": {
+                "inventarnummer": "INV-10234",
+                "pruefer": "Max Mustermann"
+            },
+            "standort": { # Hier werden die Standortinformationen des Geräts angegeben - über diese Daten wird in der UI gesucht und gefiltert
+                "standort": "Werkstatt 1",
+                "gebaeude": "Halle A",
+                "raum": "R-101",
+                "abteilung": "Instandhaltung"
+            },
+            "geraet": { # Geräteinformationen
+                "geraetetyp": "Bohrmaschine",
+                "hersteller": "Bosch",
+                "modell": "GSB 13 RE",
+                "seriennummer": "123456789",
+                "schutzklasse": "II",
+                "nennspannung": 230,
+                "nennleistung": 600
+            },
+            "pruefungen": [ # alle prüfungen, die an diesem Gerät durchgeführt wurden, mit den jeweiligen Ergebnissen. Die neue Prüfung wird mit aktuellen Datume eingegefügt, die alte Prüfung bleibt erhalten, damit die Historie nachvollziehbar ist.
+                {
+                    "pruefung": {
+                        "sichtpruefung": true,
+                        "isolationswiderstand_mohm": 100,
+                        "beruehrungsstrom_ma": 0.15,
+                        "funktionspruefung": true
+                    },
+                    "ergebnis": {
+                        "sichtpruefung": "bestanden",
+                        "messpruefung": "bestanden",
+                        "funktionspruefung": "bestanden",
+                        "gesamtbewertung": "bestanden",
+                        "status": "vorhanden",
+                        "maengel": false,
+                        "prueftermin": "2027-06-20"
+                    }
+                },
+                {
+                    "pruefung": {
+                        "sichtpruefung": true,
+                        "isolationswiderstand_mohm": 100,
+                        "beruehrungsstrom_ma": 0.15,
+                        "funktionspruefung": true
+                    },
+                    "ergebnis": {
+                        "sichtpruefung": "bestanden",
+                        "messpruefung": "bestanden",
+                        "funktionspruefung": "bestanden",
+                        "gesamtbewertung": "bestanden",
+                        "status": "nicht auffindbar",
+                        "maengel": false,
+                        "prueftermin": "2025-03-2"
+                    }
+                }
+            ],
+            "auditlog": [ # Hier werden alle Änderungen am Datensatz protokolliert. Die Prüfungsergebnisse werden hier nicht erfasset das eigenens Log
+                {
+                    "timestamp": "2026-06-20T10:22:00",
+                    "field": "seriennummer",
+                    "old_value": "12323445",
+                    "new_value": "abcdes",
+                }
+            ]
+        }
+    ]
+}
