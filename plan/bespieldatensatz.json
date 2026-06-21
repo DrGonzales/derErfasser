@@ -20,6 +20,10 @@
                 "schutzklasse": "II",
                 "nennspannung": 230,
                 "nennleistung": 600
+                "pictures": [
+                    "id": "pic-001",
+                    "id": "pic-002"
+                ]
             },
             "pruefungen": [ # alle prüfungen, die an diesem Gerät durchgeführt wurden, mit den jeweiligen Ergebnissen. Die neue Prüfung wird mit aktuellen Datume eingegefügt, die alte Prüfung bleibt erhalten, damit die Historie nachvollziehbar ist.
                 {
@@ -47,13 +51,17 @@
                         "funktionspruefung": true
                     },
                     "ergebnis": {
-                        "sichtpruefung": "bestanden",
+                        "sichtpruefung": "bestanden", # bestanden, nicht bestanden, maengelhaft, usw
                         "messpruefung": "bestanden",
                         "funktionspruefung": "bestanden",
                         "gesamtbewertung": "bestanden",
-                        "status": "nicht auffindbar",
+                        "status": "nicht auffindbar", # im Problemfall, nicht auffindbar, verschrottet, usw
                         "maengel": false,
-                        "prueftermin": "2025-03-2"
+                        "prueftermin": "2025-03-02",
+                        "pictures": [
+                            "id": "pic-001",
+                            "id": "pic-002"
+                        ]
                     }
                 }
             ],
