@@ -31,8 +31,13 @@ interface GeneratedEntry {
         pictures: string[];
         inspections: GeneratedInspection[];
     };
+}
+
+interface GeneratedDevicesFile {
+    entries: GeneratedEntry[];
     metadata: {
         inspector: string;
+        generatedAt: string;
     };
 }
 
@@ -68,16 +73,17 @@ function createEntry(): GeneratedEntry {
                 description: faker.lorem.sentence(),
                 inspectionDate: faker.date.future({ years: 1 }).toISOString().split('T')[0]
             }))
-        },
-        metadata: {
-            inspector: `${faker.person.firstName()} ${faker.person.lastName()}`
         }
     };
 }
 
 async function generate(count: number) {
-    const result = {
-        entries: Array.from({ length: count }, () => createEntry())
+    const result: GeneratedDevicesFile = {
+        entries: Array.from({ length: count }, () => createEntry()),
+        metadata: {
+            inspector: `${faker.person.firstName()} ${faker.person.lastName()}`,
+            generatedAt: new Date().toISOString()
+        }
     };
 
     await writeFile('plan/generated-devices.json', JSON.stringify(result, null, 2), 'utf8');

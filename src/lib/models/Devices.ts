@@ -5,7 +5,7 @@ import { Location } from "./Location";
 export class DeviceEntry {
     location = new Location();
     device = new Device();
-    metadata = new Metadata({});
+
 
     constructor(data?: Partial<DeviceEntry>) {
         if (!data) {
@@ -20,15 +20,12 @@ export class DeviceEntry {
             this.device = new Device(data.device);
         }
 
-        if (data.metadata) {
-            this.metadata = new Metadata(data.metadata);
-        }
     }
 }
 
 export class Devices {
     entries: DeviceEntry[] = [];
-
+    metadata: Metadata | undefined = undefined;
     constructor(data?: Partial<Devices>) {
         if (!data) {
             return;
@@ -36,6 +33,10 @@ export class Devices {
 
         if (data.entries) {
             this.entries = data.entries.map((entry) => new DeviceEntry(entry));
+        }
+
+        if (data.metadata) {
+            this.metadata = new Metadata(data.metadata);
         }
     }
 }
