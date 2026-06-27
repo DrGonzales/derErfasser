@@ -3,7 +3,9 @@ export class Location {
         building = "";
         room = "";
 
-        constructor(data: Partial<Location>) {
-                Object.assign(this, data);
+        constructor(data?: Partial<Location>) {
+                if (data) {
+                        Object.assign(this, data);
+                }
         }
 }

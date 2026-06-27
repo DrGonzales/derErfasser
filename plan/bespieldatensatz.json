@@ -32,8 +32,7 @@
                         "isolationswiderstand_mohm": 100,
                         "beruehrungsstrom_ma": 0.15,
                         "funktionspruefung": true
-                    },
-                    "ergebnis": {
+                
                         "sichtpruefung": "bestanden",
                         "messpruefung": "bestanden",
                         "funktionspruefung": "bestanden",

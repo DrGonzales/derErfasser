@@ -1,4 +1,5 @@
 import { ImageReference } from "./ImageReference";
+import { Inspection } from "./Inspection";
 
 export class Device {
     type = "";
@@ -10,8 +11,18 @@ export class Device {
     ratedPower = 0;
 
     pictures: ImageReference[] = [];
+    inspections: Inspection[] = [];
 
     constructor(data?: Partial<Device>) {
-        Object.assign(this, data);
+        if (!data) {
+            return;
+        }
+
+        const { inspections, ...rest } = data as Partial<Device>;
+        Object.assign(this, rest);
+
+        if (inspections) {
+            this.inspections = inspections.map((entry) => new Inspection(entry as Partial<Inspection>));
+        }
     }
 }

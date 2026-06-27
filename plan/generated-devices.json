@@ -1,0 +1,4780 @@
+{
+  "entries": [
+    {
+      "location": {
+        "locationName": "South Emely",
+        "building": "Building K",
+        "room": "R-125"
+      },
+      "device": {
+        "id": "5929b3fb-e222-4fb5-8f6b-6b27b7b52944",
+        "type": "Minivan",
+        "manufacturer": "Schamberger - Larkin",
+        "model": "Bespoke Gold Hat",
+        "serialNumber": "FjO8AnEL8Vce",
+        "protectionClass": "III",
+        "ratedVoltage": 212,
+        "ratedPower": 246,
+        "pictures": [
+          "2Vz44Sex",
+          "MUvKBVG0",
+          "o8cBcgeU"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 955,
+            "touchCurrentMa": 4.752483984470313,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Crepusculum audax adamo asporto neque.",
+            "inspectionDate": "2027-05-15"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Prince Swift"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Sipesburgh",
+        "building": "Building Y",
+        "room": "R-964"
+      },
+      "device": {
+        "id": "5808942e-e714-42bd-adc7-82de7ad3e752",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Lebsack - Willms",
+        "model": "Practical Wooden Towels",
+        "serialNumber": "e2JPjcm0gr20",
+        "protectionClass": "III",
+        "ratedVoltage": 152,
+        "ratedPower": 1291,
+        "pictures": [
+          "YE5tOkah"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 870,
+            "touchCurrentMa": 3.1239503095819883,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Laborum iure caput chirographum curvo attollo.",
+            "inspectionDate": "2027-05-09"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Laura Turner"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Hyattfort",
+        "building": "Building G",
+        "room": "R-319"
+      },
+      "device": {
+        "id": "4aada0f7-c1c6-4fcd-a504-08fa36c78553",
+        "type": "Convertible",
+        "manufacturer": "Boehm - Bins",
+        "model": "Soft Marble Pizza",
+        "serialNumber": "3UVBCZWSnyPW",
+        "protectionClass": "II",
+        "ratedVoltage": 174,
+        "ratedPower": 1976,
+        "pictures": [
+          "7IKYJOvk",
+          "u8kLkTjw"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 472,
+            "touchCurrentMa": 3.618019517396653,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Adulatio optio cavus cubo adaugeo crepusculum candidus undique circumvenio desidero.",
+            "inspectionDate": "2027-04-12"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Martin Batz"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Hamillfurt",
+        "building": "Building N",
+        "room": "R-403"
+      },
+      "device": {
+        "id": "07e6a1b5-19be-41ea-9377-e82ad3118fa9",
+        "type": "Sedan",
+        "manufacturer": "O'Keefe, Zemlak and Schmitt",
+        "model": "Elegant Granite Computer",
+        "serialNumber": "b6ySZKxqUnHu",
+        "protectionClass": "II",
+        "ratedVoltage": 227,
+        "ratedPower": 331,
+        "pictures": [
+          "SxCfTmFm",
+          "VtPZrKez",
+          "XFYmlcvd"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 829,
+            "touchCurrentMa": 0.07170284850999711,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Amaritudo unus capio talus spiritus angulus.",
+            "inspectionDate": "2027-02-08"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Michel Farrell"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Port Gerald",
+        "building": "Building V",
+        "room": "R-478"
+      },
+      "device": {
+        "id": "b61ab110-062a-40d9-b187-ae0e53060c7e",
+        "type": "Coupe",
+        "manufacturer": "Farrell - Borer",
+        "model": "Practical Cotton Pants",
+        "serialNumber": "0UlP3fqdtjF1",
+        "protectionClass": "I",
+        "ratedVoltage": 205,
+        "ratedPower": 707,
+        "pictures": [
+          "dE8wcR8E"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 380,
+            "touchCurrentMa": 1.3557927002839658,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Decens tricesimus comprehendo tergeo.",
+            "inspectionDate": "2027-05-15"
+          },
+          {
+            "isolationResistanceMohm": 360,
+            "touchCurrentMa": 4.988201887490915,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Ustilo angulus ara blanditiis.",
+            "inspectionDate": "2026-08-09"
+          },
+          {
+            "isolationResistanceMohm": 709,
+            "touchCurrentMa": 4.315535195259302,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Tener cicuta addo adficio.",
+            "inspectionDate": "2026-08-24"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Kayla Leannon"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Daisyboro",
+        "building": "Building G",
+        "room": "R-545"
+      },
+      "device": {
+        "id": "d60e0a15-1783-4598-aa03-4365c0f5b142",
+        "type": "Convertible",
+        "manufacturer": "Block and Sons",
+        "model": "Generic Rubber Gloves",
+        "serialNumber": "9oMI4newDy8s",
+        "protectionClass": "II",
+        "ratedVoltage": 143,
+        "ratedPower": 403,
+        "pictures": [
+          "DkuZovfP"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 363,
+            "touchCurrentMa": 0.19207603231713943,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Ago perspiciatis cometes exercitationem arx suspendo cubo cupiditate.",
+            "inspectionDate": "2027-03-03"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Della Gerhold"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Claraton",
+        "building": "Building S",
+        "room": "R-105"
+      },
+      "device": {
+        "id": "4cf7a108-46b6-4d0d-b25c-f94587cec293",
+        "type": "Passenger Van",
+        "manufacturer": "Welch, Shanahan and Kassulke",
+        "model": "Elegant Ceramic Bacon",
+        "serialNumber": "kDcE4U5hf5wV",
+        "protectionClass": "I",
+        "ratedVoltage": 224,
+        "ratedPower": 1228,
+        "pictures": [
+          "DnRTUhzg",
+          "LoFm55xo",
+          "tNWmqQPR"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 850,
+            "touchCurrentMa": 3.8955119203578463,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Vicissitudo suppono crustulum voluptatum trepide sollicito.",
+            "inspectionDate": "2026-07-21"
+          },
+          {
+            "isolationResistanceMohm": 863,
+            "touchCurrentMa": 3.431886409231283,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Patior aqua astrum alienus confero solutio quae tracto suus triduana.",
+            "inspectionDate": "2027-02-17"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Cora Smitham"
+      }
+    },
+    {
+      "location": {
+        "locationName": "North Niachester",
+        "building": "Building Z",
+        "room": "R-709"
+      },
+      "device": {
+        "id": "0d452739-c803-4b19-a071-fbe4daeb0469",
+        "type": "SUV",
+        "manufacturer": "Price Inc",
+        "model": "Luxurious Marble Mouse",
+        "serialNumber": "bblQCRCgJ2XT",
+        "protectionClass": "I",
+        "ratedVoltage": 217,
+        "ratedPower": 463,
+        "pictures": [
+          "IwFefSCz",
+          "T7nh6nQr"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 651,
+            "touchCurrentMa": 1.8023118038627433,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Debitis nesciunt voluptates reprehenderit terebro copia.",
+            "inspectionDate": "2026-08-02"
+          },
+          {
+            "isolationResistanceMohm": 210,
+            "touchCurrentMa": 4.853986023538219,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Aliquam vivo neque vulgo tendo velum desolo summisse.",
+            "inspectionDate": "2027-06-10"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Jace Schowalter"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Mattie",
+        "building": "Building K",
+        "room": "R-756"
+      },
+      "device": {
+        "id": "8eb7bc91-0057-436a-ac57-9c15d12d2157",
+        "type": "SUV",
+        "manufacturer": "Ankunding, Herzog and Powlowski",
+        "model": "Modern Concrete Shirt",
+        "serialNumber": "qpOY3HlYE9U9",
+        "protectionClass": "III",
+        "ratedVoltage": 118,
+        "ratedPower": 1801,
+        "pictures": [
+          "wAeoIhyI",
+          "OqZgqMKU"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 814,
+            "touchCurrentMa": 2.106104961293877,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Uberrime atavus suffragium temeritas convoco confugo comitatus aperiam uter conturbo.",
+            "inspectionDate": "2027-05-12"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Corey Renner"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Satterfieldland",
+        "building": "Building M",
+        "room": "R-705"
+      },
+      "device": {
+        "id": "49dc21c8-3945-468f-8143-b288eb44c685",
+        "type": "Sedan",
+        "manufacturer": "Franey LLC",
+        "model": "Tasty Plastic Sausages",
+        "serialNumber": "uDM9Tt70uIp9",
+        "protectionClass": "II",
+        "ratedVoltage": 128,
+        "ratedPower": 482,
+        "pictures": [
+          "rgBZ0pDj"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 841,
+            "touchCurrentMa": 2.6557977558952306,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Id aiunt animus antiquus.",
+            "inspectionDate": "2027-06-23"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Dion Hagenes"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Torphychester",
+        "building": "Building S",
+        "room": "R-649"
+      },
+      "device": {
+        "id": "5f19fc9e-7244-450d-8c29-4b4a2d84c0f1",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Frami - Lowe",
+        "model": "Handmade Aluminum Cheese",
+        "serialNumber": "UNcjYt0ovTzg",
+        "protectionClass": "I",
+        "ratedVoltage": 157,
+        "ratedPower": 1083,
+        "pictures": [
+          "fBONGjAR"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 516,
+            "touchCurrentMa": 0.026205706858688206,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Damno viscus admiratio.",
+            "inspectionDate": "2026-12-01"
+          },
+          {
+            "isolationResistanceMohm": 362,
+            "touchCurrentMa": 4.439168169142364,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Aestivus deduco creber cibus verumtamen.",
+            "inspectionDate": "2026-11-26"
+          },
+          {
+            "isolationResistanceMohm": 396,
+            "touchCurrentMa": 0.10336733790543706,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Colo succedo compono thema vinco altus compello ante ventosus abscido.",
+            "inspectionDate": "2027-02-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Ramon Bartell"
+      }
+    },
+    {
+      "location": {
+        "locationName": "West Fletcher",
+        "building": "Building Z",
+        "room": "R-223"
+      },
+      "device": {
+        "id": "336c806b-4451-49a5-8e89-fe9bc25a4cd2",
+        "type": "Coupe",
+        "manufacturer": "Kulas, Hoppe and Terry",
+        "model": "Modern Silk Tuna",
+        "serialNumber": "kbMxv33dWzmz",
+        "protectionClass": "III",
+        "ratedVoltage": 201,
+        "ratedPower": 1451,
+        "pictures": [
+          "KoqTXYSW",
+          "00KYCvrO"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 442,
+            "touchCurrentMa": 4.884005916504096,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Torqueo vindico amplexus.",
+            "inspectionDate": "2026-08-15"
+          },
+          {
+            "isolationResistanceMohm": 789,
+            "touchCurrentMa": 1.2019359665542966,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Qui iste ullus argentum culpa pectus xiphias derelinquo.",
+            "inspectionDate": "2026-10-01"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Tanya Hodkiewicz"
+      }
+    },
+    {
+      "location": {
+        "locationName": "North Charleston",
+        "building": "Building O",
+        "room": "R-147"
+      },
+      "device": {
+        "id": "84997b6b-877c-49eb-a7c8-ed5decf99e8c",
+        "type": "Minivan",
+        "manufacturer": "Berge, Daugherty and Kub",
+        "model": "Soft Wooden Chair",
+        "serialNumber": "gwER4mROTvhZ",
+        "protectionClass": "I",
+        "ratedVoltage": 175,
+        "ratedPower": 1013,
+        "pictures": [
+          "9xKtOiad",
+          "EY7xUSGZ",
+          "bELZTEda"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 639,
+            "touchCurrentMa": 0.6182289123832165,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Claustrum cupiditate civis vestigium sono demens bene.",
+            "inspectionDate": "2026-12-06"
+          },
+          {
+            "isolationResistanceMohm": 805,
+            "touchCurrentMa": 3.1514206963426963,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Atqui audentia sperno.",
+            "inspectionDate": "2026-11-30"
+          },
+          {
+            "isolationResistanceMohm": 246,
+            "touchCurrentMa": 4.0380395748301625,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Valens sum xiphias coma patruus acceptus cupiditate.",
+            "inspectionDate": "2026-11-23"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Joseph Rodriguez"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Fort Daltonstead",
+        "building": "Building L",
+        "room": "R-659"
+      },
+      "device": {
+        "id": "d8b80fd9-1f88-45f8-9b4d-728979b272f6",
+        "type": "Passenger Van",
+        "manufacturer": "Hudson, Schuppe and Christiansen",
+        "model": "Electronic Marble Gloves",
+        "serialNumber": "0ck6sBwlFCT0",
+        "protectionClass": "I",
+        "ratedVoltage": 184,
+        "ratedPower": 921,
+        "pictures": [
+          "J65BSkHi",
+          "TwwtvTtq",
+          "fjKWTIUI"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 486,
+            "touchCurrentMa": 2.4829378296489373,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Avarus certus absorbeo audax aegrotatio damnatio templum.",
+            "inspectionDate": "2026-10-11"
+          },
+          {
+            "isolationResistanceMohm": 58,
+            "touchCurrentMa": 2.351537509191687,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Auctus speciosus patior cerno trepide earum delego.",
+            "inspectionDate": "2026-09-10"
+          },
+          {
+            "isolationResistanceMohm": 60,
+            "touchCurrentMa": 1.0901569400652225,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Copia balbus nemo adeptio copia alias possimus.",
+            "inspectionDate": "2026-11-01"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Seamus Wilkinson"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Fort Maddisonburgh",
+        "building": "Building S",
+        "room": "R-180"
+      },
+      "device": {
+        "id": "b4bed42b-b323-4818-afc2-0b7caeac6930",
+        "type": "Hatchback",
+        "manufacturer": "Emmerich-Emard LLC",
+        "model": "Fresh Silk Sausages",
+        "serialNumber": "XuPFjq3CreMn",
+        "protectionClass": "III",
+        "ratedVoltage": 186,
+        "ratedPower": 1445,
+        "pictures": [
+          "4bG0X5EV"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 473,
+            "touchCurrentMa": 3.988517582645064,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Ipsa coaegresco compello delinquo calculus strues volup sollicito quis quis.",
+            "inspectionDate": "2027-02-14"
+          },
+          {
+            "isolationResistanceMohm": 740,
+            "touchCurrentMa": 0.632904578923034,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Cupio carcer solvo angustus.",
+            "inspectionDate": "2026-12-25"
+          },
+          {
+            "isolationResistanceMohm": 798,
+            "touchCurrentMa": 4.26408371639292,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Cetera suasoria verumtamen incidunt.",
+            "inspectionDate": "2026-12-10"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Terri Wuckert"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Paulburgh",
+        "building": "Building Z",
+        "room": "R-398"
+      },
+      "device": {
+        "id": "d96d6ae4-384a-4a83-bc53-bdf9d2dece7c",
+        "type": "SUV",
+        "manufacturer": "Mitchell Inc",
+        "model": "Unbranded Bamboo Towels",
+        "serialNumber": "5wCPGmb4pRqA",
+        "protectionClass": "II",
+        "ratedVoltage": 233,
+        "ratedPower": 484,
+        "pictures": [
+          "qMxbH1x8",
+          "4Ravlsok",
+          "MMKmgXx5"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 784,
+            "touchCurrentMa": 3.2252091458970726,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Validus utrimque aeneus comedo admoveo suffragium subnecto.",
+            "inspectionDate": "2026-07-20"
+          },
+          {
+            "isolationResistanceMohm": 239,
+            "touchCurrentMa": 2.349345257619784,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Versus autus suscipio.",
+            "inspectionDate": "2027-06-08"
+          },
+          {
+            "isolationResistanceMohm": 172,
+            "touchCurrentMa": 2.3162850326864617,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Neque claustrum sordeo porro cruentus qui.",
+            "inspectionDate": "2027-06-01"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Mabel Howe"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Funkport",
+        "building": "Building R",
+        "room": "R-608"
+      },
+      "device": {
+        "id": "9be9755c-3fc0-43ad-8c4f-5a2cedefa2b0",
+        "type": "Wagon",
+        "manufacturer": "Ward and Sons",
+        "model": "Handcrafted Silk Bacon",
+        "serialNumber": "tg6CwVQC1XPh",
+        "protectionClass": "III",
+        "ratedVoltage": 149,
+        "ratedPower": 1900,
+        "pictures": [
+          "RmFJaZzi"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 297,
+            "touchCurrentMa": 3.8839361261186816,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Coniecto vulgivagus desolo similique deripio deleo vulticulus ambulo repellendus.",
+            "inspectionDate": "2026-07-30"
+          },
+          {
+            "isolationResistanceMohm": 819,
+            "touchCurrentMa": 2.5557904046636333,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Temperantia suus arbustum ventito validus quae bonus defendo tonsor.",
+            "inspectionDate": "2026-11-12"
+          },
+          {
+            "isolationResistanceMohm": 224,
+            "touchCurrentMa": 0.35533099146661834,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Tui solio blandior conforto umquam caries benigne.",
+            "inspectionDate": "2027-05-11"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Sam Bartoletti"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Haleystad",
+        "building": "Building U",
+        "room": "R-581"
+      },
+      "device": {
+        "id": "6b953428-8d77-44cf-823c-195c20bf2d83",
+        "type": "Wagon",
+        "manufacturer": "Wyman Group",
+        "model": "Gorgeous Metal Shoes",
+        "serialNumber": "rzkeBPiWDIMa",
+        "protectionClass": "III",
+        "ratedVoltage": 235,
+        "ratedPower": 1528,
+        "pictures": [
+          "9fr1dbqk",
+          "hOQ0187v",
+          "mHzLFgKe"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 897,
+            "touchCurrentMa": 1.636290919648163,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Toties terreo audax victoria.",
+            "inspectionDate": "2027-05-07"
+          },
+          {
+            "isolationResistanceMohm": 860,
+            "touchCurrentMa": 2.8503091832036116,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Clementia demo cresco quis conitor aedificium vilitas.",
+            "inspectionDate": "2027-05-01"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Faye Balistreri"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Trenton",
+        "building": "Building M",
+        "room": "R-515"
+      },
+      "device": {
+        "id": "34314d77-68d5-4ec0-9c87-5c90713ea6bb",
+        "type": "Coupe",
+        "manufacturer": "Frami, Hahn and Beatty",
+        "model": "Fresh Metal Salad",
+        "serialNumber": "f28Nl3d8Amtu",
+        "protectionClass": "II",
+        "ratedVoltage": 231,
+        "ratedPower": 230,
+        "pictures": [
+          "aYlhrshZ",
+          "NPooQ7oZ"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 291,
+            "touchCurrentMa": 0.10744062088518071,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Nam synagoga curvo uterque stips cupiditate adinventitias termes timidus.",
+            "inspectionDate": "2027-01-28"
+          },
+          {
+            "isolationResistanceMohm": 906,
+            "touchCurrentMa": 4.4950392723212955,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Aetas temporibus tum demens angustus cilicium crastinus.",
+            "inspectionDate": "2026-11-17"
+          },
+          {
+            "isolationResistanceMohm": 847,
+            "touchCurrentMa": 0.47493149172282717,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Constans tui solutio dicta demum astrum denuncio tenetur.",
+            "inspectionDate": "2027-01-11"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Willard Mohr"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Wilmington",
+        "building": "Building M",
+        "room": "R-664"
+      },
+      "device": {
+        "id": "63f52d30-eb91-43ac-b9d3-4c7755934ec7",
+        "type": "Wagon",
+        "manufacturer": "Hodkiewicz Group",
+        "model": "Unbranded Metal Keyboard",
+        "serialNumber": "g369P7Ch0PXJ",
+        "protectionClass": "I",
+        "ratedVoltage": 225,
+        "ratedPower": 1925,
+        "pictures": [
+          "MKR6C0wT",
+          "TTPxK8MR"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 38,
+            "touchCurrentMa": 1.2683432306247955,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Conservo vulpes abscido consequatur allatus crastinus tamen aliquid cado considero.",
+            "inspectionDate": "2027-06-16"
+          },
+          {
+            "isolationResistanceMohm": 715,
+            "touchCurrentMa": 4.934756073724052,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Tepesco inventore arcus cui volva summopere theatrum vociferor incidunt.",
+            "inspectionDate": "2026-11-15"
+          },
+          {
+            "isolationResistanceMohm": 967,
+            "touchCurrentMa": 3.6164691619522302,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Beatus deorsum tot demitto deinde uxor tribuo.",
+            "inspectionDate": "2027-06-15"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Salvador Kris"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Mooretown",
+        "building": "Building U",
+        "room": "R-110"
+      },
+      "device": {
+        "id": "c15176c3-c603-4ebc-8769-060eff6f51f5",
+        "type": "Minivan",
+        "manufacturer": "Wisozk - Luettgen",
+        "model": "Recycled Wooden Towels",
+        "serialNumber": "ig6onUrLgZgx",
+        "protectionClass": "II",
+        "ratedVoltage": 135,
+        "ratedPower": 1754,
+        "pictures": [
+          "k7trYTOR"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 790,
+            "touchCurrentMa": 3.4179273733836215,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Astrum eos cubitum vir cura.",
+            "inspectionDate": "2027-06-01"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Amiya Schmitt"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Veumhaven",
+        "building": "Building P",
+        "room": "R-867"
+      },
+      "device": {
+        "id": "76231358-4f64-48fa-a6f5-924a1f801b63",
+        "type": "Hatchback",
+        "manufacturer": "Hudson Inc",
+        "model": "Incredible Silk Pants",
+        "serialNumber": "5MxAHyNUU3LF",
+        "protectionClass": "II",
+        "ratedVoltage": 207,
+        "ratedPower": 560,
+        "pictures": [
+          "viJdadfx",
+          "ZXBL69Yi",
+          "l5MQp4RR"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 445,
+            "touchCurrentMa": 4.827198542241393,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Unde tutis praesentium beatus.",
+            "inspectionDate": "2026-06-28"
+          },
+          {
+            "isolationResistanceMohm": 281,
+            "touchCurrentMa": 1.2116301268937892,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Absum acidus ulterius aqua ea theologus aegrus quis catena a.",
+            "inspectionDate": "2026-09-08"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Nikko Beahan"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Altoona",
+        "building": "Building T",
+        "room": "R-806"
+      },
+      "device": {
+        "id": "7eb27d24-c0ba-42c8-9c98-3213ebdb7914",
+        "type": "Convertible",
+        "manufacturer": "Moen LLC",
+        "model": "Frozen Granite Shirt",
+        "serialNumber": "wlQhaUkuX1j9",
+        "protectionClass": "II",
+        "ratedVoltage": 198,
+        "ratedPower": 1161,
+        "pictures": [
+          "MulbwDwp"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 672,
+            "touchCurrentMa": 3.597708901250252,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Campana tutamen tepesco quam crinis crustulum reiciendis vulticulus subseco curso.",
+            "inspectionDate": "2027-05-10"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Frederick Gleason"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Rippinview",
+        "building": "Building E",
+        "room": "R-186"
+      },
+      "device": {
+        "id": "38733be3-8b1c-45c6-9c98-9fb37dca5fee",
+        "type": "Minivan",
+        "manufacturer": "Lueilwitz - Herzog",
+        "model": "Fresh Gold Pants",
+        "serialNumber": "BjJGA2FPbsjX",
+        "protectionClass": "I",
+        "ratedVoltage": 211,
+        "ratedPower": 1013,
+        "pictures": [
+          "9Jsav9jQ",
+          "S2u1L8zv"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 22,
+            "touchCurrentMa": 4.8048889202763325,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Ipsa aqua deprimo auctor astrum soluta voveo ipsam cibo claudeo.",
+            "inspectionDate": "2026-10-18"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Frederique Hamill"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Mayertstad",
+        "building": "Building P",
+        "room": "R-422"
+      },
+      "device": {
+        "id": "b535a77d-cb15-4acd-8bad-08607e2ac4db",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Rau, Ledner and Champlin",
+        "model": "Generic Gold Hat",
+        "serialNumber": "ETK9uVhAX5gB",
+        "protectionClass": "III",
+        "ratedVoltage": 214,
+        "ratedPower": 1280,
+        "pictures": [
+          "6E9v5MqA"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 862,
+            "touchCurrentMa": 0.7242469942716587,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Amoveo ater possimus cum ocer minus territo iure.",
+            "inspectionDate": "2026-07-04"
+          },
+          {
+            "isolationResistanceMohm": 441,
+            "touchCurrentMa": 2.6777659493225916,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Soleo necessitatibus perferendis paens astrum desidero dolorem sursum.",
+            "inspectionDate": "2027-03-20"
+          },
+          {
+            "isolationResistanceMohm": 684,
+            "touchCurrentMa": 3.603012860300366,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Suspendo apud sublime surgo suppono claudeo vero antepono.",
+            "inspectionDate": "2027-05-06"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Santos Pollich-Cormier"
+      }
+    },
+    {
+      "location": {
+        "locationName": "North June",
+        "building": "Building U",
+        "room": "R-931"
+      },
+      "device": {
+        "id": "da1afa4e-0597-41d6-8957-ff026a4a2ede",
+        "type": "Coupe",
+        "manufacturer": "Huel - Hyatt",
+        "model": "Luxurious Rubber Keyboard",
+        "serialNumber": "iK7tOlbDiZpr",
+        "protectionClass": "I",
+        "ratedVoltage": 213,
+        "ratedPower": 1654,
+        "pictures": [
+          "39wM4yvJ",
+          "EXZjeg8D",
+          "pAV3ic6D"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 533,
+            "touchCurrentMa": 0.16556006804403878,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Vesco vacuus abbas abeo venia aperio video.",
+            "inspectionDate": "2027-01-18"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Alyce Howell"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Townehaven",
+        "building": "Building W",
+        "room": "R-651"
+      },
+      "device": {
+        "id": "6c5d140a-91e0-405e-ae7c-8a477747cb89",
+        "type": "Wagon",
+        "manufacturer": "Hyatt - Price",
+        "model": "Practical Silk Shoes",
+        "serialNumber": "ZpsEWAwBwAhz",
+        "protectionClass": "II",
+        "ratedVoltage": 129,
+        "ratedPower": 999,
+        "pictures": [
+          "YXBOClqz"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 360,
+            "touchCurrentMa": 4.321101162922237,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Vulnero vinitor acies crebro.",
+            "inspectionDate": "2027-05-22"
+          },
+          {
+            "isolationResistanceMohm": 692,
+            "touchCurrentMa": 3.4825951376876887,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Cribro derideo vetus alii tum crux nobis unde capio.",
+            "inspectionDate": "2027-01-24"
+          },
+          {
+            "isolationResistanceMohm": 539,
+            "touchCurrentMa": 1.7086524501957032,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Acidus depono architecto distinctio aptus solum cultellus.",
+            "inspectionDate": "2026-08-22"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Lori Hagenes"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Smithamport",
+        "building": "Building P",
+        "room": "R-951"
+      },
+      "device": {
+        "id": "0ee60695-8c70-4786-ab0a-5042b607a8a1",
+        "type": "Passenger Van",
+        "manufacturer": "Metz and Sons",
+        "model": "Fantastic Gold Car",
+        "serialNumber": "EjriylR2M3C0",
+        "protectionClass": "I",
+        "ratedVoltage": 196,
+        "ratedPower": 209,
+        "pictures": [
+          "ulslqMUs"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 97,
+            "touchCurrentMa": 1.9708493716997244,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Clam cernuus atqui veniam cruciamentum cupressus.",
+            "inspectionDate": "2026-11-25"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Charlie Sauer"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Lerabury",
+        "building": "Building U",
+        "room": "R-494"
+      },
+      "device": {
+        "id": "aacbca43-5f75-47a5-b367-05bd0f49e1dd",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Powlowski-Sporer and Sons",
+        "model": "Bespoke Aluminum Hat",
+        "serialNumber": "D6Vfm1Bm2zGy",
+        "protectionClass": "III",
+        "ratedVoltage": 193,
+        "ratedPower": 1752,
+        "pictures": [
+          "oZzdhiH7"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 648,
+            "touchCurrentMa": 4.73132452509926,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Sol odio tempus vinco.",
+            "inspectionDate": "2027-06-18"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Ed Lehner"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Port Vincenza",
+        "building": "Building R",
+        "room": "R-706"
+      },
+      "device": {
+        "id": "b3451b2c-04d8-416b-98b8-6fa6a9f939cd",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Christiansen and Sons",
+        "model": "Oriental Cotton Gloves",
+        "serialNumber": "4NnSOUu11MiH",
+        "protectionClass": "I",
+        "ratedVoltage": 195,
+        "ratedPower": 1911,
+        "pictures": [
+          "ZbYDLY6v",
+          "qAMHQGw5"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 328,
+            "touchCurrentMa": 3.1229426150635113,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Artificiose ventito tibi calculus.",
+            "inspectionDate": "2026-09-20"
+          },
+          {
+            "isolationResistanceMohm": 582,
+            "touchCurrentMa": 0.7671172039096322,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Unus timor bene acerbitas abundans tenax.",
+            "inspectionDate": "2027-04-06"
+          },
+          {
+            "isolationResistanceMohm": 328,
+            "touchCurrentMa": 4.899075416951907,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Defessus curriculum stella vespillo.",
+            "inspectionDate": "2027-04-27"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Annie O'Conner"
+      }
+    },
+    {
+      "location": {
+        "locationName": "El Monte",
+        "building": "Building A",
+        "room": "R-490"
+      },
+      "device": {
+        "id": "d764e4fd-bcf5-43c3-ae92-6676f6c36962",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Kozey, Kulas and West",
+        "model": "Handmade Gold Hat",
+        "serialNumber": "MSBGF2YgA8hn",
+        "protectionClass": "III",
+        "ratedVoltage": 138,
+        "ratedPower": 1022,
+        "pictures": [
+          "BFEwMFP3",
+          "10tBvPFn"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 677,
+            "touchCurrentMa": 1.1228645741499688,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Cuppedia crux cresco averto amet candidus thalassinus eum sperno.",
+            "inspectionDate": "2027-01-09"
+          },
+          {
+            "isolationResistanceMohm": 753,
+            "touchCurrentMa": 1.0925760834066955,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Antepono demens vitiosus solio ad asperiores capto nobis.",
+            "inspectionDate": "2027-04-13"
+          },
+          {
+            "isolationResistanceMohm": 155,
+            "touchCurrentMa": 0.13190842867383545,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Triduana conventus conicio ipsam theca reprehenderit sustineo thesaurus.",
+            "inspectionDate": "2026-09-01"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Terrell Rath"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Austin",
+        "building": "Building P",
+        "room": "R-571"
+      },
+      "device": {
+        "id": "f363cc70-f9af-4330-93a7-35667adcd54d",
+        "type": "Wagon",
+        "manufacturer": "Cormier, Rempel and Casper",
+        "model": "Refined Plastic Chair",
+        "serialNumber": "9NRQ7XwSF0BZ",
+        "protectionClass": "III",
+        "ratedVoltage": 139,
+        "ratedPower": 1262,
+        "pictures": [
+          "2wmma16b",
+          "lZhdhpa2"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 193,
+            "touchCurrentMa": 3.9799827619777406,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Vesper ventus suadeo auditor vitiosus eius acies soluta.",
+            "inspectionDate": "2027-06-13"
+          },
+          {
+            "isolationResistanceMohm": 28,
+            "touchCurrentMa": 1.9555529904993367,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Officiis sublime teres conscendo blandior tabgo amiculum collum.",
+            "inspectionDate": "2027-03-27"
+          },
+          {
+            "isolationResistanceMohm": 78,
+            "touchCurrentMa": 3.941891497019634,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Delectus vitae pecco.",
+            "inspectionDate": "2026-07-29"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Claire Zieme"
+      }
+    },
+    {
+      "location": {
+        "locationName": "South Clara",
+        "building": "Building N",
+        "room": "R-632"
+      },
+      "device": {
+        "id": "e4754c33-a44f-4ef5-ac89-cc7b48bad4f9",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Predovic - Hills",
+        "model": "Incredible Steel Computer",
+        "serialNumber": "QeyOeJYFgbpw",
+        "protectionClass": "III",
+        "ratedVoltage": 204,
+        "ratedPower": 789,
+        "pictures": [
+          "HqsqnDOg"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 77,
+            "touchCurrentMa": 2.769725548348996,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Aequitas demulceo consequatur censura subiungo vobis incidunt.",
+            "inspectionDate": "2026-12-10"
+          },
+          {
+            "isolationResistanceMohm": 343,
+            "touchCurrentMa": 3.828912976872511,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Nemo vox tersus curia.",
+            "inspectionDate": "2027-05-03"
+          },
+          {
+            "isolationResistanceMohm": 108,
+            "touchCurrentMa": 2.919362592105097,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Voluptatum vomer caute.",
+            "inspectionDate": "2026-08-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Terence Muller"
+      }
+    },
+    {
+      "location": {
+        "locationName": "East Janetberg",
+        "building": "Building R",
+        "room": "R-248"
+      },
+      "device": {
+        "id": "eca1fe23-098b-4afe-a51c-d430371b11c1",
+        "type": "SUV",
+        "manufacturer": "Rosenbaum Group",
+        "model": "Handmade Granite Salad",
+        "serialNumber": "jbiK1x5RrzNT",
+        "protectionClass": "II",
+        "ratedVoltage": 183,
+        "ratedPower": 99,
+        "pictures": [
+          "H1fh8uBm",
+          "KsOOt9ew",
+          "6g0vVNJC"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 931,
+            "touchCurrentMa": 1.6815744733293014,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Thema ascit explicabo.",
+            "inspectionDate": "2026-09-14"
+          },
+          {
+            "isolationResistanceMohm": 488,
+            "touchCurrentMa": 3.9020886518214324,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Collum harum usitas ultra aureus advoco creator odio quos apparatus.",
+            "inspectionDate": "2027-01-24"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Harvey Walker-DuBuque"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Mount Prospect",
+        "building": "Building Q",
+        "room": "R-261"
+      },
+      "device": {
+        "id": "d445debf-dcf8-438b-bf7e-d6a58c53d762",
+        "type": "Convertible",
+        "manufacturer": "Keeling-Homenick, Becker and Keebler",
+        "model": "Awesome Bronze Chair",
+        "serialNumber": "0ZeKuzwTgpL9",
+        "protectionClass": "I",
+        "ratedVoltage": 175,
+        "ratedPower": 1202,
+        "pictures": [
+          "ex6vrkUW",
+          "M8wFQGHt",
+          "r1d26q5m"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 749,
+            "touchCurrentMa": 0.09457596697548122,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Dolore caterva sufficio color tres.",
+            "inspectionDate": "2026-11-15"
+          },
+          {
+            "isolationResistanceMohm": 232,
+            "touchCurrentMa": 2.844466248692949,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Caveo turpis sol sublime villa delibero.",
+            "inspectionDate": "2026-12-02"
+          },
+          {
+            "isolationResistanceMohm": 425,
+            "touchCurrentMa": 0.48494155951840895,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Animus defessus degenero abscido reiciendis tredecim stella.",
+            "inspectionDate": "2027-02-23"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Mariano Hamill"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Rohanbury",
+        "building": "Building C",
+        "room": "R-228"
+      },
+      "device": {
+        "id": "084021ee-cec5-4473-8d91-d56fc3cfa832",
+        "type": "Coupe",
+        "manufacturer": "Hickle - Kuhlman",
+        "model": "Elegant Wooden Ball",
+        "serialNumber": "f71UpsnkDoZq",
+        "protectionClass": "III",
+        "ratedVoltage": 126,
+        "ratedPower": 1809,
+        "pictures": [
+          "WTS3EFgA",
+          "s9qfGuKt",
+          "BYYhsLw9"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 584,
+            "touchCurrentMa": 0.37945348097092063,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Vulgus sortitus spero dolorem.",
+            "inspectionDate": "2026-12-10"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Sadie Schimmel"
+      }
+    },
+    {
+      "location": {
+        "locationName": "DuBuquefield",
+        "building": "Building G",
+        "room": "R-989"
+      },
+      "device": {
+        "id": "36fbf15c-39a7-4706-8523-49544cc7bc48",
+        "type": "Coupe",
+        "manufacturer": "Goyette, Lemke and Sporer",
+        "model": "Recycled Bronze Chicken",
+        "serialNumber": "v24sBQ1bFJIg",
+        "protectionClass": "III",
+        "ratedVoltage": 159,
+        "ratedPower": 1642,
+        "pictures": [
+          "rnG3SaDr",
+          "kQjBo8LX"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 505,
+            "touchCurrentMa": 2.056558279406952,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Tibi ipsa ustilo adstringo cernuus sodalitas alveus tego triduana curatio.",
+            "inspectionDate": "2026-08-10"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Donald Blick"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Damianworth",
+        "building": "Building E",
+        "room": "R-127"
+      },
+      "device": {
+        "id": "1b554ff5-fca0-458e-b9e6-3cae58dbb2db",
+        "type": "Minivan",
+        "manufacturer": "Ernser - Bayer",
+        "model": "Practical Metal Chicken",
+        "serialNumber": "0fIwQy6c7fT5",
+        "protectionClass": "II",
+        "ratedVoltage": 184,
+        "ratedPower": 1698,
+        "pictures": [
+          "VoGiFP4K"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 334,
+            "touchCurrentMa": 4.840642927280389,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Adhaero articulus textus subito demum arca acquiro adipisci tertius arca.",
+            "inspectionDate": "2026-09-24"
+          },
+          {
+            "isolationResistanceMohm": 455,
+            "touchCurrentMa": 1.8188778717066134,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Sint apparatus cum angulus suadeo modi aeternus.",
+            "inspectionDate": "2026-08-31"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Katelin Abernathy"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Domingoberg",
+        "building": "Building R",
+        "room": "R-543"
+      },
+      "device": {
+        "id": "1f0cf5eb-16ee-4f4f-86b5-514e2f33fc5a",
+        "type": "Coupe",
+        "manufacturer": "Hoeger, Herzog and Hahn",
+        "model": "Elegant Gold Hat",
+        "serialNumber": "y6oNaWqfZ25S",
+        "protectionClass": "I",
+        "ratedVoltage": 235,
+        "ratedPower": 1260,
+        "pictures": [
+          "sDdt2lxk"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 327,
+            "touchCurrentMa": 0.7298551733984494,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Inventore testimonium sint accusantium corrigo bardus derelinquo sublime tergum.",
+            "inspectionDate": "2026-12-28"
+          },
+          {
+            "isolationResistanceMohm": 424,
+            "touchCurrentMa": 1.223782800883636,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Claustrum attero praesentium.",
+            "inspectionDate": "2027-01-08"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Domingo Koch"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Runolfssonfurt",
+        "building": "Building A",
+        "room": "R-594"
+      },
+      "device": {
+        "id": "093f40b3-ff25-46a8-b94a-ca4cf52d5553",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Rutherford LLC",
+        "model": "Electronic Bronze Mouse",
+        "serialNumber": "0QDL7wF7NN5z",
+        "protectionClass": "I",
+        "ratedVoltage": 131,
+        "ratedPower": 729,
+        "pictures": [
+          "e9OD6dTg",
+          "4h4E2LYK",
+          "sLlnO8ON"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 509,
+            "touchCurrentMa": 1.341598144492329,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Ulterius uxor quidem rerum aequus coerceo decimus amicitia valens.",
+            "inspectionDate": "2027-01-02"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Christian Hamill"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Kuhnbury",
+        "building": "Building W",
+        "room": "R-184"
+      },
+      "device": {
+        "id": "d924b2ce-fc36-4242-b3b2-a98a4043b2ff",
+        "type": "Cargo Van",
+        "manufacturer": "Prosacco Inc",
+        "model": "Practical Gold Pizza",
+        "serialNumber": "utYveTx48hLv",
+        "protectionClass": "III",
+        "ratedVoltage": 113,
+        "ratedPower": 1479,
+        "pictures": [
+          "jO311lBc",
+          "t3NM9Z8R",
+          "pXSx2gCi"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 297,
+            "touchCurrentMa": 4.033997586034875,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Amiculum consequatur tibi corporis cattus doloribus.",
+            "inspectionDate": "2027-01-26"
+          },
+          {
+            "isolationResistanceMohm": 473,
+            "touchCurrentMa": 3.4425489363293753,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Utilis ea distinctio pariatur cohaero ager.",
+            "inspectionDate": "2026-07-27"
+          },
+          {
+            "isolationResistanceMohm": 867,
+            "touchCurrentMa": 4.32560420824739,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Coepi vapulus caelum.",
+            "inspectionDate": "2027-05-15"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Elvira Ward"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Erdmanland",
+        "building": "Building A",
+        "room": "R-269"
+      },
+      "device": {
+        "id": "76481bd1-fda7-475a-87eb-d48b938eaee8",
+        "type": "SUV",
+        "manufacturer": "Kub, Maggio and Ondricka",
+        "model": "Recycled Steel Chicken",
+        "serialNumber": "qjoKX5GwN9w9",
+        "protectionClass": "II",
+        "ratedVoltage": 158,
+        "ratedPower": 1674,
+        "pictures": [
+          "k3GZLA6P",
+          "f9joMhbA",
+          "KDPV6PqX"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 656,
+            "touchCurrentMa": 1.5676923591887095,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Ulciscor incidunt crinis balbus decor aurum vesco beatus capillus unus.",
+            "inspectionDate": "2026-07-09"
+          },
+          {
+            "isolationResistanceMohm": 159,
+            "touchCurrentMa": 2.1838525135203506,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Sonitus conatus congregatio exercitationem approbo beneficium asperiores tendo utpote.",
+            "inspectionDate": "2026-08-15"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Angelina Pacocha"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Cupertino",
+        "building": "Building M",
+        "room": "R-908"
+      },
+      "device": {
+        "id": "d1f46e85-6c23-4ae5-ad4b-ccb067a7c4c0",
+        "type": "Convertible",
+        "manufacturer": "Kuhlman - Schmitt-Kuhn",
+        "model": "Ergonomic Wooden Fish",
+        "serialNumber": "MRrPXgyTOYs8",
+        "protectionClass": "II",
+        "ratedVoltage": 231,
+        "ratedPower": 1190,
+        "pictures": [
+          "XXkErD9d"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 154,
+            "touchCurrentMa": 3.727227475106209,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Acer adulescens uxor casus summa aiunt amor.",
+            "inspectionDate": "2026-07-19"
+          },
+          {
+            "isolationResistanceMohm": 665,
+            "touchCurrentMa": 2.222875864519149,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Corrupti clam ambulo.",
+            "inspectionDate": "2026-11-03"
+          },
+          {
+            "isolationResistanceMohm": 963,
+            "touchCurrentMa": 4.921991776003256,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Sodalitas iure ancilla subseco eveniet viridis comparo supellex cumque.",
+            "inspectionDate": "2027-06-22"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Ted Kuhic"
+      }
+    },
+    {
+      "location": {
+        "locationName": "East Nicholasstad",
+        "building": "Building O",
+        "room": "R-178"
+      },
+      "device": {
+        "id": "92efed85-b459-4f45-b5c3-c256bab43ebf",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Durgan - Weimann",
+        "model": "Fantastic Bronze Ball",
+        "serialNumber": "1iPgIATLLGOK",
+        "protectionClass": "I",
+        "ratedVoltage": 126,
+        "ratedPower": 946,
+        "pictures": [
+          "qMGDfU3n",
+          "uTZhh5h5"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 334,
+            "touchCurrentMa": 3.541052551978387,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Cognatus vehemens corporis modi demergo adipiscor sublime peccatus super.",
+            "inspectionDate": "2027-06-13"
+          },
+          {
+            "isolationResistanceMohm": 152,
+            "touchCurrentMa": 3.6977869018078384,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Barba ut minus turpis aptus sulum.",
+            "inspectionDate": "2027-05-13"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Daphne Hickle"
+      }
+    },
+    {
+      "location": {
+        "locationName": "North Oda",
+        "building": "Building S",
+        "room": "R-699"
+      },
+      "device": {
+        "id": "d159b072-ef71-4818-8fc5-fa4c8c7b44cf",
+        "type": "Minivan",
+        "manufacturer": "Jerde - Heller",
+        "model": "Intelligent Concrete Bacon",
+        "serialNumber": "HWHDRy4uRRMt",
+        "protectionClass": "I",
+        "ratedVoltage": 116,
+        "ratedPower": 1901,
+        "pictures": [
+          "wtBb6txq",
+          "TRaNgcFz"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 382,
+            "touchCurrentMa": 4.376605050918188,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Demonstro vesica decerno aggredior desolo caste.",
+            "inspectionDate": "2026-10-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Calvin Reilly"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Osinskichester",
+        "building": "Building H",
+        "room": "R-369"
+      },
+      "device": {
+        "id": "25fbfe9c-591d-4f81-a85e-f9fc2c269811",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Yost - Baumbach",
+        "model": "Gorgeous Cotton Chicken",
+        "serialNumber": "CfqPNMqmoVzb",
+        "protectionClass": "III",
+        "ratedVoltage": 218,
+        "ratedPower": 1156,
+        "pictures": [
+          "gUXA4dnk",
+          "rTBvb5tM",
+          "4omM827M"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 999,
+            "touchCurrentMa": 1.980092547975377,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Teres cribro vaco aspicio ad acer alter deduco cogo.",
+            "inspectionDate": "2026-07-02"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Carl Miller"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Minot",
+        "building": "Building Y",
+        "room": "R-150"
+      },
+      "device": {
+        "id": "20737eda-73e9-4fe0-a0ad-a003482ce616",
+        "type": "Coupe",
+        "manufacturer": "Collier and Sons",
+        "model": "Fresh Aluminum Fish",
+        "serialNumber": "4RBxdEuDuF5R",
+        "protectionClass": "II",
+        "ratedVoltage": 164,
+        "ratedPower": 1616,
+        "pictures": [
+          "tq4Ym888",
+          "14za3NOe"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 332,
+            "touchCurrentMa": 3.029329696136755,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Ago eveniet demonstro totam solitudo defero candidus.",
+            "inspectionDate": "2027-05-10"
+          },
+          {
+            "isolationResistanceMohm": 721,
+            "touchCurrentMa": 1.5834336698200089,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Depereo cenaculum denuo cui adficio.",
+            "inspectionDate": "2026-07-05"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Thomas Kertzmann"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Leigh",
+        "building": "Building A",
+        "room": "R-223"
+      },
+      "device": {
+        "id": "2fe19f2f-75c2-4fe3-a43d-9117adeb4893",
+        "type": "Sedan",
+        "manufacturer": "Ullrich - Harber",
+        "model": "Soft Ceramic Sausages",
+        "serialNumber": "NN8nvQJ1Pa9r",
+        "protectionClass": "III",
+        "ratedVoltage": 123,
+        "ratedPower": 1990,
+        "pictures": [
+          "om99ZAzg"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 772,
+            "touchCurrentMa": 1.4367083051368774,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Usque aer calamitas ascit adinventitias carcer absens vomica censura abeo.",
+            "inspectionDate": "2026-08-03"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Katie Will"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Santa Rosa",
+        "building": "Building Y",
+        "room": "R-606"
+      },
+      "device": {
+        "id": "99be6eb1-4ac8-4de0-98d4-29d2a1a2052f",
+        "type": "Cargo Van",
+        "manufacturer": "Reinger and Sons",
+        "model": "Licensed Plastic Hat",
+        "serialNumber": "Hoh9iM6c7vOg",
+        "protectionClass": "I",
+        "ratedVoltage": 168,
+        "ratedPower": 668,
+        "pictures": [
+          "FBMYoRXt",
+          "X1kCICuF"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 760,
+            "touchCurrentMa": 4.8896087235891645,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Consequuntur cui asper vero angulus supra velit viscus.",
+            "inspectionDate": "2027-01-01"
+          },
+          {
+            "isolationResistanceMohm": 687,
+            "touchCurrentMa": 0.2726067139978232,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Iste vindico tertius volubilis repellendus cubicularis ipsum sollicito compello.",
+            "inspectionDate": "2027-03-07"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Luna Little"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Marquardtport",
+        "building": "Building R",
+        "room": "R-846"
+      },
+      "device": {
+        "id": "adbe9f37-de3f-4d31-902c-9a2cbf50e9fb",
+        "type": "Coupe",
+        "manufacturer": "Simonis and Sons",
+        "model": "Recycled Marble Tuna",
+        "serialNumber": "dfNwmMNpzUEA",
+        "protectionClass": "III",
+        "ratedVoltage": 210,
+        "ratedPower": 670,
+        "pictures": [
+          "Nu9IVefm"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 266,
+            "touchCurrentMa": 3.66441073072996,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Casso cursus statua veniam hic.",
+            "inspectionDate": "2027-04-03"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Ann Feeney"
+      }
+    },
+    {
+      "location": {
+        "locationName": "East Andreschester",
+        "building": "Building J",
+        "room": "R-177"
+      },
+      "device": {
+        "id": "1a264ade-64fc-4e35-a5e5-b29543645f8a",
+        "type": "Convertible",
+        "manufacturer": "Wisozk LLC",
+        "model": "Bespoke Concrete Cheese",
+        "serialNumber": "i4zYWqYO4LH8",
+        "protectionClass": "II",
+        "ratedVoltage": 161,
+        "ratedPower": 843,
+        "pictures": [
+          "ZBT3ApdS",
+          "sfH80pQ5",
+          "3t49k81D"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 30,
+            "touchCurrentMa": 3.9610477873719665,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Cito cogito tempora valens aut amissio.",
+            "inspectionDate": "2027-01-16"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Reed Schimmel"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Lake Wilfredo",
+        "building": "Building S",
+        "room": "R-241"
+      },
+      "device": {
+        "id": "9272f53c-f851-4d6f-a97d-10f70999f42a",
+        "type": "Coupe",
+        "manufacturer": "Barrows - Denesik",
+        "model": "Handcrafted Wooden Gloves",
+        "serialNumber": "nU2CLpt8QTfA",
+        "protectionClass": "III",
+        "ratedVoltage": 191,
+        "ratedPower": 367,
+        "pictures": [
+          "0fig20r8",
+          "yQ7H3vHW",
+          "DjVC1Nfd"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 742,
+            "touchCurrentMa": 0.6474898205591992,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Callide aggredior maxime amoveo degenero apto cognatus.",
+            "inspectionDate": "2026-09-23"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Erma Fadel"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Goyetteside",
+        "building": "Building D",
+        "room": "R-589"
+      },
+      "device": {
+        "id": "ccdf7edb-cf2a-4421-be25-4c6633be5297",
+        "type": "Sedan",
+        "manufacturer": "Brakus Group",
+        "model": "Modern Rubber Salad",
+        "serialNumber": "0aJ9VZs2OSmC",
+        "protectionClass": "III",
+        "ratedVoltage": 143,
+        "ratedPower": 1678,
+        "pictures": [
+          "q5pbdEiO"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 106,
+            "touchCurrentMa": 0.13311781768865477,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Tam rerum theologus conforto amor virtus deputo sunt cruciamentum dedecor.",
+            "inspectionDate": "2026-07-15"
+          },
+          {
+            "isolationResistanceMohm": 367,
+            "touchCurrentMa": 2.3809964091945917,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Vallum acceptus subseco expedita carpo subiungo valetudo temperantia.",
+            "inspectionDate": "2026-07-21"
+          },
+          {
+            "isolationResistanceMohm": 313,
+            "touchCurrentMa": 3.9987691337588926,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Aurum amitto appono nemo.",
+            "inspectionDate": "2027-01-18"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Rebeka Parisian"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Everett",
+        "building": "Building C",
+        "room": "R-651"
+      },
+      "device": {
+        "id": "709569eb-ff0a-48af-8cd9-70057e1768de",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "VonRueden, Koss and Witting",
+        "model": "Soft Plastic Sausages",
+        "serialNumber": "OrAobXiCs7Jy",
+        "protectionClass": "II",
+        "ratedVoltage": 231,
+        "ratedPower": 907,
+        "pictures": [
+          "Z9PxSEjI",
+          "mIJbKC5b"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 635,
+            "touchCurrentMa": 2.8356064997908885,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Coruscus ambulo tyrannus votum veritas tamisium careo aduro.",
+            "inspectionDate": "2026-10-12"
+          },
+          {
+            "isolationResistanceMohm": 650,
+            "touchCurrentMa": 0.7796230774768874,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Deripio cupressus versus antea.",
+            "inspectionDate": "2027-04-23"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Robyn Welch"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Medhursttown",
+        "building": "Building H",
+        "room": "R-841"
+      },
+      "device": {
+        "id": "2d5b217a-04b1-43b2-a0ab-bd817784db0e",
+        "type": "Sedan",
+        "manufacturer": "Bernier, Nicolas and Wuckert",
+        "model": "Electronic Cotton Sausages",
+        "serialNumber": "Nn0aZ1BZn6Db",
+        "protectionClass": "III",
+        "ratedVoltage": 145,
+        "ratedPower": 1443,
+        "pictures": [
+          "zx5slWUF"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 611,
+            "touchCurrentMa": 4.949737463133316,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Succurro spoliatio aequitas.",
+            "inspectionDate": "2026-10-28"
+          },
+          {
+            "isolationResistanceMohm": 652,
+            "touchCurrentMa": 0.9237893152105165,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Textilis delibero vilicus conculco texo verumtamen suscipit summisse.",
+            "inspectionDate": "2026-07-21"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Douglas Cummings-Volkman"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Borerhaven",
+        "building": "Building O",
+        "room": "R-252"
+      },
+      "device": {
+        "id": "d887dac1-7200-429b-8c05-50c5abe68bae",
+        "type": "Passenger Van",
+        "manufacturer": "Hermann Inc",
+        "model": "Handmade Aluminum Hat",
+        "serialNumber": "lZQz3ORyDBJl",
+        "protectionClass": "III",
+        "ratedVoltage": 237,
+        "ratedPower": 1031,
+        "pictures": [
+          "9mDZNQ7M",
+          "r4vcMggE",
+          "BZk8qAA4"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 629,
+            "touchCurrentMa": 2.5401239682508714,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Acies tot tumultus torrens pauper.",
+            "inspectionDate": "2027-02-02"
+          },
+          {
+            "isolationResistanceMohm": 253,
+            "touchCurrentMa": 4.892262882109206,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Optio quas thymbra trado ullam angelus.",
+            "inspectionDate": "2026-12-13"
+          },
+          {
+            "isolationResistanceMohm": 44,
+            "touchCurrentMa": 3.883851733769378,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Ter cenaculum vix.",
+            "inspectionDate": "2026-10-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Renee Huels"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Fort Jamir",
+        "building": "Building Y",
+        "room": "R-305"
+      },
+      "device": {
+        "id": "6d27717f-bd0d-459a-a1e5-acd3f849b741",
+        "type": "Wagon",
+        "manufacturer": "Ebert - Fay",
+        "model": "Incredible Ceramic Bacon",
+        "serialNumber": "Vn4kMz8o8ScU",
+        "protectionClass": "II",
+        "ratedVoltage": 136,
+        "ratedPower": 1556,
+        "pictures": [
+          "euOAPznc",
+          "SgNmesY9"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 545,
+            "touchCurrentMa": 3.3226150257033282,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Vomito vix molestias patrocinor comis.",
+            "inspectionDate": "2027-03-12"
+          },
+          {
+            "isolationResistanceMohm": 220,
+            "touchCurrentMa": 4.195576623873147,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Enim contra caecus dens tum.",
+            "inspectionDate": "2027-06-09"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Ginger Ernser"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Lake Belindafield",
+        "building": "Building W",
+        "room": "R-100"
+      },
+      "device": {
+        "id": "74c5a2a0-d2d9-467b-bd56-9242d968154f",
+        "type": "Wagon",
+        "manufacturer": "Murray - Cummerata-Kertzmann",
+        "model": "Elegant Gold Chair",
+        "serialNumber": "kV7qy6qY99bn",
+        "protectionClass": "I",
+        "ratedVoltage": 149,
+        "ratedPower": 1693,
+        "pictures": [
+          "Pz54Lsu2",
+          "q4lrkG2R"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 533,
+            "touchCurrentMa": 4.200726180414775,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Amo adsuesco verto baiulus.",
+            "inspectionDate": "2026-12-19"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Khalid Friesen"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Maxime",
+        "building": "Building U",
+        "room": "R-947"
+      },
+      "device": {
+        "id": "e7f61ae6-3010-48aa-ba94-ee014e0f52e1",
+        "type": "Minivan",
+        "manufacturer": "Reynolds and Sons",
+        "model": "Fresh Concrete Bacon",
+        "serialNumber": "owvFrvvEKVk0",
+        "protectionClass": "III",
+        "ratedVoltage": 152,
+        "ratedPower": 779,
+        "pictures": [
+          "hcJLPPc7",
+          "GfK297NF"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 525,
+            "touchCurrentMa": 0.8216079534532288,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Corporis aeneus odit viscus clarus comitatus tantillus delibero ex.",
+            "inspectionDate": "2026-09-06"
+          },
+          {
+            "isolationResistanceMohm": 748,
+            "touchCurrentMa": 4.962834436606858,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Stillicidium doloremque patruus sui decerno aiunt rerum.",
+            "inspectionDate": "2027-05-28"
+          },
+          {
+            "isolationResistanceMohm": 470,
+            "touchCurrentMa": 3.7673305173329457,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Pariatur victus animi aranea acidus.",
+            "inspectionDate": "2027-02-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Robert Rodriguez"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Summerville",
+        "building": "Building B",
+        "room": "R-143"
+      },
+      "device": {
+        "id": "8625478c-c5fc-487a-bff0-a5092ee212b6",
+        "type": "Coupe",
+        "manufacturer": "Padberg - Heathcote",
+        "model": "Modern Granite Ball",
+        "serialNumber": "FMD7AaWZB7eX",
+        "protectionClass": "III",
+        "ratedVoltage": 217,
+        "ratedPower": 483,
+        "pictures": [
+          "BDu5MI9W",
+          "O4pEVRir",
+          "p0kTXagU"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 351,
+            "touchCurrentMa": 3.544312956131689,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Cometes tenax callide ante quibusdam denuo consequuntur bis arceo uxor.",
+            "inspectionDate": "2027-05-14"
+          },
+          {
+            "isolationResistanceMohm": 541,
+            "touchCurrentMa": 2.7809042407621734,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Calculus cui valetudo sol.",
+            "inspectionDate": "2027-03-23"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Loren Medhurst"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Hammond",
+        "building": "Building A",
+        "room": "R-435"
+      },
+      "device": {
+        "id": "563fe820-a898-415f-b41a-a049e873ee3e",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Bernier LLC",
+        "model": "Soft Metal Gloves",
+        "serialNumber": "LmkX2ceMhoQM",
+        "protectionClass": "II",
+        "ratedVoltage": 234,
+        "ratedPower": 1781,
+        "pictures": [
+          "JsLRhLfk",
+          "8poTUuym"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 341,
+            "touchCurrentMa": 2.6865975606050343,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Usitas copiose admoneo decens cibo considero vorago quisquam amplus versus.",
+            "inspectionDate": "2027-02-24"
+          },
+          {
+            "isolationResistanceMohm": 454,
+            "touchCurrentMa": 4.475886573287556,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Copiose amet subiungo utrimque desino.",
+            "inspectionDate": "2027-04-18"
+          },
+          {
+            "isolationResistanceMohm": 430,
+            "touchCurrentMa": 3.5722654182683677,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Ascisco repellat aranea.",
+            "inspectionDate": "2026-08-23"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Carl Bernhard"
+      }
+    },
+    {
+      "location": {
+        "locationName": "North Kellie",
+        "building": "Building H",
+        "room": "R-491"
+      },
+      "device": {
+        "id": "d5d38224-478e-4252-9ac6-0c8966bcb68f",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Steuber, Stracke and Kovacek",
+        "model": "Frozen Bronze Computer",
+        "serialNumber": "5al6AfZpgDlw",
+        "protectionClass": "III",
+        "ratedVoltage": 154,
+        "ratedPower": 136,
+        "pictures": [
+          "fhJ9u84D",
+          "YC9Izli8"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 34,
+            "touchCurrentMa": 1.4398418748317796,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Vox assentator angustus balbus videlicet complectus vomica supra attero cubicularis.",
+            "inspectionDate": "2027-06-06"
+          },
+          {
+            "isolationResistanceMohm": 419,
+            "touchCurrentMa": 0.5131889488987059,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Depopulo conitor vinitor.",
+            "inspectionDate": "2026-09-04"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Dorthy Marvin"
+      }
+    },
+    {
+      "location": {
+        "locationName": "San Buenaventura (Ventura)",
+        "building": "Building T",
+        "room": "R-315"
+      },
+      "device": {
+        "id": "96fe5389-6729-46ba-a436-01b1b994b7c7",
+        "type": "Cargo Van",
+        "manufacturer": "Marks, Nienow and Farrell",
+        "model": "Modern Concrete Bike",
+        "serialNumber": "xLORbWTU6tjx",
+        "protectionClass": "II",
+        "ratedVoltage": 233,
+        "ratedPower": 1241,
+        "pictures": [
+          "55SzZhk5",
+          "HbCYqPBq"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 757,
+            "touchCurrentMa": 2.078236601004183,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Vociferor audax angustus accusator cenaculum qui amplitudo.",
+            "inspectionDate": "2027-01-13"
+          },
+          {
+            "isolationResistanceMohm": 984,
+            "touchCurrentMa": 2.4559028093568704,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Eaque bibo vestigium advenio provident theologus.",
+            "inspectionDate": "2026-12-08"
+          },
+          {
+            "isolationResistanceMohm": 861,
+            "touchCurrentMa": 3.9572791505761824,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Tertius valetudo denuo suus coma.",
+            "inspectionDate": "2027-06-04"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Timmy Zboncak"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Martinaton",
+        "building": "Building C",
+        "room": "R-750"
+      },
+      "device": {
+        "id": "dc4f9d28-ed8e-4bb0-8992-8dbd5717ea6b",
+        "type": "Cargo Van",
+        "manufacturer": "Johnston, Rodriguez-Walter and Miller",
+        "model": "Awesome Rubber Chips",
+        "serialNumber": "Wdhc5HyUKUq9",
+        "protectionClass": "II",
+        "ratedVoltage": 203,
+        "ratedPower": 521,
+        "pictures": [
+          "gIpQMDlR",
+          "mCnYRGnW",
+          "g6aD2GVj"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 115,
+            "touchCurrentMa": 4.73284213400499,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Distinctio tristis certe templum.",
+            "inspectionDate": "2026-08-19"
+          },
+          {
+            "isolationResistanceMohm": 106,
+            "touchCurrentMa": 4.358216916515708,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Claudeo aggredior canis corrumpo.",
+            "inspectionDate": "2027-05-27"
+          },
+          {
+            "isolationResistanceMohm": 490,
+            "touchCurrentMa": 2.5406351784942416,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Celebrer aliqua stabilis cognatus vobis tyrannus terebro provident accendo.",
+            "inspectionDate": "2027-03-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Torrance Wuckert"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Bernadetteberg",
+        "building": "Building D",
+        "room": "R-873"
+      },
+      "device": {
+        "id": "60818ba4-ed43-4083-9040-615e61b40edd",
+        "type": "Passenger Van",
+        "manufacturer": "MacGyver, Witting and Dare",
+        "model": "Ergonomic Marble Ball",
+        "serialNumber": "zPCPzH1iA4YK",
+        "protectionClass": "II",
+        "ratedVoltage": 138,
+        "ratedPower": 1007,
+        "pictures": [
+          "U4MwfaRc",
+          "SekHHHjr",
+          "JyKMmp68"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 605,
+            "touchCurrentMa": 1.341404422818676,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Sapiente adstringo deporto.",
+            "inspectionDate": "2027-04-22"
+          },
+          {
+            "isolationResistanceMohm": 345,
+            "touchCurrentMa": 4.818773917119088,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Aurum coaegresco vir deduco facere cenaculum clam umerus.",
+            "inspectionDate": "2026-08-24"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Rick Simonis"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Ericaview",
+        "building": "Building W",
+        "room": "R-803"
+      },
+      "device": {
+        "id": "431a1d73-9326-4c92-995d-feda7b838233",
+        "type": "Sedan",
+        "manufacturer": "Mitchell - Welch",
+        "model": "Soft Bamboo Tuna",
+        "serialNumber": "DIB5hpY6Q7Un",
+        "protectionClass": "III",
+        "ratedVoltage": 214,
+        "ratedPower": 696,
+        "pictures": [
+          "ucVZJksv"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 706,
+            "touchCurrentMa": 3.824898687650408,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Sponte deprecator curtus vestigium.",
+            "inspectionDate": "2027-06-05"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Prudence Leannon"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Fort Nancy",
+        "building": "Building N",
+        "room": "R-924"
+      },
+      "device": {
+        "id": "49157d5b-f223-497b-b136-fc565d627777",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Zboncak - Jacobs",
+        "model": "Soft Marble Tuna",
+        "serialNumber": "D9rCLnK1daB9",
+        "protectionClass": "III",
+        "ratedVoltage": 206,
+        "ratedPower": 143,
+        "pictures": [
+          "RzqGZsoU",
+          "Swmmp2Gj"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 577,
+            "touchCurrentMa": 3.1505907342216997,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Civitas vulariter crudelis.",
+            "inspectionDate": "2026-10-05"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Cierra Hackett"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Ricardostad",
+        "building": "Building B",
+        "room": "R-473"
+      },
+      "device": {
+        "id": "fa9f7ff5-9a38-47b0-866f-985eb236efaa",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Towne - Runolfsson",
+        "model": "Awesome Granite Sausages",
+        "serialNumber": "yjbEScol3DkS",
+        "protectionClass": "III",
+        "ratedVoltage": 142,
+        "ratedPower": 240,
+        "pictures": [
+          "9P8joZAC"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 234,
+            "touchCurrentMa": 2.6789004746832967,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Enim adiuvo voro.",
+            "inspectionDate": "2027-04-28"
+          },
+          {
+            "isolationResistanceMohm": 842,
+            "touchCurrentMa": 1.345633429419836,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Peior voluntarius blanditiis ubi.",
+            "inspectionDate": "2026-09-03"
+          },
+          {
+            "isolationResistanceMohm": 187,
+            "touchCurrentMa": 3.3271795132706465,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Credo carpo culpo tamdiu absconditus usus decumbo.",
+            "inspectionDate": "2027-01-05"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Alicia Pollich"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Schambergerberg",
+        "building": "Building R",
+        "room": "R-859"
+      },
+      "device": {
+        "id": "908ed807-db8e-4faf-a21d-448a29b098e0",
+        "type": "Passenger Van",
+        "manufacturer": "Conn - Hintz",
+        "model": "Rustic Bamboo Hat",
+        "serialNumber": "vVwPDpenkOQ1",
+        "protectionClass": "III",
+        "ratedVoltage": 176,
+        "ratedPower": 813,
+        "pictures": [
+          "iyTVn0qW",
+          "V458q3AE"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 146,
+            "touchCurrentMa": 2.1736976816060025,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Anser tricesimus vallum ustulo surculus comedo sunt.",
+            "inspectionDate": "2027-01-25"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Ahmed Raynor"
+      }
+    },
+    {
+      "location": {
+        "locationName": "East Jerryview",
+        "building": "Building L",
+        "room": "R-936"
+      },
+      "device": {
+        "id": "384e8b12-b655-4209-8daf-54ff820fedc7",
+        "type": "Wagon",
+        "manufacturer": "Batz, Cormier and Halvorson",
+        "model": "Generic Bamboo Pants",
+        "serialNumber": "ECy07f8avFWe",
+        "protectionClass": "III",
+        "ratedVoltage": 115,
+        "ratedPower": 1179,
+        "pictures": [
+          "CrusUNDw",
+          "96KmUUJK"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 573,
+            "touchCurrentMa": 2.820468034145778,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Vilicus vehemens nisi cunctatio admitto.",
+            "inspectionDate": "2027-03-12"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Evelyn Boehm"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Beatrice",
+        "building": "Building T",
+        "room": "R-457"
+      },
+      "device": {
+        "id": "3776df83-b4df-4f56-a55f-c9230c54c7f2",
+        "type": "Minivan",
+        "manufacturer": "Upton, Predovic and Farrell",
+        "model": "Refined Aluminum Cheese",
+        "serialNumber": "IldQlp88V5c2",
+        "protectionClass": "III",
+        "ratedVoltage": 116,
+        "ratedPower": 721,
+        "pictures": [
+          "JcXBUlZM",
+          "IvBq3BxU",
+          "o5XAn7jQ"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 223,
+            "touchCurrentMa": 0.37889477706032904,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Antea bos terra certus omnis clementia animus.",
+            "inspectionDate": "2026-07-02"
+          },
+          {
+            "isolationResistanceMohm": 999,
+            "touchCurrentMa": 3.9568081830179564,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Certe undique adeptio catena amissio undique ultra cursus.",
+            "inspectionDate": "2027-02-23"
+          },
+          {
+            "isolationResistanceMohm": 326,
+            "touchCurrentMa": 3.5746779997134577,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Audentia sed recusandae.",
+            "inspectionDate": "2026-09-24"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Jena Kris"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Chadtown",
+        "building": "Building K",
+        "room": "R-345"
+      },
+      "device": {
+        "id": "ec86d160-b944-4e41-aa00-db70897030cd",
+        "type": "Minivan",
+        "manufacturer": "Hagenes, Gutkowski and Harber",
+        "model": "Awesome Granite Towels",
+        "serialNumber": "K8xMqdPCE4QZ",
+        "protectionClass": "III",
+        "ratedVoltage": 209,
+        "ratedPower": 171,
+        "pictures": [
+          "7AnjzaOb"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 286,
+            "touchCurrentMa": 2.5622178487612297,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Tenetur validus valetudo dolore candidus temptatio.",
+            "inspectionDate": "2027-06-16"
+          },
+          {
+            "isolationResistanceMohm": 850,
+            "touchCurrentMa": 4.352865307775979,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Congregatio venia aestus nulla communis derelinquo libero somnus totus.",
+            "inspectionDate": "2026-08-05"
+          },
+          {
+            "isolationResistanceMohm": 752,
+            "touchCurrentMa": 3.699170332642582,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Aut inflammatio verbera agnosco eos supellex vivo.",
+            "inspectionDate": "2026-06-27"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Manley Rolfson"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Eagan",
+        "building": "Building C",
+        "room": "R-401"
+      },
+      "device": {
+        "id": "7f899ec8-7e21-4d7b-8719-bb027a2bcbe6",
+        "type": "Wagon",
+        "manufacturer": "Mohr - Weimann",
+        "model": "Small Rubber Bike",
+        "serialNumber": "ng69vEUba6mn",
+        "protectionClass": "II",
+        "ratedVoltage": 181,
+        "ratedPower": 682,
+        "pictures": [
+          "gWAzSOgf",
+          "uoDIKjEl",
+          "oKp9vLmB"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 222,
+            "touchCurrentMa": 1.39681384977094,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Cimentarius sumptus totidem labore thesaurus sortitus curatio dolorem adeptio.",
+            "inspectionDate": "2026-08-31"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Buck Stanton"
+      }
+    },
+    {
+      "location": {
+        "locationName": "West Astrid",
+        "building": "Building L",
+        "room": "R-762"
+      },
+      "device": {
+        "id": "fca0ea43-ccbf-4ddb-902b-51896066be97",
+        "type": "Passenger Van",
+        "manufacturer": "Robel and Sons",
+        "model": "Awesome Rubber Tuna",
+        "serialNumber": "qeQXMGEzNgRU",
+        "protectionClass": "I",
+        "ratedVoltage": 160,
+        "ratedPower": 376,
+        "pictures": [
+          "W90ErvkX",
+          "o0WOZOCD"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 952,
+            "touchCurrentMa": 1.3193085141997003,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Adhuc attollo territo quibusdam umbra advoco defaeco vulgivagus triumphus cattus.",
+            "inspectionDate": "2026-07-10"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Samanta Swift"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Sandracester",
+        "building": "Building C",
+        "room": "R-553"
+      },
+      "device": {
+        "id": "24f8485c-2a04-44de-9c1c-7ee7b6c2420b",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Green - Koch",
+        "model": "Small Gold Pants",
+        "serialNumber": "sDuJ3ETR1IeD",
+        "protectionClass": "II",
+        "ratedVoltage": 153,
+        "ratedPower": 693,
+        "pictures": [
+          "qaEjxh8H",
+          "m23IdC1D",
+          "okgXudjx"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 523,
+            "touchCurrentMa": 0.8359252482495162,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Tutamen curo vinculum.",
+            "inspectionDate": "2026-10-17"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Imani Hermann"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Fort Theodora",
+        "building": "Building T",
+        "room": "R-663"
+      },
+      "device": {
+        "id": "c1be5db9-aa58-49d0-8376-5f53fb1aa9c6",
+        "type": "Hatchback",
+        "manufacturer": "King-Schmidt - Cummings-Kshlerin",
+        "model": "Fresh Rubber Keyboard",
+        "serialNumber": "zpyPJMbuS1NK",
+        "protectionClass": "III",
+        "ratedVoltage": 191,
+        "ratedPower": 267,
+        "pictures": [
+          "Xrb7cgxk"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 568,
+            "touchCurrentMa": 4.995651473544051,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Cimentarius defluo cogito defaeco tumultus cur veniam delectus.",
+            "inspectionDate": "2027-02-12"
+          },
+          {
+            "isolationResistanceMohm": 296,
+            "touchCurrentMa": 0.6023899516056738,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Vulariter supellex vallum spero casso supplanto.",
+            "inspectionDate": "2026-07-22"
+          },
+          {
+            "isolationResistanceMohm": 762,
+            "touchCurrentMa": 4.502110595587811,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Varius tres benevolentia sed amet uredo quaerat.",
+            "inspectionDate": "2027-04-02"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Frances Runte"
+      }
+    },
+    {
+      "location": {
+        "locationName": "North Jerald",
+        "building": "Building E",
+        "room": "R-142"
+      },
+      "device": {
+        "id": "1cfbaba8-3b12-4de6-bd25-3e9407addae2",
+        "type": "Minivan",
+        "manufacturer": "Wilkinson, Lockman and Upton",
+        "model": "Frozen Silk Chips",
+        "serialNumber": "9IjeYejv1pmn",
+        "protectionClass": "I",
+        "ratedVoltage": 203,
+        "ratedPower": 1575,
+        "pictures": [
+          "ySQSSUn7"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 535,
+            "touchCurrentMa": 1.2123305420304316,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Abscido desino aestus sodalitas tepesco.",
+            "inspectionDate": "2026-09-16"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Maximilian Armstrong"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Kendale Lakes",
+        "building": "Building K",
+        "room": "R-934"
+      },
+      "device": {
+        "id": "a0611e4e-3e35-4839-90d7-c25d30da77b8",
+        "type": "Hatchback",
+        "manufacturer": "Boyle - Veum",
+        "model": "Refined Silk Towels",
+        "serialNumber": "87sI5lNF5cZ3",
+        "protectionClass": "II",
+        "ratedVoltage": 115,
+        "ratedPower": 389,
+        "pictures": [
+          "NbP6QY1k"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 575,
+            "touchCurrentMa": 0.8164937692123365,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Voluptatum conicio rerum aegrus defluo tabesco vicissitudo.",
+            "inspectionDate": "2027-03-03"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Marguerite Gerhold"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Flint",
+        "building": "Building U",
+        "room": "R-462"
+      },
+      "device": {
+        "id": "0a987653-b9f3-4721-8978-9eb7413eed49",
+        "type": "Hatchback",
+        "manufacturer": "Kutch, Wisozk-Weissnat and Watsica",
+        "model": "Tasty Bronze Pants",
+        "serialNumber": "laXKf439UPYI",
+        "protectionClass": "III",
+        "ratedVoltage": 147,
+        "ratedPower": 645,
+        "pictures": [
+          "b8TKbNTu",
+          "kArc583g"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 745,
+            "touchCurrentMa": 2.2115430439509356,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Denego aequus decet aperio.",
+            "inspectionDate": "2026-12-25"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Bertha Streich"
+      }
+    },
+    {
+      "location": {
+        "locationName": "West Teresabury",
+        "building": "Building L",
+        "room": "R-192"
+      },
+      "device": {
+        "id": "bf9e8f6f-1c06-43e5-9159-2c0479e083b4",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Hudson, Kessler and Okuneva",
+        "model": "Electronic Marble Pants",
+        "serialNumber": "ILscVhlLceQC",
+        "protectionClass": "III",
+        "ratedVoltage": 147,
+        "ratedPower": 919,
+        "pictures": [
+          "QXM7KRg8",
+          "lBMRkh74",
+          "qKUE78RX"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 830,
+            "touchCurrentMa": 4.391868570896673,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Subnecto video conspergo decimus.",
+            "inspectionDate": "2026-08-05"
+          },
+          {
+            "isolationResistanceMohm": 693,
+            "touchCurrentMa": 0.3189708395455191,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Tergeo pauci iste depono dedico cubicularis vulnus ter.",
+            "inspectionDate": "2027-01-06"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Shania Abbott"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Rapid City",
+        "building": "Building D",
+        "room": "R-652"
+      },
+      "device": {
+        "id": "8a4a6d40-e877-43df-8787-222086e1bde5",
+        "type": "Hatchback",
+        "manufacturer": "Wilkinson LLC",
+        "model": "Frozen Plastic Fish",
+        "serialNumber": "uHH4KLEkvsXq",
+        "protectionClass": "II",
+        "ratedVoltage": 225,
+        "ratedPower": 506,
+        "pictures": [
+          "9OJnWpk8"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 112,
+            "touchCurrentMa": 0.11256428827460747,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Bis dens textor abduco aeternus tandem talis spero apud calcar.",
+            "inspectionDate": "2027-06-17"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Bryan Dietrich"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Edenfield",
+        "building": "Building B",
+        "room": "R-700"
+      },
+      "device": {
+        "id": "e4a1d82e-3a53-4ac1-8401-33ce63aa8573",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Fisher-Kozey and Sons",
+        "model": "Small Marble Hat",
+        "serialNumber": "pZNLyr46AsyV",
+        "protectionClass": "III",
+        "ratedVoltage": 172,
+        "ratedPower": 1923,
+        "pictures": [
+          "rKyEo7Pi",
+          "uHaKlN2j"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 429,
+            "touchCurrentMa": 4.4533372294581905,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Aperte torqueo certe perferendis adficio theologus antea.",
+            "inspectionDate": "2026-08-22"
+          },
+          {
+            "isolationResistanceMohm": 191,
+            "touchCurrentMa": 2.801092661216522,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Comis curriculum villa.",
+            "inspectionDate": "2027-03-14"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Howard Bosco"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Armstrongland",
+        "building": "Building J",
+        "room": "R-903"
+      },
+      "device": {
+        "id": "613fb15d-5d3d-49cf-a46d-b6a474fc18da",
+        "type": "Convertible",
+        "manufacturer": "Hoppe-Wilderman and Sons",
+        "model": "Oriental Bronze Shirt",
+        "serialNumber": "mWJVVja8TDgd",
+        "protectionClass": "III",
+        "ratedVoltage": 149,
+        "ratedPower": 872,
+        "pictures": [
+          "ukwFOLjz",
+          "xDCcmjuJ",
+          "0OcrvG8z"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 476,
+            "touchCurrentMa": 4.441271954749296,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Super minima sumptus arx.",
+            "inspectionDate": "2026-11-20"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Carmella Kutch-Gorczany"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Haleyfurt",
+        "building": "Building R",
+        "room": "R-945"
+      },
+      "device": {
+        "id": "7d6c0a80-22a7-46c4-b61b-0c988d757fc8",
+        "type": "Sedan",
+        "manufacturer": "Schmitt, Macejkovic-Walter and Reilly",
+        "model": "Recycled Metal Chips",
+        "serialNumber": "7vuMLvNRUoiN",
+        "protectionClass": "I",
+        "ratedVoltage": 173,
+        "ratedPower": 1558,
+        "pictures": [
+          "RxNuCdHj",
+          "Np5t5imj"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 911,
+            "touchCurrentMa": 0.24959671751092993,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Atqui tamquam speciosus cogo annus officia animus clarus.",
+            "inspectionDate": "2027-03-15"
+          },
+          {
+            "isolationResistanceMohm": 742,
+            "touchCurrentMa": 2.759594620331823,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Viduo nesciunt totidem advenio depromo quos coma.",
+            "inspectionDate": "2026-10-18"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Edgar Russel"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Sabrinachester",
+        "building": "Building Y",
+        "room": "R-298"
+      },
+      "device": {
+        "id": "68913e72-4c39-4916-94b5-23ee18e31c16",
+        "type": "Extended Cab Pickup",
+        "manufacturer": "Wintheiser, Shields and Nolan",
+        "model": "Elegant Granite Chips",
+        "serialNumber": "gBhoeOXKTta9",
+        "protectionClass": "II",
+        "ratedVoltage": 227,
+        "ratedPower": 1280,
+        "pictures": [
+          "au0552AC",
+          "HDtAUXAE",
+          "rytVI3Gw"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 205,
+            "touchCurrentMa": 1.5304805963850483,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Fugiat tonsor vicissitudo summopere comis.",
+            "inspectionDate": "2027-03-18"
+          },
+          {
+            "isolationResistanceMohm": 337,
+            "touchCurrentMa": 1.5352153583712103,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Adeo desidero contabesco verbera cornu cuius tribuo.",
+            "inspectionDate": "2026-09-28"
+          },
+          {
+            "isolationResistanceMohm": 298,
+            "touchCurrentMa": 3.5997182966533727,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Textor vallum tripudio turba verto cibus abstergo canonicus utilis caecus.",
+            "inspectionDate": "2027-05-09"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Christophe Hoeger"
+      }
+    },
+    {
+      "location": {
+        "locationName": "West Alviston",
+        "building": "Building Q",
+        "room": "R-324"
+      },
+      "device": {
+        "id": "2072ad5a-663b-4ba1-9ea8-d30caac66796",
+        "type": "SUV",
+        "manufacturer": "Ernser, Purdy and Schimmel",
+        "model": "Refined Metal Hat",
+        "serialNumber": "ZOlpq4rrDTxr",
+        "protectionClass": "III",
+        "ratedVoltage": 175,
+        "ratedPower": 849,
+        "pictures": [
+          "i4ZnETGB",
+          "6dMpSr8a"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 259,
+            "touchCurrentMa": 2.3713871514709393,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Arcesso animi ascit synagoga torrens.",
+            "inspectionDate": "2026-08-29"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Cecelia Harber"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Hicklefurt",
+        "building": "Building S",
+        "room": "R-741"
+      },
+      "device": {
+        "id": "a0c27426-0873-48f9-b385-8a90a3da3740",
+        "type": "Sedan",
+        "manufacturer": "Dach and Sons",
+        "model": "Practical Rubber Cheese",
+        "serialNumber": "s97QVKzaarTb",
+        "protectionClass": "I",
+        "ratedVoltage": 116,
+        "ratedPower": 955,
+        "pictures": [
+          "hJdmSEwQ"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 971,
+            "touchCurrentMa": 1.3976964259566393,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Ciminatio uberrime arguo video coepi similique venio succurro.",
+            "inspectionDate": "2026-12-09"
+          },
+          {
+            "isolationResistanceMohm": 481,
+            "touchCurrentMa": 4.897912060816265,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Suadeo ascit denuncio iusto auctus.",
+            "inspectionDate": "2026-07-28"
+          },
+          {
+            "isolationResistanceMohm": 470,
+            "touchCurrentMa": 3.688735573299101,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Aduro correptius territo adipisci vapulus.",
+            "inspectionDate": "2026-11-12"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Demarco Emard"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Wmstead",
+        "building": "Building U",
+        "room": "R-473"
+      },
+      "device": {
+        "id": "0721fbc1-1746-4853-9948-d8f39c25bc0d",
+        "type": "Sedan",
+        "manufacturer": "Boyle, Stroman and Hand",
+        "model": "Frozen Ceramic Fish",
+        "serialNumber": "wZ6lrx1Di4Ip",
+        "protectionClass": "III",
+        "ratedVoltage": 149,
+        "ratedPower": 1700,
+        "pictures": [
+          "yzVDqD5X",
+          "zt8kHqYH"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 20,
+            "touchCurrentMa": 0.9417748797645408,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Tamdiu accusator eveniet tabgo a.",
+            "inspectionDate": "2027-03-08"
+          },
+          {
+            "isolationResistanceMohm": 500,
+            "touchCurrentMa": 1.725638839194241,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "passed",
+            "description": "Necessitatibus cribro desparatus adeo degusto ante tabernus subvenio enim ascisco.",
+            "inspectionDate": "2027-01-04"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Serena Jacobson"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Beahanbury",
+        "building": "Building E",
+        "room": "R-504"
+      },
+      "device": {
+        "id": "1b2276e0-73e6-4010-8391-ce87a1616da5",
+        "type": "Coupe",
+        "manufacturer": "Bartell - Spencer",
+        "model": "Ergonomic Bronze Pizza",
+        "serialNumber": "NXqPeT2Yixp1",
+        "protectionClass": "I",
+        "ratedVoltage": 200,
+        "ratedPower": 276,
+        "pictures": [
+          "szYmSqrY"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 568,
+            "touchCurrentMa": 2.8703322892850496,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Depereo cervus verbera utrum conforto ventito templum conscendo.",
+            "inspectionDate": "2026-11-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Kathy Frami"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Alva",
+        "building": "Building A",
+        "room": "R-124"
+      },
+      "device": {
+        "id": "2bba7c74-35a0-42ec-b12f-e1c18900ded7",
+        "type": "Coupe",
+        "manufacturer": "Kohler Group",
+        "model": "Fresh Ceramic Bike",
+        "serialNumber": "cG7Gg1zNqfxC",
+        "protectionClass": "I",
+        "ratedVoltage": 116,
+        "ratedPower": 1641,
+        "pictures": [
+          "xEWYj6Pt",
+          "TqTtIH8c"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 766,
+            "touchCurrentMa": 2.214104910449782,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Vulariter adhaero dolores triumphus curso terra conscendo appositus vado.",
+            "inspectionDate": "2027-01-25"
+          },
+          {
+            "isolationResistanceMohm": 285,
+            "touchCurrentMa": 1.2597944080181764,
+            "visualTestResult": "passed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Cras amplus degero voluntarius cicuta.",
+            "inspectionDate": "2026-08-10"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Catherine Orn"
+      }
+    },
+    {
+      "location": {
+        "locationName": "South Rickfort",
+        "building": "Building S",
+        "room": "R-527"
+      },
+      "device": {
+        "id": "2c39472f-b3cd-455a-9934-c4e39e7e6f2c",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Wyman, Ziemann and Flatley",
+        "model": "Incredible Silk Shirt",
+        "serialNumber": "YtOM55mzqEy5",
+        "protectionClass": "I",
+        "ratedVoltage": 194,
+        "ratedPower": 1844,
+        "pictures": [
+          "uEvRM2WL"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 203,
+            "touchCurrentMa": 4.986428801885634,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Cubicularis abscido sumo abbas coerceo deludo dicta alii ab.",
+            "inspectionDate": "2026-10-28"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Garrett Crona"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Lake Martamouth",
+        "building": "Building K",
+        "room": "R-200"
+      },
+      "device": {
+        "id": "b55a3331-7cb9-412c-a5ef-b0df0acbfd9d",
+        "type": "Coupe",
+        "manufacturer": "Oberbrunner Inc",
+        "model": "Soft Wooden Keyboard",
+        "serialNumber": "2XA3hvf8KNCt",
+        "protectionClass": "II",
+        "ratedVoltage": 137,
+        "ratedPower": 1438,
+        "pictures": [
+          "be0z8zeR",
+          "71E6PiBo",
+          "otHhjClb"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 577,
+            "touchCurrentMa": 3.339388459874838,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Viscus balbus nostrum cribro consequatur sub sufficio.",
+            "inspectionDate": "2027-02-03"
+          },
+          {
+            "isolationResistanceMohm": 114,
+            "touchCurrentMa": 4.705464371059592,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Cariosus terror blandior.",
+            "inspectionDate": "2027-03-28"
+          },
+          {
+            "isolationResistanceMohm": 588,
+            "touchCurrentMa": 3.665505182715554,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Tempora pectus vespillo amitto capio cariosus.",
+            "inspectionDate": "2027-05-02"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Shaylee Heaney-Orn"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Joanneton",
+        "building": "Building Y",
+        "room": "R-879"
+      },
+      "device": {
+        "id": "f49cfb9d-6ea2-442c-abae-3890bd2ce702",
+        "type": "Sedan",
+        "manufacturer": "Stokes - Little",
+        "model": "Oriental Bamboo Chair",
+        "serialNumber": "Eo5oU20pf0Ul",
+        "protectionClass": "III",
+        "ratedVoltage": 119,
+        "ratedPower": 61,
+        "pictures": [
+          "YszqLemI",
+          "y3DFkDcO",
+          "NTGiJRnz"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 300,
+            "touchCurrentMa": 2.337334619911518,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Aetas ocer pecus deputo spectaculum thermae cometes ademptio.",
+            "inspectionDate": "2027-03-03"
+          },
+          {
+            "isolationResistanceMohm": 831,
+            "touchCurrentMa": 2.32749507338413,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Cui somnus victoria censura adnuo vae pecto commemoro.",
+            "inspectionDate": "2027-06-09"
+          },
+          {
+            "isolationResistanceMohm": 447,
+            "touchCurrentMa": 4.8110210792645205,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Aggredior paulatim sol sperno ustulo tener adduco clamo.",
+            "inspectionDate": "2026-12-08"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Sylvester Fadel"
+      }
+    },
+    {
+      "location": {
+        "locationName": "New Nicholas",
+        "building": "Building F",
+        "room": "R-309"
+      },
+      "device": {
+        "id": "f377de6e-71e6-4649-90ae-317a7175452a",
+        "type": "Coupe",
+        "manufacturer": "Hagenes - Blick",
+        "model": "Handmade Wooden Fish",
+        "serialNumber": "UzkGIJ7F8nqK",
+        "protectionClass": "II",
+        "ratedVoltage": 147,
+        "ratedPower": 404,
+        "pictures": [
+          "cmtk50cU",
+          "0DCMDUA6"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 273,
+            "touchCurrentMa": 4.410896551032292,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Vigor tripudio damno capitulus aperiam venio ultra volutabrum aggredior.",
+            "inspectionDate": "2027-05-26"
+          },
+          {
+            "isolationResistanceMohm": 401,
+            "touchCurrentMa": 3.2343755571859254,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Quo calco tonsor adficio tero arguo alienus timidus vulariter.",
+            "inspectionDate": "2026-09-30"
+          },
+          {
+            "isolationResistanceMohm": 774,
+            "touchCurrentMa": 0.6966497393003421,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "no_result",
+            "description": "Tolero acies voco tener reprehenderit.",
+            "inspectionDate": "2027-01-21"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Leonard Kuhic"
+      }
+    },
+    {
+      "location": {
+        "locationName": "North Troy",
+        "building": "Building X",
+        "room": "R-638"
+      },
+      "device": {
+        "id": "88082cf4-f18a-4581-8275-c529710d241f",
+        "type": "Wagon",
+        "manufacturer": "Herzog and Sons",
+        "model": "Bespoke Silk Pizza",
+        "serialNumber": "cg9QQDpDNnnA",
+        "protectionClass": "II",
+        "ratedVoltage": 229,
+        "ratedPower": 412,
+        "pictures": [
+          "KR94joHT"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 890,
+            "touchCurrentMa": 2.981084555272228,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Usque auditor corroboro bellicus aestus aptus virga.",
+            "inspectionDate": "2027-01-29"
+          },
+          {
+            "isolationResistanceMohm": 186,
+            "touchCurrentMa": 3.3633651506506403,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Conculco adipisci atqui.",
+            "inspectionDate": "2027-02-07"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Olen Heaney"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Wmfield",
+        "building": "Building P",
+        "room": "R-576"
+      },
+      "device": {
+        "id": "1d79ae39-d79f-4b0d-a727-5a1a8ead5b4d",
+        "type": "Convertible",
+        "manufacturer": "Metz and Sons",
+        "model": "Handmade Ceramic Soap",
+        "serialNumber": "4x1XEd8VxW3q",
+        "protectionClass": "I",
+        "ratedVoltage": 219,
+        "ratedPower": 1316,
+        "pictures": [
+          "Fc3Yzwia"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 919,
+            "touchCurrentMa": 0.554684595614361,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "failed",
+            "status": "failed",
+            "description": "Tempus angustus decimus eum bestia causa adsidue.",
+            "inspectionDate": "2026-07-30"
+          },
+          {
+            "isolationResistanceMohm": 968,
+            "touchCurrentMa": 0.7014874305027848,
+            "visualTestResult": "passed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Vulgaris acquiro iste auxilium defungo abeo alii appono commodo tenetur.",
+            "inspectionDate": "2026-09-14"
+          },
+          {
+            "isolationResistanceMohm": 293,
+            "touchCurrentMa": 2.815324756338876,
+            "visualTestResult": "passed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "no_result",
+            "description": "Sophismata censura cubicularis tabula auctus teneo angelus infit strenuus degero.",
+            "inspectionDate": "2027-03-12"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Amie Boyle"
+      }
+    },
+    {
+      "location": {
+        "locationName": "South Ben",
+        "building": "Building W",
+        "room": "R-876"
+      },
+      "device": {
+        "id": "d065ead4-a793-4c45-a432-90c845c6a89c",
+        "type": "Cargo Van",
+        "manufacturer": "Spencer - Schneider",
+        "model": "Luxurious Aluminum Fish",
+        "serialNumber": "VXpSriMZW9nZ",
+        "protectionClass": "II",
+        "ratedVoltage": 176,
+        "ratedPower": 137,
+        "pictures": [
+          "tFuukCHL",
+          "vIGkWOLk",
+          "OP9w4V14"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 802,
+            "touchCurrentMa": 1.0578069743603704,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Benevolentia similique illo comis blanditiis attonbitus conspergo deprimo deputo.",
+            "inspectionDate": "2027-02-16"
+          },
+          {
+            "isolationResistanceMohm": 928,
+            "touchCurrentMa": 3.3712535044443737,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "failed",
+            "functionTestResult": "no_result",
+            "overallResult": "failed",
+            "status": "no_result",
+            "description": "Censura conitor coaegresco tametsi sui corporis vitium demens eligendi.",
+            "inspectionDate": "2026-11-15"
+          },
+          {
+            "isolationResistanceMohm": 88,
+            "touchCurrentMa": 2.292293181044509,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Compono abundans angelus.",
+            "inspectionDate": "2026-11-26"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Thad Dooley"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Victoriaton",
+        "building": "Building L",
+        "room": "R-149"
+      },
+      "device": {
+        "id": "f61db55c-d277-4249-b932-d92f9767ceb6",
+        "type": "Wagon",
+        "manufacturer": "Mosciski, Ondricka and Grant",
+        "model": "Elegant Bronze Shoes",
+        "serialNumber": "8ZxiS8gxGgi6",
+        "protectionClass": "II",
+        "ratedVoltage": 233,
+        "ratedPower": 741,
+        "pictures": [
+          "xphXahei",
+          "TKEFHp7U",
+          "SHb0xCUV"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 245,
+            "touchCurrentMa": 2.9178917827318323,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Cur voluptatibus cultellus aliquam blanditiis.",
+            "inspectionDate": "2027-03-26"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Antwan Lehner"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Ryanside",
+        "building": "Building W",
+        "room": "R-814"
+      },
+      "device": {
+        "id": "a98ee647-dce1-4fea-b830-53a3094e8635",
+        "type": "Crew Cab Pickup",
+        "manufacturer": "Brown - Wilderman",
+        "model": "Bespoke Aluminum Fish",
+        "serialNumber": "00l0oNGCkEf7",
+        "protectionClass": "I",
+        "ratedVoltage": 139,
+        "ratedPower": 1745,
+        "pictures": [
+          "qOxMyheG",
+          "jpE7cOrI"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 1000,
+            "touchCurrentMa": 3.5002037156674146,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "failed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Veritatis esse crapula tracto aqua denego amitto beneficium aggero.",
+            "inspectionDate": "2027-05-07"
+          },
+          {
+            "isolationResistanceMohm": 530,
+            "touchCurrentMa": 1.6712110266895766,
+            "visualTestResult": "no_result",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "failed",
+            "description": "Vulgivagus adstringo cur minus deorsum.",
+            "inspectionDate": "2026-09-23"
+          },
+          {
+            "isolationResistanceMohm": 661,
+            "touchCurrentMa": 0.8204106120620842,
+            "visualTestResult": "failed",
+            "measurementTestResult": "failed",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "passed",
+            "description": "Cibus solvo creo repellat adulescens tamdiu fuga subvenio ademptio.",
+            "inspectionDate": "2026-12-09"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Toby Nolan"
+      }
+    },
+    {
+      "location": {
+        "locationName": "Irving",
+        "building": "Building Y",
+        "room": "R-142"
+      },
+      "device": {
+        "id": "f0206eba-63de-42b8-a439-940a5e740a34",
+        "type": "SUV",
+        "manufacturer": "Stoltenberg - Wiegand",
+        "model": "Elegant Plastic Hat",
+        "serialNumber": "DGU4MepEaf0q",
+        "protectionClass": "III",
+        "ratedVoltage": 196,
+        "ratedPower": 273,
+        "pictures": [
+          "Vu2duKNI"
+        ],
+        "inspections": [
+          {
+            "isolationResistanceMohm": 731,
+            "touchCurrentMa": 3.07111879320493,
+            "visualTestResult": "failed",
+            "measurementTestResult": "passed",
+            "functionTestResult": "no_result",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "Conduco arcus acquiro victus harum volubilis verbera adamo tondeo theologus.",
+            "inspectionDate": "2026-09-13"
+          },
+          {
+            "isolationResistanceMohm": 605,
+            "touchCurrentMa": 2.7780580099316983,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "passed",
+            "status": "failed",
+            "description": "Laborum dens delectatio culpa claustrum esse aliqua vitae charisma celebrer.",
+            "inspectionDate": "2027-04-06"
+          },
+          {
+            "isolationResistanceMohm": 750,
+            "touchCurrentMa": 1.4539471730198033,
+            "visualTestResult": "failed",
+            "measurementTestResult": "no_result",
+            "functionTestResult": "passed",
+            "overallResult": "no_result",
+            "status": "passed",
+            "description": "In volutabrum ciminatio cenaculum viridis suscipit decens.",
+            "inspectionDate": "2026-08-29"
+          }
+        ]
+      },
+      "metadata": {
+        "inspector": "Sue Hansen"
+      }
+    }
+  ]
+}
