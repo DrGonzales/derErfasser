@@ -1,15 +1,20 @@
-<script>
+<script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import { addRecord, clearRecords, deleteRecord, getRecords } from './lib/db.js';
+  import { addRecord, clearRecords, deleteRecord, getRecords, type StoredRecord } from './lib/db';
 
-  let records = [];
+  type RecordView = StoredRecord & {
+    imageUrl: string;
+  };
+
+  let records: RecordView[] = [];
   let title = '';
   let notes = '';
-  let imageFile = null;
+  let imageFile: File | null = null;
   let imagePreviewUrl = '';
   let status = 'Bereit fuer neue Eintraege.';
+  let isLoading = true;
   let isSaving = false;
-  let recordImageUrls = [];
+  let recordImageUrls: string[] = [];
 
   onMount(() => {
     loadRecords();
@@ -26,11 +31,15 @@
   async function loadRecords() {
     revokeRecordImageUrls();
 
-    records = (await getRecords()).map((record) => ({
-      ...record,
-      imageUrl: record.image?.blob ? URL.createObjectURL(record.image.blob) : ''
-    }));
-    recordImageUrls = records.map((record) => record.imageUrl).filter(Boolean);
+    try {
+      records = (await getRecords()).map((record) => ({
+        ...record,
+        imageUrl: record.image?.blob ? URL.createObjectURL(record.image.blob) : ''
+      }));
+      recordImageUrls = records.map((record) => record.imageUrl).filter(Boolean);
+    } finally {
+      isLoading = false;
+    }
   }
 
   function revokeRecordImageUrls() {
@@ -38,8 +47,9 @@
     recordImageUrls = [];
   }
 
-  function handleImageChange(event) {
-    const [file] = event.currentTarget.files;
+  function handleImageChange(event: Event) {
+    const input = event.currentTarget as HTMLInputElement;
+    const [file] = input.files ?? [];
     imageFile = file ?? null;
 
     if (imagePreviewUrl) {
@@ -86,13 +96,13 @@
       await loadRecords();
       status = 'Eintrag wurde lokal gespeichert.';
     } catch (error) {
-      status = `Speichern fehlgeschlagen: ${error.message}`;
+      status = `Speichern fehlgeschlagen: ${error instanceof Error ? error.message : String(error)}`;
     } finally {
       isSaving = false;
     }
   }
 
-  async function removeRecord(id) {
+  async function removeRecord(id: number) {
     await deleteRecord(id);
     await loadRecords();
     status = 'Eintrag wurde geloescht.';
@@ -110,7 +120,7 @@
     status = 'Alle Eintraege wurden geloescht.';
   }
 
-  function formatDate(timestamp) {
+  function formatDate(timestamp: number) {
     return new Intl.DateTimeFormat('de-DE', {
       dateStyle: 'medium',
       timeStyle: 'short'
@@ -123,55 +133,90 @@
 </svelte:head>
 
 <main class="app-shell">
-  <section class="workspace">
-    <form class="capture-panel" on:submit|preventDefault={handleSubmit}>
-      <div class="panel-head">
-        <div>
-          <p class="eyebrow">PWA / IndexedDB</p>
-          <h1>derErfasser</h1>
-        </div>
-        <span class="count">{records.length}</span>
+  {#if isLoading}
+    <section class="loading-view" aria-live="polite">
+      <p>Daten werden geladen...</p>
+    </section>
+  {:else if records.length === 0}
+    <section class="upload-entry">
+      <div class="upload-copy">
+        <p class="eyebrow">Erster Eintrag</p>
+        <h1>derErfasser</h1>
+        <p>Lege den ersten lokalen Datensatz an. Danach oeffnet sich die normale Uebersicht.</p>
       </div>
 
-      <label>
-        Titel
-        <input bind:value={title} autocomplete="off" placeholder="z.B. Fundstueck, Beleg, Notiz" />
-      </label>
+      <form class="capture-panel upload-panel" on:submit|preventDefault={handleSubmit}>
+        <label>
+          Titel
+          <input bind:value={title} autocomplete="off" placeholder="z.B. Fundstueck, Beleg, Notiz" />
+        </label>
 
-      <label>
-        Daten
-        <textarea bind:value={notes} rows="6" placeholder="Text, Messwerte oder Beschreibung"></textarea>
-      </label>
+        <label>
+          Daten
+          <textarea bind:value={notes} rows="6" placeholder="Text, Messwerte oder Beschreibung"></textarea>
+        </label>
 
-      <label class="file-drop">
-        <input accept="image/*" type="file" on:change={handleImageChange} />
-        <span>Bild auswaehlen</span>
-        <small>{imageFile ? imageFile.name : 'JPG, PNG, WebP oder Kameraaufnahme'}</small>
-      </label>
+        <label class="file-drop">
+          <input accept="image/*" type="file" on:change={handleImageChange} />
+          <span>Bild hochladen</span>
+          <small>{imageFile ? imageFile.name : 'JPG, PNG, WebP oder Kameraaufnahme'}</small>
+        </label>
 
-      {#if imagePreviewUrl}
-        <img class="preview" src={imagePreviewUrl} alt="Vorschau des ausgewaehlten Bildes" />
-      {/if}
+        {#if imagePreviewUrl}
+          <img class="preview" src={imagePreviewUrl} alt="Vorschau des ausgewaehlten Bildes" />
+        {/if}
 
-      <div class="actions">
         <button class="primary" disabled={isSaving} type="submit">
-          {isSaving ? 'Speichern...' : 'Lokal speichern'}
+          {isSaving ? 'Speichern...' : 'Upload speichern'}
         </button>
-        <button class="ghost" disabled={!records.length} type="button" on:click={removeAll}>
-          Alles loeschen
-        </button>
-      </div>
 
-      <p class="status" aria-live="polite">{status}</p>
-    </form>
-
-    <section class="records" aria-label="Gespeicherte Eintraege">
-      {#if records.length === 0}
-        <div class="empty-state">
-          <h2>Noch keine Eintraege</h2>
-          <p>Neue Daten und Bilder werden offline in IndexedDB auf diesem Geraet gespeichert.</p>
+        <p class="status" aria-live="polite">{status}</p>
+      </form>
+    </section>
+  {:else}
+    <section class="workspace">
+      <form class="capture-panel" on:submit|preventDefault={handleSubmit}>
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">PWA / IndexedDB</p>
+            <h1>derErfasser</h1>
+          </div>
+          <span class="count">{records.length}</span>
         </div>
-      {:else}
+
+        <label>
+          Titel
+          <input bind:value={title} autocomplete="off" placeholder="z.B. Fundstueck, Beleg, Notiz" />
+        </label>
+
+        <label>
+          Daten
+          <textarea bind:value={notes} rows="6" placeholder="Text, Messwerte oder Beschreibung"></textarea>
+        </label>
+
+        <label class="file-drop">
+          <input accept="image/*" type="file" on:change={handleImageChange} />
+          <span>Bild auswaehlen</span>
+          <small>{imageFile ? imageFile.name : 'JPG, PNG, WebP oder Kameraaufnahme'}</small>
+        </label>
+
+        {#if imagePreviewUrl}
+          <img class="preview" src={imagePreviewUrl} alt="Vorschau des ausgewaehlten Bildes" />
+        {/if}
+
+        <div class="actions">
+          <button class="primary" disabled={isSaving} type="submit">
+            {isSaving ? 'Speichern...' : 'Lokal speichern'}
+          </button>
+          <button class="ghost" disabled={!records.length} type="button" on:click={removeAll}>
+            Alles loeschen
+          </button>
+        </div>
+
+        <p class="status" aria-live="polite">{status}</p>
+      </form>
+
+      <section class="records" aria-label="Gespeicherte Eintraege">
         {#each records as record (record.id)}
           <article class="record-card">
             {#if record.imageUrl}
@@ -196,7 +241,7 @@
             </div>
           </article>
         {/each}
-      {/if}
+      </section>
     </section>
-  </section>
+  {/if}
 </main>

@@ -11,7 +11,8 @@
                 "eamodio.gitlens",
                 "redhat.vscode-yaml",
                 "vmware.vscode-boot-dev-pack",
-                "ms-azuretools.vscode-containers"
+                "ms-azuretools.vscode-containers",
+                "svelte.svelte-vscode"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh"
@@ -25,6 +26,7 @@
     "mounts": [
         "source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig,type=bind,readonly",
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
-        "source=${localEnv:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,readonly"
+        "source=${localEnv:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,readonly",
+        "source=${localEnv:HOME}/.config/opencode/opencode.json,target=/home/ubuntu/.config/opencode/opencode.json,type=bind,readonly"
     ]
 }

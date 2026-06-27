@@ -37,17 +37,41 @@ button:disabled {
   padding: 24px;
 }
 
-.workspace {
+.workspace,
+.upload-entry {
   display: grid;
-  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
   gap: 24px;
   max-width: 1180px;
   margin: 0 auto;
   align-items: start;
 }
 
+.workspace {
+  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+}
+
+.upload-entry {
+  min-height: calc(100vh - 48px);
+  grid-template-columns: minmax(260px, 0.85fr) minmax(300px, 460px);
+  align-items: center;
+}
+
+.loading-view {
+  min-height: calc(100vh - 48px);
+  display: grid;
+  place-items: center;
+  color: #5c6c65;
+}
+
+.upload-copy p:last-child {
+  max-width: 520px;
+  margin: 18px 0 0;
+  color: #40544b;
+  font-size: 1.08rem;
+  line-height: 1.6;
+}
+
 .capture-panel,
-.empty-state,
 .record-card {
   border: 1px solid #d8ded4;
   border-radius: 8px;
@@ -61,6 +85,10 @@ button:disabled {
   display: grid;
   gap: 18px;
   padding: 22px;
+}
+
+.upload-panel {
+  position: static;
 }
 
 .panel-head {
@@ -214,19 +242,6 @@ time,
   gap: 16px;
 }
 
-.empty-state {
-  min-height: 260px;
-  display: grid;
-  align-content: center;
-  padding: 32px;
-}
-
-.empty-state p {
-  max-width: 440px;
-  margin-bottom: 0;
-  color: #5c6c65;
-}
-
 .record-card {
   display: grid;
   grid-template-columns: minmax(160px, 240px) minmax(0, 1fr);
@@ -259,8 +274,13 @@ time,
     padding: 14px;
   }
 
-  .workspace {
+  .workspace,
+  .upload-entry {
     grid-template-columns: 1fr;
+  }
+
+  .upload-entry {
+    min-height: auto;
   }
 
   .capture-panel {
