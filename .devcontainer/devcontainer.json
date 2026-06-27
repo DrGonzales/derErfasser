@@ -1,6 +1,6 @@
 {
     "name": "ubuntu-dev",
-    "image": "pi:5000/devcontainer/ubuntu-dev:dev",
+    "image": "pi:5000/devcontainer/ubuntu-dev:20260627-ef11075",
     "updateRemoteUserUID": true,
     "customizations": {
         "vscode": {
