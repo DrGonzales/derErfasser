@@ -89,18 +89,24 @@
         </thead>
         <tbody>
             {#each filtered as item}
-                    <tr>
-                        <td>
-                            {item.location?.locationName ?? "-"}
-                        </td>
-                        <td>{item.location?.building ?? "-"}</td>
-                        <td>{item.location?.room ?? "-"}</td>
-                        <td>
-                            {#if item.device}
-                                <button class="link" aria-label="Öffne Gerät" on:click={() => onSelectDevice && onSelectDevice(item.device)}>🔗</button>
-                            {/if}
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        {item.location?.locationName ?? "-"}
+                    </td>
+                    <td>{item.location?.building ?? "-"}</td>
+                    <td>{item.location?.room ?? "-"}</td>
+                    <td>
+                        {#if item.device}
+                            <button
+                                class="link"
+                                aria-label="Öffne Gerät"
+                                on:click={() =>
+                                    onSelectDevice &&
+                                    onSelectDevice(item.device)}>🔗</button
+                            >
+                        {/if}
+                    </td>
+                </tr>
             {/each}
         </tbody>
     </table>
