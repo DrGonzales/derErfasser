@@ -1,22 +1,35 @@
 <script lang="ts">
     import Upload from "./components/Upload.svelte";
     import EntriesList from "./components/EntriesList.svelte";
+    import Device from "./components/Device.svelte";
+    import { uploadCounter } from "./lib/stores/uploadStore";
 
     let message = "";
-    let refresh = 0;
+    let selectedDevice: any = null;
 
-    function onUploaded() {
+    // show a message when an upload happens (uploadCounter increments)
+    $: if ($uploadCounter) {
         message = "Upload abgeschlossen. Die App hat Daten in IndexedDB.";
-        // increment to signal EntriesList to reload
-        refresh = refresh + 1;
+    }
+
+    function openDevice(d: any) {
+        selectedDevice = d;
+    }
+
+    function closeDevice() {
+        selectedDevice = null;
     }
 </script>
 
 <main>
     <h1>derErfasser</h1>
-    <Upload on:uploaded={onUploaded} />
+    <Upload />
 
-    <EntriesList {refresh} />
+    {#if selectedDevice}
+        <Device device={selectedDevice} onBack={closeDevice} />
+    {:else}
+        <EntriesList onSelectDevice={openDevice} />
+    {/if}
 
     {#if message}
         <p aria-live="polite">{message}</p>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
     import { getRecords, type StoredRecord } from "../lib/db";
 
     type Location = {
@@ -9,16 +9,17 @@
     };
 
     // entries extracted from all records' devices.entries
-    let entries: { location?: Location }[] = [];
+    let entries: { location?: Location; device?: any }[] = [];
     let filter = "";
-
-    export let refresh = 0;
+    import { entriesFilter } from "../lib/stores/uiStore";
+    export let onSelectDevice: ((device: any) => void) | undefined;
+    import { uploadCounter } from "../lib/stores/uploadStore";
 
     import { Devices } from "../lib/models";
 
     async function load() {
         const records: StoredRecord[] = await getRecords();
-        const all: { location?: Location }[] = [];
+        const all: { location?: Location; device?: any }[] = [];
 
         for (const r of records) {
             const devicesRaw: any = (r as any).devices;
@@ -31,7 +32,7 @@
             if (Array.isArray(devices.entries)) {
                 for (const e of devices.entries) {
                     // e.location is a Location instance via the DeviceEntry constructor
-                    all.push({ location: e.location });
+                    all.push({ location: e.location, device: e.device });
                 }
             }
         }
@@ -41,10 +42,15 @@
 
     onMount(() => {
         load();
+        const unsub = entriesFilter.subscribe((v) => {
+            filter = v ?? "";
+        });
+        // ensure unsubscribe on destroy
+        onDestroy(() => unsub());
     });
 
-    $: if (refresh) {
-        // reload when parent signals a refresh (e.g. after upload)
+    // reload when the global upload counter changes (signalling a new upload)
+    $: if ($uploadCounter) {
         load();
     }
 
@@ -67,6 +73,7 @@
             id="filter"
             placeholder="z.B. New Clara oder Building A oder R-843"
             bind:value={filter}
+            on:input={() => entriesFilter.set(filter)}
         />
         <div>{filtered.length} / {entries.length}</div>
     </div>
@@ -77,15 +84,23 @@
                 <th>Location Name</th>
                 <th>Building</th>
                 <th>Room</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             {#each filtered as item}
-                <tr>
-                    <td>{item.location?.locationName ?? "-"}</td>
-                    <td>{item.location?.building ?? "-"}</td>
-                    <td>{item.location?.room ?? "-"}</td>
-                </tr>
+                    <tr>
+                        <td>
+                            {item.location?.locationName ?? "-"}
+                        </td>
+                        <td>{item.location?.building ?? "-"}</td>
+                        <td>{item.location?.room ?? "-"}</td>
+                        <td>
+                            {#if item.device}
+                                <button class="link" aria-label="Öffne Gerät" on:click={() => onSelectDevice && onSelectDevice(item.device)}>🔗</button>
+                            {/if}
+                        </td>
+                    </tr>
             {/each}
         </tbody>
     </table>
