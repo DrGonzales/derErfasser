@@ -19,7 +19,7 @@ function runGenerator(count: number) {
 
 describe('Device JSON generation', () => {
     it('should generate the requested number of devices and hydrate the Devices model', async () => {
-        const count = 5
+        const count = 10000
         await runGenerator(count);
 
         const file = await readFile('plan/generated-devices.json', 'utf8');

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'der-erfasser-v1';
+const CACHE_NAME = 'der-erfasser-v2';
 const APP_SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icon.svg'];
 
 self.addEventListener('install', (event) => {

@@ -1,5 +1,5 @@
 import './app.css';
-import App from './App.svelte';
+import AppRoot from './AppRoot.svelte';
 import { mount } from 'svelte';
 
 const target = document.getElementById('app');
@@ -8,7 +8,7 @@ if (!target) {
   throw new Error('App target element not found.');
 }
 
-const app = mount(App, {
+const app = mount(AppRoot, {
   target
 });
 
