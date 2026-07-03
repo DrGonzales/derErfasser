@@ -1,6 +1,15 @@
 {
     "name": "ubuntu-dev",
-    "image": "pi:5000/devcontainer/ubuntu-dev:20260627-ef11075",
+    //"image": "pi:5000/devcontainer/ubuntu-dev:20260627-ef11075",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "..",
+        "args": {
+            "JAVA_VERSION": "21-tem",
+            "NODE_VERSION": "lts/*",
+            "TASK_VERSION": "v3.42.1"
+        }
+    },
     "updateRemoteUserUID": true,
     "customizations": {
         "vscode": {

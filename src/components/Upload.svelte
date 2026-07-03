@@ -1,7 +1,8 @@
 <script lang="ts">
     import { addRecord, getRecords, clearRecords } from "../lib/db";
     import { Devices, Metadata } from "../lib/models";
-
+    import BackupButton from "./BackupButton.svelte";
+    import RestoreButton from "./RestoreButton.svelte";
     import { incrementUpload } from "../lib/stores/uploadStore";
     import { onMount } from "svelte";
 
@@ -38,16 +39,22 @@
             }
             devicesModel.metadata.lastback = Date.now();
 
-            const payload: any = {
-                title: file.name.replace(/\.json$/i, ""),
-                notes: "",
-                devices: devicesModel,
-            };
+            const title = file.name.replace(/\.json$/i, "");
 
             // Clear existing records before storing the new upload
             await clearRecords();
 
-            await addRecord(payload);
+            for (const entry of devicesModel.entries) {
+                entry.device.inspection = true;
+
+                await addRecord({
+                    title,
+                    notes: "",
+                    device: entry.device,
+                    location: entry.location,
+                    metadata: devicesModel.metadata,
+                });
+            }
 
             status = "Datei wurde in IndexedDB gespeichert.";
             // Signal other components via the shared store instead of a dispatched event.
@@ -68,16 +75,12 @@
             existingMetadata = null;
 
             if (records.length > 0) {
-                // use newest record's metadata
                 const newest = records[0];
-                existingMetadata = (newest as any).devices?.metadata ?? null;
-
-                for (const r of records) {
-                    const devs: any = (r as any).devices;
-                    if (devs && Array.isArray(devs.entries)) {
-                        totalEntries += devs.entries.length;
-                    }
-                }
+                existingMetadata =
+                    (newest as any).metadata ??
+                    (newest as any).devices?.metadata ??
+                    null;
+                totalEntries = records.length;
             }
         } catch (e) {
             // ignore
@@ -122,7 +125,13 @@
             <div>Anzahl Geräte-Einträge: {totalEntries}</div>
         </div>
     {/if}
-    <div class="drop" on:drop={onDrop} on:dragover={onDragOver}>
+    <div
+        class="drop"
+        role="button"
+        tabindex="0"
+        on:drop={onDrop}
+        on:dragover={onDragOver}
+    >
         <label>
             <input
                 accept="application/json"
@@ -139,6 +148,10 @@
     </div>
 
     <p aria-live="polite">{isLoading ? "Verarbeite..." : status}</p>
+    <div class="backup-actions">
+        <BackupButton />
+        <RestoreButton on:restored={loadExisting} />
+    </div>
 </div>
 
 <style>

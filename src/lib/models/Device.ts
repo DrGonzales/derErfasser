@@ -9,6 +9,7 @@ export class Device {
     protectionClass = "";
     ratedVoltage = 0;
     ratedPower = 0;
+    inspection = true
 
     pictures: ImageReference[] = [];
     inspections: Inspection[] = [];

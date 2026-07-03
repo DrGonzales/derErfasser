@@ -8,31 +8,47 @@
         room?: string;
     };
 
-    // entries extracted from all records' devices.entries
-    let entries: { location?: Location; device?: any }[] = [];
+    type EntryRow = {
+        location?: Location;
+        device: any;
+        recordId: number;
+    };
+
+    let entries: EntryRow[] = [];
     let filter = "";
     import { entriesFilter } from "../lib/stores/uiStore";
-    export let onSelectDevice: ((device: any) => void) | undefined;
+    export let onSelectDevice: ((item: EntryRow) => void) | undefined;
     import { uploadCounter } from "../lib/stores/uploadStore";
 
     import { Devices } from "../lib/models";
 
     async function load() {
         const records: StoredRecord[] = await getRecords();
-        const all: { location?: Location; device?: any }[] = [];
+        const all: EntryRow[] = [];
 
         for (const r of records) {
+            if (r.device) {
+                all.push({
+                    location: r.location,
+                    device: r.device,
+                    recordId: r.id,
+                });
+                continue;
+            }
+
             const devicesRaw: any = (r as any).devices;
             if (!devicesRaw) continue;
 
-            // Ensure we have a Devices instance (db.getRecords already hydrates,
-            // but we wrap again for safety so model constructors run).
+            // Backward compatibility: support old records with `devices.entries`.
             const devices = new Devices(devicesRaw as Partial<Devices>);
 
             if (Array.isArray(devices.entries)) {
                 for (const e of devices.entries) {
-                    // e.location is a Location instance via the DeviceEntry constructor
-                    all.push({ location: e.location, device: e.device });
+                    all.push({
+                        location: e.location,
+                        device: e.device,
+                        recordId: r.id,
+                    });
                 }
             }
         }
@@ -40,13 +56,14 @@
         entries = all;
     }
 
+    const unsubscribe = entriesFilter.subscribe((v) => {
+        filter = v ?? "";
+    });
+
+    onDestroy(() => unsubscribe());
+
     onMount(() => {
         load();
-        const unsub = entriesFilter.subscribe((v) => {
-            filter = v ?? "";
-        });
-        // ensure unsubscribe on destroy
-        onDestroy(() => unsub());
     });
 
     // reload when the global upload counter changes (signalling a new upload)
@@ -84,7 +101,7 @@
                 <th>Location Name</th>
                 <th>Building</th>
                 <th>Room</th>
-                <th></th>
+                <th>Aktion</th>
             </tr>
         </thead>
         <tbody>
@@ -96,15 +113,14 @@
                     <td>{item.location?.building ?? "-"}</td>
                     <td>{item.location?.room ?? "-"}</td>
                     <td>
-                        {#if item.device}
-                            <button
-                                class="link"
-                                aria-label="Öffne Gerät"
-                                on:click={() =>
-                                    onSelectDevice &&
-                                    onSelectDevice(item.device)}>🔗</button
-                            >
-                        {/if}
+                        <button
+                            type="button"
+                            class="link"
+                            aria-label="Öffne Gerät"
+                            on:click={() => onSelectDevice?.(item)}
+                        >
+                            🔗 Öffnen
+                        </button>
                     </td>
                 </tr>
             {/each}
@@ -142,5 +158,27 @@
     }
     th {
         background: #fafafa;
+    }
+
+    button.link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        border: 1px solid #006c5b;
+        background: #e9f7f2;
+        color: #006c5b;
+        border-radius: 4px;
+        padding: 0.4rem 0.8rem;
+        text-decoration: none;
+        font: inherit;
+        min-width: 90px;
+    }
+
+    button.link:hover,
+    button.link:focus {
+        background: #d2efe4;
+        outline: 2px solid #006c5b;
+        outline-offset: 2px;
     }
 </style>

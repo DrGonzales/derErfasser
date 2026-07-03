@@ -1,8 +1,18 @@
 <script lang="ts">
-    import type { Device as DeviceModel } from "../lib/models";
+    import { type Device as DeviceModel } from "../lib/models";
+    import ImageUpload from "./ImageUpload.svelte";
 
     export let device: DeviceModel | null = null;
+    export let recordId: number | null = null;
     export let onBack: (() => void) | undefined;
+
+    function handleImageUpdated(event: CustomEvent) {
+        const updated = event.detail as {
+            device: DeviceModel;
+            recordId: number;
+        };
+        device = updated.device;
+    }
 </script>
 
 {#if device}
@@ -67,6 +77,8 @@
         {:else}
             <div>Keine Inspektionen vorhanden.</div>
         {/if}
+
+        <ImageUpload {device} {recordId} on:updated={handleImageUpdated} />
     </div>
 {:else}
     <div>Kein Gerät ausgewählt.</div>

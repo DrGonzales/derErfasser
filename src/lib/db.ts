@@ -1,14 +1,19 @@
 const DB_NAME = 'der-erfasser-db';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE_NAME = 'records';
+const IMAGE_STORE_NAME = 'images';
 
-import { Devices, Device, DeviceEntry, Location } from './models';
+import { Devices, Device, Location, Metadata } from './models';
+
+let hasMigratedLegacyRecords = false;
 
 export type StoredImage = {
+  id: string;
   blob: Blob;
-  name: string;
+  name?: string;
   type: string;
   size: number;
+  createdAt: number;
 };
 
 // A record in the DB can hold arbitrary payloads. For new device-focused
@@ -19,6 +24,9 @@ export type NewRecord = {
   notes?: string;
   image?: StoredImage | null;
   devices?: Devices | Record<string, unknown>;
+  device?: Device | Record<string, unknown>;
+  location?: Location | Record<string, unknown>;
+  metadata?: Metadata | Record<string, unknown>;
 };
 
 export type StoredRecord = {
@@ -29,6 +37,52 @@ export type StoredRecord = {
 
 function openDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
+    const ensureStores = (db: IDBDatabase) => {
+      return db.objectStoreNames.contains(STORE_NAME) && db.objectStoreNames.contains(IMAGE_STORE_NAME);
+    };
+
+    const createStores = (version: number) => {
+      const request = indexedDB.open(DB_NAME, version);
+
+      request.onupgradeneeded = () => {
+        const db = request.result;
+
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          const store = db.createObjectStore(STORE_NAME, {
+            keyPath: 'id',
+            autoIncrement: true
+          });
+          store.createIndex('createdAt', 'createdAt');
+        }
+
+        if (!db.objectStoreNames.contains(IMAGE_STORE_NAME)) {
+          const imageStore = db.createObjectStore(IMAGE_STORE_NAME, {
+            keyPath: 'id'
+          });
+          imageStore.createIndex('createdAt', 'createdAt');
+        }
+      };
+
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    };
+
+    const openCurrent = () => {
+      const request = indexedDB.open(DB_NAME);
+
+      request.onsuccess = () => {
+        const db = request.result;
+        if (ensureStores(db)) {
+          resolve(db);
+        } else {
+          const nextVersion = db.version + 1;
+          db.close();
+          createStores(nextVersion);
+        }
+      };
+      request.onerror = () => reject(request.error);
+    };
+
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onupgradeneeded = () => {
@@ -41,22 +95,36 @@ function openDatabase(): Promise<IDBDatabase> {
         });
         store.createIndex('createdAt', 'createdAt');
       }
+
+      if (!db.objectStoreNames.contains(IMAGE_STORE_NAME)) {
+        const imageStore = db.createObjectStore(IMAGE_STORE_NAME, {
+          keyPath: 'id'
+        });
+        imageStore.createIndex('createdAt', 'createdAt');
+      }
     };
 
     request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      if (request.error?.name === 'VersionError') {
+        openCurrent();
+        return;
+      }
+      reject(request.error);
+    };
   });
 }
 
-async function withStore<T>(
+async function withObjectStore<T>(
+  storeName: string,
   mode: IDBTransactionMode,
   callback: (store: IDBObjectStore) => IDBRequest<T>
 ): Promise<T> {
   const db = await openDatabase();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, mode);
-    const store = transaction.objectStore(STORE_NAME);
+    const transaction = db.transaction(storeName, mode);
+    const store = transaction.objectStore(storeName);
     const request = callback(store);
 
     request.onsuccess = () => resolve(request.result);
@@ -69,28 +137,101 @@ async function withStore<T>(
   });
 }
 
-export async function getRecords(): Promise<StoredRecord[]> {
+async function withStore<T>(
+  mode: IDBTransactionMode,
+  callback: (store: IDBObjectStore) => IDBRequest<T>
+): Promise<T> {
+  return withObjectStore(STORE_NAME, mode, callback);
+}
+
+function hydrateRecord(record: StoredRecord): StoredRecord {
+  const copy: StoredRecord = { ...record };
+
+  if (copy.devices) {
+    copy.devices = new Devices(copy.devices as Partial<Devices>);
+  }
+
+  if (copy.device) {
+    copy.device = new Device(copy.device as Partial<Device>);
+  }
+
+  if (copy.location) {
+    copy.location = new Location(copy.location as Partial<Location>);
+  }
+
+  if (copy.metadata) {
+    copy.metadata = new Metadata(copy.metadata as Partial<Metadata>);
+  }
+
+  return copy;
+}
+
+async function migrateLegacyDeviceEntries(): Promise<void> {
+  if (hasMigratedLegacyRecords) {
+    return;
+  }
+
   const raw = await withStore<StoredRecord[]>('readonly', (store) => store.getAll() as IDBRequest<StoredRecord[]>);
+  const legacyRecords = raw.filter((rec) => rec.devices && Array.isArray((rec.devices as any).entries));
 
-  // Hydrate `devices` into model classes when present.
-  const records = raw.map((r) => {
-    const copy: StoredRecord = { ...r };
+  if (legacyRecords.length === 0) {
+    hasMigratedLegacyRecords = true;
+    return;
+  }
 
-    if (copy.devices) {
-      copy.devices = new Devices(copy.devices as Partial<Devices>);
+  const db = await openDatabase();
+  await new Promise<void>((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+
+    for (const record of raw) {
+      if (record.devices && Array.isArray((record.devices as any).entries)) {
+        const devices = new Devices(record.devices as Partial<Devices>);
+        for (const entry of devices.entries) {
+          const payload: NewRecord = {
+            title: record.title,
+            notes: record.notes,
+            metadata: record.metadata ? new Metadata(record.metadata as Partial<Metadata>) : undefined,
+            device: entry.device,
+            location: entry.location
+          };
+          store.add(JSON.parse(JSON.stringify(payload)));
+        }
+        store.delete(record.id);
+      }
     }
 
-    return copy;
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+    transaction.onabort = () => {
+      db.close();
+      reject(transaction.error);
+    };
   });
 
+  hasMigratedLegacyRecords = true;
+}
+
+export async function getRecords(): Promise<StoredRecord[]> {
+  await migrateLegacyDeviceEntries();
+  const raw = await withStore<StoredRecord[]>('readonly', (store) => store.getAll() as IDBRequest<StoredRecord[]>);
+  const records = raw.map(hydrateRecord);
   return records.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 export function addRecord(record: NewRecord): Promise<IDBValidKey> {
   const payload = {
     ...record,
-    // Store a plain representation of `devices`.
     devices: record.devices ? JSON.parse(JSON.stringify(record.devices)) : undefined,
+    device: record.device ? JSON.parse(JSON.stringify(record.device)) : undefined,
+    location: record.location ? JSON.parse(JSON.stringify(record.location)) : undefined,
+    metadata: record.metadata ? JSON.parse(JSON.stringify(record.metadata)) : undefined,
     createdAt: Date.now(),
     updatedAt: Date.now()
   };
@@ -98,8 +239,89 @@ export function addRecord(record: NewRecord): Promise<IDBValidKey> {
   return withStore<IDBValidKey>('readwrite', (store) => store.add(payload));
 }
 
+export async function updateRecord(record: StoredRecord): Promise<IDBValidKey> {
+  const payload = {
+    ...record,
+    devices: record.devices ? JSON.parse(JSON.stringify(record.devices)) : undefined,
+    device: record.device ? JSON.parse(JSON.stringify(record.device)) : undefined,
+    location: record.location ? JSON.parse(JSON.stringify(record.location)) : undefined,
+    metadata: record.metadata ? JSON.parse(JSON.stringify(record.metadata)) : undefined,
+    updatedAt: Date.now()
+  };
+
+  return withStore<IDBValidKey>('readwrite', (store) => store.put(payload));
+}
+
+export async function saveImageBlob(blob: Blob, name?: string): Promise<StoredImage> {
+  const image: StoredImage = {
+    id: crypto.randomUUID?.() ?? `img-${Math.random().toString(36).slice(2)}`,
+    blob,
+    name,
+    type: blob.type || 'image/jpeg',
+    size: blob.size,
+    createdAt: Date.now()
+  };
+
+  await withObjectStore<IDBValidKey>(IMAGE_STORE_NAME, 'readwrite', (store) => store.put(image));
+  return image;
+}
+
+export async function getImage(id: string): Promise<StoredImage | undefined> {
+  if (!id) {
+    return undefined;
+  }
+
+  return withObjectStore<StoredImage | undefined>(IMAGE_STORE_NAME, 'readonly', (store) => store.get(id) as IDBRequest<StoredImage | undefined>);
+}
+
+export async function getAllImages(): Promise<StoredImage[]> {
+  return withObjectStore<StoredImage[]>(IMAGE_STORE_NAME, 'readonly', (store) => store.getAll() as IDBRequest<StoredImage[]>);
+}
+
 export function deleteRecord(id: number): Promise<undefined> {
   return withStore<undefined>('readwrite', (store) => store.delete(id));
+}
+
+export function deleteDatabase(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(DB_NAME);
+
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+    request.onblocked = () => reject(new Error('Datenbanklöschung wurde blockiert. Bitte schließen Sie alle offenen Tabs oder Apps.'));
+  });
+}
+
+export async function restoreDatabaseFromBackup(records: StoredRecord[], images: StoredImage[]): Promise<void> {
+  await deleteDatabase();
+  const db = await openDatabase();
+
+  await new Promise<void>((resolve, reject) => {
+    const transaction = db.transaction([STORE_NAME, IMAGE_STORE_NAME], 'readwrite');
+    const recordStore = transaction.objectStore(STORE_NAME);
+    const imageStore = transaction.objectStore(IMAGE_STORE_NAME);
+
+    for (const record of records) {
+      recordStore.put(record as any);
+    }
+
+    for (const image of images) {
+      imageStore.put(image);
+    }
+
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => {
+      db.close();
+      reject(transaction.error);
+    };
+    transaction.onabort = () => {
+      db.close();
+      reject(transaction.error);
+    };
+  });
 }
 
 export function clearRecords(): Promise<undefined> {
@@ -111,58 +333,34 @@ export async function getRecord(id: number): Promise<StoredRecord | undefined> {
 
   if (!rec) return undefined;
 
-  if (rec.devices) {
-    rec.devices = new Devices(rec.devices as Partial<Devices>);
-  }
-
-  return rec;
+  return hydrateRecord(rec);
 }
 
 /**
- * Update an existing device inside a record, or add it if not present.
- * If `recordId` is null the function creates a new record and stores the
- * device as the first entry.
+ * Update an existing device record, or add a new device record if none exists.
+ * If `recordId` is null the function creates a new record for the device.
  */
 export async function upsertDevice(recordId: number | null, deviceData: Partial<Device> & { id?: string }, locationData?: Partial<Location>): Promise<IDBValidKey> {
+  const incoming = new Device({ ...deviceData, inspection: true });
+  const payload: NewRecord = {
+    device: incoming,
+    location: locationData ? new Location(locationData) : undefined
+  };
+
   if (recordId == null) {
-    const devices = new Devices({ entries: [new DeviceEntry({ device: new Device(deviceData), location: new Location(locationData) })] });
-    return addRecord({ devices });
+    return addRecord(payload);
   }
 
   const raw = await withStore<any>('readwrite', (store) => store.get(recordId) as IDBRequest<any>);
 
   if (!raw) {
-    // If record not found, create new one with the device.
-    return addRecord({ devices: new Devices({ entries: [new DeviceEntry({ device: new Device(deviceData), location: new Location(locationData) })] }) });
+    return addRecord(payload);
   }
 
-  // Ensure we have a plain object for devices.entries
-  const devicesObj = raw.devices ? new Devices(raw.devices as Partial<Devices>) : new Devices({ entries: [] });
-
-  const incoming = new Device(deviceData as Partial<Device>);
-
-  // Try to find existing entry by `id` if provided, otherwise by serialNumber.
-  let idx = -1;
-  if (incoming && (incoming as any).id) {
-    idx = devicesObj.entries.findIndex((e) => (e.device as any).id === (incoming as any).id);
+  raw.device = JSON.parse(JSON.stringify(incoming));
+  if (locationData) {
+    raw.location = JSON.parse(JSON.stringify(new Location(locationData)));
   }
-
-  if (idx === -1 && incoming.serialNumber) {
-    idx = devicesObj.entries.findIndex((e) => e.device.serialNumber === incoming.serialNumber);
-  }
-
-  if (idx !== -1) {
-    // Replace device details, keep location unless provided
-    const existing = devicesObj.entries[idx];
-    existing.device = incoming;
-    if (locationData) {
-      existing.location = new Location(locationData);
-    }
-  } else {
-    devicesObj.entries.push(new DeviceEntry({ device: incoming, location: new Location(locationData) }));
-  }
-
-  raw.devices = JSON.parse(JSON.stringify(devicesObj));
   raw.updatedAt = Date.now();
 
   return withStore<IDBValidKey>('readwrite', (store) => store.put(raw));

@@ -5,19 +5,19 @@
     import { uploadCounter } from "./lib/stores/uploadStore";
 
     let message = "";
-    let selectedDevice: any = null;
+    let selectedRecord: { device: any; recordId: number } | null = null;
 
     // show a message when an upload happens (uploadCounter increments)
     $: if ($uploadCounter) {
         message = "Upload abgeschlossen. Die App hat Daten in IndexedDB.";
     }
 
-    function openDevice(d: any) {
-        selectedDevice = d;
+    function openDevice(record: { device: any; recordId: number }) {
+        selectedRecord = record;
     }
 
     function closeDevice() {
-        selectedDevice = null;
+        selectedRecord = null;
     }
 </script>
 
@@ -25,8 +25,12 @@
     <h1>derErfasser</h1>
     <Upload />
 
-    {#if selectedDevice}
-        <Device device={selectedDevice} onBack={closeDevice} />
+    {#if selectedRecord}
+        <Device
+            device={selectedRecord.device}
+            recordId={selectedRecord.recordId}
+            onBack={closeDevice}
+        />
     {:else}
         <EntriesList onSelectDevice={openDevice} />
     {/if}
