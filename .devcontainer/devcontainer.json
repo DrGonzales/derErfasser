@@ -21,7 +21,8 @@
                 "redhat.vscode-yaml",
                 "vmware.vscode-boot-dev-pack",
                 "ms-azuretools.vscode-containers",
-                "svelte.svelte-vscode"
+                "svelte.svelte-vscode",
+                "openai.chatgpt-vscode"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh"

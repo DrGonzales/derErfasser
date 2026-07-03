@@ -53,7 +53,8 @@ Die Anwendung wird von Prüfern direkt vor Ort eingesetzt und muss daher auch oh
 * Bestehenden Code möglichst erweitern statt neu schreiben.
 * Vorhandene Namenskonventionen beibehalten.
 * Änderungen sollen möglichst klein und nachvollziehbar sein.
-
+* Nutze Svelte best practices
+* achte auf kleine überschaubere Componenten
 ---
 
 # Offline Requirements

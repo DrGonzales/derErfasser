@@ -1,6 +1,7 @@
 <script lang="ts">
     import { type Device as DeviceModel } from "../lib/models";
     import ImageUpload from "./ImageUpload.svelte";
+    import PictureGrid from "./PictureGrid.svelte";
 
     export let device: DeviceModel | null = null;
     export let recordId: number | null = null;
@@ -77,6 +78,11 @@
         {:else}
             <div>Keine Inspektionen vorhanden.</div>
         {/if}
+
+        <section class="device-images">
+            <h3>Bilder</h3>
+            <PictureGrid pictures={device.pictures ?? []} />
+        </section>
 
         <ImageUpload {device} {recordId} on:updated={handleImageUpdated} />
     </div>

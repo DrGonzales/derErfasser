@@ -8,7 +8,6 @@
         getRecord,
         updateRecord,
     } from "../lib/db";
-    import PictureGrid from "./PictureGrid.svelte";
 
     export let device: DeviceModel | null = null;
     export let recordId: number | null = null;
@@ -88,6 +87,9 @@
         imageBitmap.close();
 
         return new Promise<Blob>((resolve, reject) => {
+            const outputType = file.type || "image/jpeg";
+            const quality = outputType === "image/jpeg" ? 0.92 : undefined;
+
             canvas.toBlob(
                 (blob) => {
                     if (!blob) {
@@ -96,8 +98,8 @@
                     }
                     resolve(blob);
                 },
-                file.type || "image/jpeg",
-                0.92,
+                outputType,
+                quality,
             );
         });
     }
@@ -200,8 +202,6 @@
         </div>
     </div>
     <p>{uploadStatus}</p>
-
-    <PictureGrid pictures={displayPictures} {pictureUrls} />
 </section>
 
 <style>

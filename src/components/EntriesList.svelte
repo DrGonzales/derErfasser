@@ -73,9 +73,13 @@
 
     $: filtered = entries.filter((e) => {
         const loc = e.location ?? {};
+        const device = e.device ?? {};
         const q = filter.trim().toLowerCase();
         if (!q) return true;
         return (
+            (device.manufacturer ?? "").toLowerCase().includes(q) ||
+            (device.model ?? "").toLowerCase().includes(q) ||
+            (device.serialNumber ?? "").toLowerCase().includes(q) ||
             (loc.locationName ?? "").toLowerCase().includes(q) ||
             (loc.building ?? "").toLowerCase().includes(q) ||
             (loc.room ?? "").toLowerCase().includes(q)
@@ -85,10 +89,10 @@
 
 <div class="wrap">
     <div class="filter">
-        <label for="filter">Filter (Location Name, Building, Room):</label>
+        <label for="filter">Filter :</label>
         <input
             id="filter"
-            placeholder="z.B. New Clara oder Building A oder R-843"
+            placeholder="z.B. Siemens, Typ 123, SN-456, New Clara"
             bind:value={filter}
             on:input={() => entriesFilter.set(filter)}
         />
@@ -98,6 +102,9 @@
     <table>
         <thead>
             <tr>
+                <th>Hersteller</th>
+                <th>Modell</th>
+                <th>Seriennummer</th>
                 <th>Location Name</th>
                 <th>Building</th>
                 <th>Room</th>
@@ -107,9 +114,10 @@
         <tbody>
             {#each filtered as item}
                 <tr>
-                    <td>
-                        {item.location?.locationName ?? "-"}
-                    </td>
+                    <td>{item.device?.manufacturer ?? "-"}</td>
+                    <td>{item.device?.model ?? "-"}</td>
+                    <td>{item.device?.serialNumber ?? "-"}</td>
+                    <td>{item.location?.locationName ?? "-"}</td>
                     <td>{item.location?.building ?? "-"}</td>
                     <td>{item.location?.room ?? "-"}</td>
                     <td>
