@@ -18,11 +18,10 @@ Die Anwendung wird von Prüfern direkt vor Ort eingesetzt und muss daher auch oh
 ---
 
 # Features
-
+* Umsetzung als PWA
 * Erfassung von Messdaten
 * Speicherung aller Daten in der **IndexedDB**
 * Speicherung von:
-
   * JSON-Dokumenten
   * Bildern
 * Import von Projekten über ZIP-Dateien
@@ -55,6 +54,7 @@ Die Anwendung wird von Prüfern direkt vor Ort eingesetzt und muss daher auch oh
 * Änderungen sollen möglichst klein und nachvollziehbar sein.
 * Nutze Svelte best practices
 * achte auf kleine überschaubere Componenten
+* keine UI frameworks, natives HTML und CSS
 ---
 
 # Offline Requirements
@@ -136,7 +136,7 @@ Beim Implementieren neuer Funktionen ist darauf zu achten:
 * Große Schaltflächen für Touch-Bedienung.
 * Gute Lesbarkeit.
 * Dunkles und helles Design unterstützen.
-
+* auf Modilgeräte optimiert.
 ---
 
 # Testing
