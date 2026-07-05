@@ -1,12 +1,11 @@
 <script lang="ts">
     import { restoreDatabaseFromBackup } from "../lib/db";
     import { loadIndexedDBBackupZip } from "../lib/zipService";
-    import { createEventDispatcher } from "svelte";
 
-    const dispatch = createEventDispatcher();
+    let { onRestored }: { onRestored?: () => void } = $props();
 
-    let isRestoring = false;
-    let error = "";
+    let isRestoring = $state(false);
+    let error = $state("");
 
     async function handleRestoreFile(file: File) {
         isRestoring = true;
@@ -15,7 +14,7 @@
         try {
             const backup = await loadIndexedDBBackupZip(file);
             await restoreDatabaseFromBackup(backup.records, backup.images);
-            dispatch("restored");
+            onRestored?.();
         } catch (err) {
             error = `Restore fehlgeschlagen: ${err instanceof Error ? err.message : String(err)}`;
         } finally {
@@ -38,7 +37,7 @@
 </script>
 
 <div class="restore-button">
-    <button type="button" on:click={openFilePicker} disabled={isRestoring}>
+    <button type="button" onclick={openFilePicker} disabled={isRestoring}>
         {isRestoring ? "Restore läuft..." : "Backup wiederherstellen"}
     </button>
     {#if error}

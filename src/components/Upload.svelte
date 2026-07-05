@@ -3,14 +3,15 @@
     import { Devices, Metadata } from "../lib/models";
     import BackupButton from "./BackupButton.svelte";
     import RestoreButton from "./RestoreButton.svelte";
-    import { incrementUpload } from "../lib/stores/uploadStore";
     import { onMount } from "svelte";
 
-    let existingMetadata: Metadata | null = null;
-    let totalEntries = 0;
+    let { onUpload }: { onUpload?: () => void } = $props();
 
-    let status = "Bereit zum Hochladen (Drag & Drop oder Klick).";
-    let isLoading = false;
+    let existingMetadata: Metadata | null = $state(null);
+    let totalEntries = $state(0);
+
+    let status = $state("Bereit zum Hochladen (Drag & Drop oder Klick).");
+    let isLoading = $state(false);
 
     async function handleFile(file: File) {
         try {
@@ -57,8 +58,7 @@
             }
 
             status = "Datei wurde in IndexedDB gespeichert.";
-            // Signal other components via the shared store instead of a dispatched event.
-            incrementUpload();
+            onUpload?.();
             // reload local preview of metadata / counts
             await loadExisting();
         } catch (err) {
@@ -129,14 +129,14 @@
         class="drop"
         role="button"
         tabindex="0"
-        on:drop={onDrop}
-        on:dragover={onDragOver}
+        ondrop={onDrop}
+        ondragover={onDragOver}
     >
         <label>
             <input
                 accept="application/json"
                 type="file"
-                on:change={onInputChange}
+                onchange={onInputChange}
             />
             <div>
                 <strong>JSON-Datei hochladen</strong>
@@ -150,7 +150,7 @@
     <p aria-live="polite">{isLoading ? "Verarbeite..." : status}</p>
     <div class="backup-actions">
         <BackupButton />
-        <RestoreButton on:restored={loadExisting} />
+        <RestoreButton onRestored={loadExisting} />
     </div>
 </div>
 

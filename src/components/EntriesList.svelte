@@ -7,7 +7,6 @@
         entriesSort,
         type EntriesSortKey,
     } from "../lib/stores/uiStore";
-    import { uploadCounter } from "../lib/stores/uploadStore";
 
     type Location = {
         locationName?: string;
@@ -26,7 +25,11 @@
         label: string;
     };
 
-    export let onSelectDevice: ((item: EntryRow) => void) | undefined;
+    let {
+        onSelectDevice,
+        uploadVersion = 0,
+    }: { onSelectDevice?: (item: EntryRow) => void; uploadVersion?: number } =
+        $props();
 
     const columns: Column[] = [
         { key: "manufacturer", label: "Hersteller" },
@@ -37,7 +40,7 @@
         { key: "room", label: "Room" },
     ];
 
-    let entries: EntryRow[] = [];
+    let entries: EntryRow[] = $state([]);
 
     async function load() {
         const records: StoredRecord[] = await getRecords();
@@ -103,12 +106,12 @@
         load();
     });
 
-    // reload when the global upload counter changes (signalling a new upload)
-    $: if ($uploadCounter) {
-        load();
-    }
+    // reload when uploadVersion changes (signals a new upload)
+    $effect(() => {
+        if (uploadVersion > 0) load();
+    });
 
-    $: filtered = entries.filter((e) => {
+    const filtered = $derived(entries.filter((e) => {
         const loc = e.location ?? {};
         const device = e.device ?? {};
         const q = $entriesFilter.trim().toLowerCase();
@@ -121,9 +124,9 @@
             (loc.building ?? "").toLowerCase().includes(q) ||
             (loc.room ?? "").toLowerCase().includes(q)
         );
-    });
+    }));
 
-    $: sorted = [...filtered].sort((a, b) => {
+    const sorted = $derived([...filtered].sort((a, b) => {
         const direction = $entriesSort.direction === "ascending" ? 1 : -1;
         return (
             getSortValue(a, $entriesSort.key).localeCompare(
@@ -132,7 +135,7 @@
                 { numeric: true, sensitivity: "base" },
             ) * direction
         );
-    });
+    }));
 </script>
 
 <div class="wrap">
@@ -155,7 +158,7 @@
         <table class="entries-table">
             <thead>
                 <tr>
-                    {#each columns as column}
+                    {#each columns as column (column.key)}
                         <th
                             aria-sort={$entriesSort.key === column.key
                                 ? $entriesSort.direction
@@ -164,7 +167,7 @@
                             <button
                                 class="sort-button"
                                 type="button"
-                                on:click={() => setSort(column.key)}
+                                onclick={() => setSort(column.key)}
                             >
                                 <span>{column.label}</span>
                                 <span class="sort-indicator" aria-hidden="true">
@@ -181,7 +184,7 @@
                 </tr>
             </thead>
             <tbody>
-                {#each sorted as item}
+                {#each sorted as item (item.recordId)}
                     <tr>
                         <td>{item.device?.manufacturer ?? "-"}</td>
                         <td>{item.device?.model ?? "-"}</td>
@@ -194,7 +197,7 @@
                                 type="button"
                                 class="open-button"
                                 aria-label="Öffne Gerät"
-                                on:click={() => onSelectDevice?.(item)}
+                                onclick={() => onSelectDevice?.(item)}
                             >
                                 Öffnen
                             </button>

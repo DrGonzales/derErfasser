@@ -2,14 +2,14 @@
     import Upload from "./components/Upload.svelte";
     import EntriesList from "./components/EntriesList.svelte";
     import Device from "./components/Device.svelte";
-    import { uploadCounter } from "./lib/stores/uploadStore";
 
-    let message = "";
-    let selectedRecord: { device: any; recordId: number } | null = null;
+    let message = $state("");
+    let uploadVersion = $state(0);
+    let selectedRecord: { device: any; recordId: number } | null = $state(null);
 
-    // show a message when an upload happens (uploadCounter increments)
-    $: if ($uploadCounter) {
+    function handleUpload() {
         message = "Upload abgeschlossen. Die App hat Daten in IndexedDB.";
+        uploadVersion += 1;
     }
 
     function openDevice(record: { device: any; recordId: number }) {
@@ -23,7 +23,7 @@
 
 <main>
     <h1>derErfasser</h1>
-    <Upload />
+    <Upload onUpload={handleUpload} />
 
     {#if selectedRecord}
         <Device
@@ -32,7 +32,7 @@
             onBack={closeDevice}
         />
     {:else}
-        <EntriesList onSelectDevice={openDevice} />
+        <EntriesList onSelectDevice={openDevice} {uploadVersion} />
     {/if}
 
     {#if message}

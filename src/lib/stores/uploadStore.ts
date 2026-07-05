@@ -1,8 +1,2 @@
-import { writable } from "svelte/store";
-
-// Simple counter store that increments on each successful upload.
-export const uploadCounter = writable(0);
-
-export function incrementUpload() {
-    uploadCounter.update((n) => n + 1);
-}
+// uploadStore.ts — removed; upload signalling is now done via callback props.
+// This file is kept empty to avoid breaking any stale imports during migration.
