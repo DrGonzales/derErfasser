@@ -3,22 +3,51 @@
     import type { ImageReference } from "../lib/models";
     import { getImage } from "../lib/db";
 
-    export let pictures: ImageReference[] = [];
-    export let pictureUrls: Record<string, string> | undefined = undefined;
+    let {
+        pictures = [] as ImageReference[],
+        pictureUrls = undefined as Record<string, string> | undefined,
+    }: {
+        pictures?: ImageReference[];
+        pictureUrls?: Record<string, string> | undefined;
+    } = $props();
 
-    let internalPictureUrls: Record<string, string> = {};
+    let internalPictureUrls: Record<string, string> = $state({});
     let blobUrls: string[] = [];
     let loadToken = 0;
-    let urls: Record<string, string> = {};
-    let selectedIndex: number | null = null;
+    let selectedIndex: number | null = $state(null);
 
-    $: validPictures = pictures.filter(
-        (pic) => typeof pic?.id === "string" && pic.id.trim().length > 0,
+    const validPictures = $derived(
+        pictures.filter(
+            (pic) => typeof pic?.id === "string" && pic.id.trim().length > 0,
+        ),
     );
-    $: visiblePictures = validPictures.filter((picture) => urls[picture.id]);
-    $: selectedPicture =
-        selectedIndex === null ? undefined : visiblePictures[selectedIndex];
-    $: selectedUrl = selectedPicture ? urls[selectedPicture.id] : undefined;
+
+    const urls: Record<string, string> = $derived(
+        pictureUrls ?? internalPictureUrls,
+    );
+
+    const visiblePictures = $derived(
+        validPictures.filter((picture) => urls[picture.id]),
+    );
+
+    // Clamp selectedIndex: if out of range, treat as null (derived)
+    const clampedSelectedIndex = $derived(
+        selectedIndex !== null &&
+        selectedIndex < visiblePictures.length &&
+        visiblePictures.length > 0
+            ? selectedIndex
+            : null,
+    );
+
+    const selectedPicture = $derived(
+        clampedSelectedIndex === null
+            ? undefined
+            : visiblePictures[clampedSelectedIndex],
+    );
+
+    const selectedUrl = $derived(
+        selectedPicture ? urls[selectedPicture.id] : undefined,
+    );
 
     async function loadInternalUrls() {
         const token = ++loadToken;
@@ -33,7 +62,10 @@
             if (stored?.blob) {
                 const url = URL.createObjectURL(stored.blob);
                 blobUrls.push(url);
-                internalPictureUrls[picture.id] = url;
+                internalPictureUrls = {
+                    ...internalPictureUrls,
+                    [picture.id]: url,
+                };
             }
         }
     }
@@ -54,19 +86,22 @@
     }
 
     function showPreviousImage() {
-        if (selectedIndex === null || visiblePictures.length === 0) return;
+        if (clampedSelectedIndex === null || visiblePictures.length === 0)
+            return;
         selectedIndex =
-            (selectedIndex - 1 + visiblePictures.length) %
+            (clampedSelectedIndex - 1 + visiblePictures.length) %
             visiblePictures.length;
     }
 
     function showNextImage() {
-        if (selectedIndex === null || visiblePictures.length === 0) return;
-        selectedIndex = (selectedIndex + 1) % visiblePictures.length;
+        if (clampedSelectedIndex === null || visiblePictures.length === 0)
+            return;
+        selectedIndex =
+            (clampedSelectedIndex + 1) % visiblePictures.length;
     }
 
     function handleKeydown(event: KeyboardEvent) {
-        if (selectedIndex === null) return;
+        if (clampedSelectedIndex === null) return;
 
         if (event.key === "Escape") {
             closeLightbox();
@@ -77,35 +112,28 @@
         }
     }
 
-    $: if (pictureUrls === undefined && pictures.length > 0) {
-        loadInternalUrls();
-    }
-
-    $: urls = pictureUrls ?? internalPictureUrls;
-
-    $: if (
-        selectedIndex !== null &&
-        (selectedIndex >= visiblePictures.length ||
-            visiblePictures.length === 0)
-    ) {
-        closeLightbox();
-    }
+    $effect(() => {
+        // validPictures lesen damit der Effect bei jeder Änderung der pictures neu feuert
+        if (pictureUrls === undefined && validPictures.length > 0) {
+            loadInternalUrls();
+        }
+    });
 
     onDestroy(() => {
         cleanupBlobUrls();
     });
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window onkeydown={handleKeydown} />
 
 {#if visiblePictures.length > 0}
     <div class="picture-grid">
-        {#each visiblePictures as picture, index}
+        {#each visiblePictures as picture, index (picture.id)}
             <button
                 class="picture-thumb"
                 type="button"
                 aria-label="Gerätebild groß anzeigen"
-                on:click={() => openLightbox(index)}
+                onclick={() => openLightbox(index)}
             >
                 <img
                     src={urls[picture.id]}
@@ -129,7 +157,7 @@
             class="lightbox-close"
             type="button"
             aria-label="Bildansicht schließen"
-            on:click={closeLightbox}
+            onclick={closeLightbox}
         >
             ×
         </button>
@@ -139,7 +167,7 @@
                 class="lightbox-nav lightbox-nav-previous"
                 type="button"
                 aria-label="Vorheriges Bild anzeigen"
-                on:click={showPreviousImage}
+                onclick={showPreviousImage}
             >
                 ‹
             </button>
@@ -152,7 +180,7 @@
                 class="lightbox-nav lightbox-nav-next"
                 type="button"
                 aria-label="Nächstes Bild anzeigen"
-                on:click={showNextImage}
+                onclick={showNextImage}
             >
                 ›
             </button>

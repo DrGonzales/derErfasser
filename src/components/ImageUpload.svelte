@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onDestroy, createEventDispatcher } from "svelte";
+    import { onDestroy } from "svelte";
     import type { Device as DeviceModel } from "../lib/models";
     import { ImageReference } from "../lib/models";
     import {
@@ -9,23 +9,29 @@
         updateRecord,
     } from "../lib/db";
 
-    export let device: DeviceModel | null = null;
-    export let recordId: number | null = null;
-    let displayPictures: ImageReference[] = [];
+    let {
+        device = null,
+        recordId = null,
+        onUpdated = undefined,
+    }: {
+        device?: DeviceModel | null;
+        recordId?: number | null;
+        onUpdated?: (detail: { device: DeviceModel; recordId: number }) => void;
+    } = $props();
 
-    $: displayPictures =
+    let displayPictures = $derived(
         device?.pictures?.filter(
             (pic) => typeof pic?.id === "string" && pic.id.trim().length > 0,
-        ) ?? [];
-
-    const dispatch = createEventDispatcher();
+        ) ?? [],
+    );
 
     let fileInput: HTMLInputElement | null = null;
     let pictureUrls: Record<string, string> = {};
     let blobUrls: string[] = [];
-    let isUploading = false;
-    let uploadStatus =
-        "Bilder können per Drag & Drop oder Kamera hinzugefügt werden.";
+    let isUploading = $state(false);
+    let uploadStatus = $state(
+        "Bilder können per Drag & Drop oder Kamera hinzugefügt werden.",
+    );
 
     async function loadPictures() {
         const validPics =
@@ -133,7 +139,7 @@
 
             await loadPictures();
             uploadStatus = "Bilder erfolgreich gespeichert.";
-            dispatch("updated", { device, recordId });
+            onUpdated?.({ device, recordId });
         } catch (error) {
             uploadStatus = `Fehler beim Speichern: ${error instanceof Error ? error.message : String(error)}`;
         } finally {
@@ -167,9 +173,11 @@
         }
     }
 
-    $: if (device) {
-        loadPictures();
-    }
+    $effect(() => {
+        if (device) {
+            loadPictures();
+        }
+    });
 </script>
 
 <section class="images-section">
@@ -179,10 +187,10 @@
         class="image-drop"
         role="button"
         tabindex="0"
-        on:drop={onImageDrop}
-        on:dragover={onImageDragOver}
-        on:click={() => fileInput?.click()}
-        on:keydown={onImageDropKeydown}
+        ondrop={onImageDrop}
+        ondragover={onImageDragOver}
+        onclick={() => fileInput?.click()}
+        onkeydown={onImageDropKeydown}
     >
         <input
             bind:this={fileInput}
@@ -190,7 +198,7 @@
             accept="image/*"
             capture="environment"
             multiple
-            on:change={onImageInputChange}
+            onchange={onImageInputChange}
             hidden
         />
         <div>

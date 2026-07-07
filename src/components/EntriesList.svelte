@@ -7,6 +7,7 @@
         entriesSort,
         type EntriesSortKey,
     } from "../lib/stores/uiStore";
+    import DeviceEditor from "./DeviceEditor.svelte";
 
     type Location = {
         locationName?: string;
@@ -20,7 +21,7 @@
         recordId: number;
     };
 
-    type Column = {
+    type SortChip = {
         key: EntriesSortKey;
         label: string;
     };
@@ -31,13 +32,15 @@
     }: { onSelectDevice?: (item: EntryRow) => void; uploadVersion?: number } =
         $props();
 
-    const columns: Column[] = [
+    let creating = $state(false);
+
+    const sortChips: SortChip[] = [
         { key: "manufacturer", label: "Hersteller" },
         { key: "model", label: "Modell" },
         { key: "serialNumber", label: "Seriennummer" },
-        { key: "locationName", label: "Location Name" },
-        { key: "building", label: "Building" },
-        { key: "room", label: "Room" },
+        { key: "locationName", label: "Standort" },
+        { key: "building", label: "Gebäude" },
+        { key: "room", label: "Raum" },
     ];
 
     let entries: EntryRow[] = $state([]);
@@ -111,34 +114,44 @@
         if (uploadVersion > 0) load();
     });
 
-    const filtered = $derived(entries.filter((e) => {
-        const loc = e.location ?? {};
-        const device = e.device ?? {};
-        const q = $entriesFilter.trim().toLowerCase();
-        if (!q) return true;
-        return (
-            (device.manufacturer ?? "").toLowerCase().includes(q) ||
-            (device.model ?? "").toLowerCase().includes(q) ||
-            (device.serialNumber ?? "").toLowerCase().includes(q) ||
-            (loc.locationName ?? "").toLowerCase().includes(q) ||
-            (loc.building ?? "").toLowerCase().includes(q) ||
-            (loc.room ?? "").toLowerCase().includes(q)
-        );
-    }));
+    const filtered = $derived(
+        entries.filter((e) => {
+            const loc = e.location ?? {};
+            const device = e.device ?? {};
+            const q = $entriesFilter.trim().toLowerCase();
+            if (!q) return true;
+            return (
+                (device.manufacturer ?? "").toLowerCase().includes(q) ||
+                (device.model ?? "").toLowerCase().includes(q) ||
+                (device.serialNumber ?? "").toLowerCase().includes(q) ||
+                (loc.locationName ?? "").toLowerCase().includes(q) ||
+                (loc.building ?? "").toLowerCase().includes(q) ||
+                (loc.room ?? "").toLowerCase().includes(q)
+            );
+        }),
+    );
 
-    const sorted = $derived([...filtered].sort((a, b) => {
-        const direction = $entriesSort.direction === "ascending" ? 1 : -1;
-        return (
-            getSortValue(a, $entriesSort.key).localeCompare(
-                getSortValue(b, $entriesSort.key),
-                "de",
-                { numeric: true, sensitivity: "base" },
-            ) * direction
-        );
-    }));
+    const sorted = $derived(
+        [...filtered].sort((a, b) => {
+            const direction =
+                $entriesSort.direction === "ascending" ? 1 : -1;
+            return (
+                getSortValue(a, $entriesSort.key).localeCompare(
+                    getSortValue(b, $entriesSort.key),
+                    "de",
+                    { numeric: true, sensitivity: "base" },
+                ) * direction
+            );
+        }),
+    );
+
+    const MAX_VISIBLE = 500;
+    const visible = $derived(sorted.slice(0, MAX_VISIBLE));
+    const truncated = $derived(sorted.length > MAX_VISIBLE);
 </script>
 
 <div class="wrap">
+    <!-- Toolbar -->
     <div class="toolbar">
         <label class="filter-field" for="entries-filter">
             <span>Filter</span>
@@ -149,82 +162,130 @@
                 bind:value={$entriesFilter}
             />
         </label>
+
+        <div class="sort-chips" role="group" aria-label="Sortierung">
+            {#each sortChips as chip (chip.key)}
+                <button
+                    type="button"
+                    class="chip"
+                    class:chip--active={$entriesSort.key === chip.key}
+                    onclick={() => setSort(chip.key)}
+                    aria-pressed={$entriesSort.key === chip.key}
+                >
+                    {chip.label}
+                    {#if $entriesSort.key === chip.key}
+                        <span class="chip-arrow" aria-hidden="true">
+                            {$entriesSort.direction === "ascending" ? "↑" : "↓"}
+                        </span>
+                    {/if}
+                </button>
+            {/each}
+        </div>
+
         <div class="result-count" aria-live="polite">
             {sorted.length} / {entries.length}
         </div>
     </div>
 
-    <div class="table-shell">
-        <table class="entries-table">
-            <thead>
-                <tr>
-                    {#each columns as column (column.key)}
-                        <th
-                            aria-sort={$entriesSort.key === column.key
-                                ? $entriesSort.direction
-                                : "none"}
+    <!-- Card Grid -->
+    {#if sorted.length === 0}
+        <p class="empty-hint">Keine Einträge gefunden.</p>
+    {:else}
+        <ul class="card-grid" role="list">
+            {#each visible as item (item.recordId)}
+                <li class="card">
+                    <button
+                        type="button"
+                        class="inspect-btn"
+                        aria-label="Gerät prüfen / öffnen"
+                        onclick={() => onSelectDevice?.(item)}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="22"
+                            height="22"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
                         >
-                            <button
-                                class="sort-button"
-                                type="button"
-                                onclick={() => setSort(column.key)}
-                            >
-                                <span>{column.label}</span>
-                                <span class="sort-indicator" aria-hidden="true">
-                                    {$entriesSort.key === column.key
-                                        ? $entriesSort.direction === "ascending"
-                                            ? "↑"
-                                            : "↓"
-                                        : ""}
-                                </span>
-                            </button>
-                        </th>
-                    {/each}
-                    <th>Aktion</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each sorted as item (item.recordId)}
-                    <tr>
-                        <td>{item.device?.manufacturer ?? "-"}</td>
-                        <td>{item.device?.model ?? "-"}</td>
-                        <td>{item.device?.serialNumber ?? "-"}</td>
-                        <td>{item.location?.locationName ?? "-"}</td>
-                        <td>{item.location?.building ?? "-"}</td>
-                        <td>{item.location?.room ?? "-"}</td>
-                        <td>
-                            <button
-                                type="button"
-                                class="open-button"
-                                aria-label="Öffne Gerät"
-                                onclick={() => onSelectDevice?.(item)}
-                            >
-                                Öffnen
-                            </button>
-                        </td>
-                    </tr>
-                {/each}
-            </tbody>
-        </table>
-    </div>
+                            <rect x="5" y="3" width="14" height="18" rx="2" />
+                            <path d="M9 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H9V3z" />
+                            <polyline points="9 12 11 14 15 10" />
+                            <line x1="9" y1="17" x2="15" y2="17" />
+                        </svg>
+                    </button>
+
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            {item.device?.manufacturer ?? "–"} — {item.device?.model ?? "–"}
+                        </h3>
+                        <dl class="card-details">
+                            <div class="detail-row">
+                                <dt>Seriennummer</dt>
+                                <dd>{item.device?.serialNumber ?? "–"}</dd>
+                            </div>
+                            <div class="detail-row">
+                                <dt>Standort</dt>
+                                <dd>{item.location?.locationName ?? "–"}</dd>
+                            </div>
+                            <div class="detail-row">
+                                <dt>Gebäude</dt>
+                                <dd>{item.location?.building ?? "–"}</dd>
+                            </div>
+                            <div class="detail-row">
+                                <dt>Raum</dt>
+                                <dd>{item.location?.room ?? "–"}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </li>
+            {/each}
+        </ul>
+        {#if truncated}
+            <p class="truncate-hint" aria-live="polite">
+                Nur die ersten 500 Treffer werden angezeigt — Filter verwenden um die Ergebnisse einzugrenzen.
+            </p>
+        {/if}
+    {/if}
 </div>
 
+<button
+    type="button"
+    class="fab"
+    aria-label="Neues Gerät erstellen"
+    onclick={() => (creating = true)}
+>+</button>
+
+{#if creating}
+    <DeviceEditor
+        onSave={() => { creating = false; load(); }}
+        onCancel={() => (creating = false)}
+    />
+{/if}
+
 <style>
+    /* ── Wrapper ─────────────────────────────────────────── */
     .wrap {
-        max-width: 1000px;
+        max-width: 1100px;
         margin: 1rem auto;
     }
 
+    /* ── Toolbar ─────────────────────────────────────────── */
     .toolbar {
         display: flex;
-        align-items: end;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
     }
 
     .filter-field {
         flex: 1;
-        min-width: 16rem;
+        min-width: 14rem;
         display: grid;
         gap: 0.35rem;
         color: #31433b;
@@ -248,104 +309,192 @@
         outline: 3px solid rgb(35 83 71 / 20%);
     }
 
+    /* ── Sort chips ──────────────────────────────────────── */
+    .sort-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-items: center;
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0 0.75rem;
+        min-height: 34px;
+        border: 1px solid #b8c9b8;
+        border-radius: 99px;
+        background: #f2f7f2;
+        color: #40544b;
+        font: inherit;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .chip:hover,
+    .chip:focus-visible {
+        border-color: #235347;
+        background: #e4efe6;
+        color: #235347;
+        outline: none;
+    }
+
+    .chip--active {
+        border-color: #235347;
+        background: #235347;
+        color: #fff;
+    }
+
+    .chip--active:hover,
+    .chip--active:focus-visible {
+        background: #1a3f35;
+        color: #fff;
+    }
+
+    .chip-arrow {
+        font-size: 0.85rem;
+    }
+
+    /* ── Result count ────────────────────────────────────── */
     .result-count {
-        min-width: 5rem;
-        min-height: 44px;
+        min-width: 4.5rem;
+        min-height: 34px;
         display: grid;
         align-items: center;
         color: #667970;
         font-weight: 700;
         text-align: right;
         white-space: nowrap;
-    }
-
-    .table-shell {
-        width: 100%;
-        overflow-x: auto;
-        border: 1px solid #d8ded4;
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 12px 30px rgb(36 51 42 / 8%);
-    }
-
-    .entries-table {
-        width: 100%;
-        border-collapse: collapse;
         font-size: 0.9rem;
     }
 
-    th,
-    td {
-        height: 52px;
-        padding: 0 16px;
-        border-bottom: 1px solid #e7ece4;
-        text-align: left;
-        white-space: nowrap;
+    /* ── Empty / truncate hint ───────────────────────────── */
+    .empty-hint,
+    .truncate-hint {
+        text-align: center;
+        padding: 1rem;
+        color: #667970;
+        font-size: 0.9rem;
     }
 
-    th {
-        color: #40544b;
-        font-weight: 800;
-        background: #f8faf7;
+    .empty-hint {
+        padding: 3rem 1rem;
     }
 
-    tbody tr:hover {
-        background: #f8faf7;
-    }
-
-    tbody tr:last-child td {
-        border-bottom: 0;
-    }
-
-    .sort-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        min-height: 44px;
-        border: 0;
+    /* ── Card Grid ───────────────────────────────────────── */
+    .card-grid {
+        list-style: none;
+        margin: 0;
         padding: 0;
-        color: inherit;
-        background: transparent;
-        font: inherit;
-        font-weight: 800;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
-    .sort-button:hover,
-    .sort-button:focus-visible {
+
+
+    /* ── Single card ─────────────────────────────────────── */
+    .card {
+        position: relative;
+        background: #fff;
+        border: 1px solid #d8ded4;
+        border-radius: 10px;
+        padding: 0;
+        box-shadow: 0 4px 16px rgb(35 83 71 / 7%);
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        transition: box-shadow 0.18s, border-color 0.18s;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        border-color: #235347;
+        box-shadow: 0 8px 28px rgb(35 83 71 / 14%);
+    }
+
+    /* ── Inspect button (left, full height) ─────────────── */
+    .inspect-btn {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        align-self: stretch;
+        border: none;
+        border-right: 1.5px solid #235347;
+        border-radius: 0;
+        background: #f0f7f4;
         color: #235347;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .inspect-btn:hover,
+    .inspect-btn:focus-visible {
+        background: #235347;
+        color: #fff;
         outline: none;
     }
 
-    .sort-indicator {
-        display: inline-grid;
-        place-items: center;
-        width: 1rem;
-        color: #235347;
+    /* ── Card body (rechts vom Button) ──────────────────── */
+    .card-body {
+        flex: 1;
+        min-width: 0;
+        padding: 0.75rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
-    .open-button {
-        min-height: 36px;
-        border: 1px solid #235347;
-        border-radius: 6px;
-        padding: 0 14px;
-        color: #235347;
-        background: #fff;
-        font: inherit;
+    /* ── Card title ──────────────────────────────────────── */
+    .card-title {
+        margin: 0;
+        font-size: 0.95rem;
         font-weight: 800;
+        color: #17211d;
+        line-height: 1.35;
+        word-break: break-word;
     }
 
-    .open-button:hover,
-    .open-button:focus-visible {
-        background: rgb(35 83 71 / 8%);
-        outline: 2px solid rgb(35 83 71 / 32%);
-        outline-offset: 2px;
+    /* ── Detail list ─────────────────────────────────────── */
+    .card-details {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        font-size: 0.82rem;
     }
 
-    @media (max-width: 700px) {
+    .detail-row {
+        display: flex;
+        gap: 0.4rem;
+        align-items: baseline;
+    }
+
+    .card-details dt {
+        flex-shrink: 0;
+        color: #667970;
+        font-weight: 700;
+        min-width: 7rem;
+    }
+
+    .card-details dd {
+        margin: 0;
+        color: #31433b;
+        word-break: break-word;
+    }
+
+    /* ── Responsive toolbar adjustments ─────────────────── */
+    @media (max-width: 600px) {
         .toolbar {
             align-items: stretch;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
         .filter-field {
@@ -355,5 +504,42 @@
         .result-count {
             text-align: left;
         }
+
+        .sort-chips {
+            order: 2;
+        }
+    }
+
+    /* ── FAB ─────────────────────────────────────────────── */
+    .fab {
+        position: fixed;
+        bottom: 1.75rem;
+        right: 1.75rem;
+        z-index: 100;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: none;
+        background: #235347;
+        color: #fff;
+        font-size: 2rem;
+        line-height: 1;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 4px 16px rgb(35 83 71 / 35%);
+        cursor: pointer;
+        transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    }
+
+    .fab:hover,
+    .fab:focus-visible {
+        background: #1a3f35;
+        box-shadow: 0 6px 24px rgb(35 83 71 / 50%);
+        transform: scale(1.07);
+        outline: none;
+    }
+
+    .fab:active {
+        transform: scale(0.96);
     }
 </style>

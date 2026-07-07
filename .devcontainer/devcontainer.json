@@ -19,7 +19,7 @@
 	// Start the OpenCode web server on every container start so it is always reachable
 	// from the host via `opencode attach http://localhost:4096`.
 	// Runs in the background; logs go to /tmp/opencode-web.log for debugging.
-	"postStartCommand": "opencode web --hostname 0.0.0.0 --port 4096 > /tmp/opencode-web.log 2>&1 &",
+	"postStartCommand": "opencode web --hostname 0.0.0.0 --port 1234 > /tmp/opencode-web.log 2>&1 &",
 
 	// Bind-mount host OpenCode config and auth into the container so the container
 	// shares the same provider credentials and settings as the host.
