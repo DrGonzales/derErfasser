@@ -15,9 +15,13 @@ export type EntriesSort = {
   direction: EntriesSortDirection;
 };
 
+// 'current' = grün (abgearbeitet), 'outdated' = gelb (noch offen), 'all' = alle
+export type EntriesStatusFilter = 'current' | 'outdated' | 'all';
+
 // UI-related small stores
 export const entriesFilter = writable('');
 export const entriesSort = writable<EntriesSort>({
   key: 'manufacturer',
   direction: 'ascending'
 });
+export const entriesStatusFilter = writable<EntriesStatusFilter>('outdated');

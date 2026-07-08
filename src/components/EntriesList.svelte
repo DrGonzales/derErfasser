@@ -1,10 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { getRecords, type StoredRecord } from "../lib/db";
+    import { getRecords, getMeta, type StoredRecord } from "../lib/db";
     import {
         entriesFilter,
         entriesSort,
+        entriesStatusFilter,
         type EntriesSortKey,
+        type EntriesStatusFilter,
     } from "../lib/stores/uiStore";
     import DeviceEditor from "./DeviceEditor.svelte";
     import BackupButton from "./BackupButton.svelte";
@@ -19,6 +21,7 @@
         location?: Location;
         device: any;
         recordId: number;
+        isCurrent: boolean;
     };
 
     type SortChip = {
@@ -47,14 +50,15 @@
     let entries: EntryRow[] = $state([]);
 
     async function load() {
-        const records: StoredRecord[] = await getRecords();
+        const [records, meta] = await Promise.all([getRecords(), getMeta()]);
         const all: EntryRow[] = [];
+        const aktuellePruefung = meta?.aktuellePruefung?.trim() ?? "";
 
         // Datum des letzten Backups aus dem neuesten Record holen
         if (records.length > 0) {
             const newest = records[0];
-            const meta = (newest as any).metadata;
-            const metaTs: number | undefined = meta?.lastback ?? undefined;
+            const recMeta = (newest as any).metadata;
+            const metaTs: number | undefined = recMeta?.lastback ?? undefined;
             // localStorage-Timestamp vom letzten ZIP-Backup
             const lsRaw = localStorage.getItem("der-erfasser-last-backup");
             const lsTs = lsRaw ? Number(lsRaw) : undefined;
@@ -70,10 +74,20 @@
 
         for (const r of records) {
             if (r.device) {
+                const inspections: any[] = r.device.inspections ?? [];
+                // isCurrent: aktuellePruefung ist leer ODER mind. eine Inspection hat diesen Namen
+                const isCurrent =
+                    !aktuellePruefung ||
+                    inspections.some(
+                        (ins) =>
+                            (ins.inspectionName ?? "").trim() ===
+                            aktuellePruefung,
+                    );
                 all.push({
                     location: r.location,
                     device: r.device,
                     recordId: r.id,
+                    isCurrent,
                 });
             }
         }
@@ -118,6 +132,13 @@
 
     const filtered = $derived(
         entries.filter((e) => {
+            // Status-Filter
+            if ($entriesStatusFilter === "current" && !e.isCurrent)
+                return false;
+            if ($entriesStatusFilter === "outdated" && e.isCurrent)
+                return false;
+
+            // Textfilter
             const loc = e.location ?? {};
             const device = e.device ?? {};
             const q = $entriesFilter.trim().toLowerCase();
@@ -164,6 +185,31 @@
             />
         </label>
 
+        <div class="status-chips" role="group" aria-label="Status-Filter">
+            <button
+                type="button"
+                class="chip chip--outdated"
+                class:chip--active={$entriesStatusFilter === "outdated"}
+                onclick={() => entriesStatusFilter.set("outdated")}
+                aria-pressed={$entriesStatusFilter === "outdated"}>Offen</button
+            >
+            <button
+                type="button"
+                class="chip chip--current"
+                class:chip--active={$entriesStatusFilter === "current"}
+                onclick={() => entriesStatusFilter.set("current")}
+                aria-pressed={$entriesStatusFilter === "current"}
+                >Abgearbeitet</button
+            >
+            <button
+                type="button"
+                class="chip chip--all"
+                class:chip--active={$entriesStatusFilter === "all"}
+                onclick={() => entriesStatusFilter.set("all")}
+                aria-pressed={$entriesStatusFilter === "all"}>Alle</button
+            >
+        </div>
+
         <div class="sort-chips" role="group" aria-label="Sortierung">
             {#each sortChips as chip (chip.key)}
                 <button
@@ -190,7 +236,10 @@
         <div class="header-actions">
             {#if lastBackup}
                 <span class="backup-date" title="Datum des letzten Backups">
-                    {new Date(lastBackup).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })}
+                    {new Date(lastBackup).toLocaleString("de-DE", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                    })}
                 </span>
             {/if}
             <BackupButton onBackupDone={load} />
@@ -207,6 +256,7 @@
                     <button
                         type="button"
                         class="inspect-btn"
+                        class:inspect-btn--outdated={!item.isCurrent}
                         aria-label="Gerät prüfen / öffnen"
                         onclick={() => onSelectDevice?.(item)}
                     >
@@ -378,6 +428,78 @@
         font-size: 0.85rem;
     }
 
+    /* ── Status chips ────────────────────────────────────── */
+    .status-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-items: center;
+        flex-basis: 100%;
+    }
+
+    /* Gelb: Offen */
+    .chip--outdated {
+        border-color: #a16207;
+        background: #fef9c3;
+        color: #a16207;
+    }
+    .chip--outdated:hover,
+    .chip--outdated:focus-visible {
+        background: #fde68a;
+        outline: none;
+    }
+    .chip--outdated.chip--active {
+        background: #a16207;
+        border-color: #a16207;
+        color: #fff;
+    }
+    .chip--outdated.chip--active:hover,
+    .chip--outdated.chip--active:focus-visible {
+        background: #78350f;
+    }
+
+    /* Grün: Abgearbeitet */
+    .chip--current {
+        border-color: #235347;
+        background: #f0f7f4;
+        color: #235347;
+    }
+    .chip--current:hover,
+    .chip--current:focus-visible {
+        background: #e4efe6;
+        outline: none;
+    }
+    .chip--current.chip--active {
+        background: #235347;
+        border-color: #235347;
+        color: #fff;
+    }
+    .chip--current.chip--active:hover,
+    .chip--current.chip--active:focus-visible {
+        background: #1a3f35;
+    }
+
+    /* Weiß: Alle */
+    .chip--all {
+        border-color: #b8c9b8;
+        background: #fff;
+        color: #40544b;
+    }
+    .chip--all:hover,
+    .chip--all:focus-visible {
+        background: #f2f7f2;
+        outline: none;
+    }
+    .chip--all.chip--active {
+        background: #40544b;
+        border-color: #40544b;
+        color: #fff;
+    }
+    .chip--all.chip--active:hover,
+    .chip--all.chip--active:focus-visible {
+        background: #31433b;
+    }
+
     /* ── Result count ────────────────────────────────────── */
     .result-count {
         min-width: 4.5rem;
@@ -473,6 +595,20 @@
     .inspect-btn:hover,
     .inspect-btn:focus-visible {
         background: #235347;
+        color: #fff;
+        outline: none;
+    }
+
+    /* Aktuelle Prüfung fehlt → gelb */
+    .inspect-btn--outdated {
+        background: #fef9c3;
+        border-right-color: #a16207;
+        color: #a16207;
+    }
+
+    .inspect-btn--outdated:hover,
+    .inspect-btn--outdated:focus-visible {
+        background: #a16207;
         color: #fff;
         outline: none;
     }

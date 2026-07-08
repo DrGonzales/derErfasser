@@ -16,6 +16,7 @@ export class Inspection {
     status: InspectionResult = InspectionResult.NoResult;
     description = '';
     inspectionDate = '';
+    inspectionName = '';
     pictures: ImageReference[] = [];
 
 
