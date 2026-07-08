@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { getMeta, saveMeta } from "../lib/db";
-    import type { Meta } from "../lib/db";
+    import { getMeta, saveMeta } from "../../lib/db";
+    import type { Meta } from "../../lib/db";
     import RestoreButton from "./RestoreButton.svelte";
 
     let {
@@ -58,7 +58,7 @@
         saving = true;
         saveError = "";
         try {
-            const { Meta } = await import("../lib/models");
+            const { Meta } = await import("../../lib/models");
             const m = new Meta({
                 pruefObjekt: fPruefObjekt.trim(),
                 namen: fNamen.trim(),
@@ -180,7 +180,7 @@
     .back-btn {
         background: none;
         border: none;
-        color: #235347;
+        color: var(--color-primary);
         cursor: pointer;
         font-size: 0.9rem;
         margin-bottom: 1rem;
@@ -199,7 +199,7 @@
     .section {
         margin-top: 1.75rem;
         padding-top: 1.75rem;
-        border-top: 1px solid #d8ded4;
+        border-top: 1px solid var(--color-border);
     }
 
     .section:first-of-type {
@@ -210,7 +210,7 @@
 
     h3 {
         margin-top: 0;
-        color: #235347;
+        color: var(--color-primary);
     }
 
     /* Display list */
@@ -230,13 +230,13 @@
     .meta-row dt {
         flex-shrink: 0;
         min-width: 9rem;
-        color: #667970;
+        color: var(--color-muted);
         font-weight: 700;
     }
 
     .meta-row dd {
         margin: 0;
-        color: #17211d;
+        color: var(--color-text);
         word-break: break-word;
     }
 
@@ -251,17 +251,17 @@
         display: grid;
         gap: 0.3rem;
         font-size: 0.9rem;
-        color: #31433b;
+        color: var(--color-text-secondary);
         font-weight: 600;
     }
 
     .field input {
         width: 100%;
         min-height: 40px;
-        border: 1px solid #cbd4ca;
+        border: 1px solid var(--color-border-input);
         border-radius: 6px;
         padding: 0 12px;
-        color: #17211d;
+        color: var(--color-text);
         background: #fbfcfa;
         font: inherit;
         font-weight: 400;
@@ -269,8 +269,8 @@
     }
 
     .field input:focus {
-        border-color: #235347;
-        outline: 3px solid rgb(35 83 71 / 20%);
+        border-color: var(--color-primary);
+        outline: 3px solid var(--focus-ring);
     }
 
     .form-actions {
@@ -291,14 +291,14 @@
     }
 
     .btn--primary {
-        border: 1px solid #235347;
-        background: #235347;
+        border: 1px solid var(--color-primary);
+        background: var(--color-primary);
         color: #fff;
     }
 
     .btn--primary:hover:not(:disabled),
     .btn--primary:focus-visible:not(:disabled) {
-        background: #1a3f35;
+        background: var(--color-primary-hover);
         outline: none;
     }
 
@@ -308,9 +308,9 @@
     }
 
     .btn--secondary {
-        border: 1px solid #235347;
+        border: 1px solid var(--color-primary);
         background: transparent;
-        color: #235347;
+        color: var(--color-primary);
     }
 
     .btn--secondary:hover:not(:disabled),
@@ -331,13 +331,13 @@
     }
 
     .no-meta-hint {
-        color: #667970;
+        color: var(--color-muted);
         font-size: 0.9rem;
         margin-bottom: 0.75rem;
     }
 
     .save-error {
-        color: #a00;
+        color: var(--color-danger-text);
         font-size: 0.9rem;
         margin: 0;
     }

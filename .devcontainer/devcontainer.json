@@ -24,6 +24,8 @@
 	// This is required for the `opencode attach` workflow to use host API keys.
 	"mounts": [
 		"source=${localEnv:HOME}/.config/opencode,target=/home/node/.config/opencode,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig,type=bind,readonly",
+		"source=${localEnv:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,readonly"
 		//"source=${localEnv:HOME}/.local/share/opencode,target=/home/node/.local/share/opencode,type=bind,consistency=cached"
 	],
 	// Configure tool-specific properties.

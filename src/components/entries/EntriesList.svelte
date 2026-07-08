@@ -1,15 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { getRecords, getMeta, type StoredRecord } from "../lib/db";
+    import { getRecords, getMeta, type StoredRecord } from "../../lib/db";
     import {
         entriesFilter,
         entriesSort,
         entriesStatusFilter,
         type EntriesSortKey,
         type EntriesStatusFilter,
-    } from "../lib/stores/uiStore";
-    import DeviceEditor from "./DeviceEditor.svelte";
-    import BackupButton from "./BackupButton.svelte";
+    } from "../../lib/stores/uiStore";
+    import DeviceEditor from "../device/DeviceEditor.svelte";
+    import BackupButton from "../admin/BackupButton.svelte";
 
     type Location = {
         locationName?: string;
@@ -252,7 +252,7 @@
     {:else}
         <ul class="card-grid" role="list">
             {#each visible as item (item.recordId)}
-                <li class="card">
+                <li class="card panel-card">
                     <button
                         type="button"
                         class="inspect-btn"
@@ -355,25 +355,25 @@
         min-width: 14rem;
         display: grid;
         gap: 0.35rem;
-        color: #31433b;
+        color: var(--color-text-secondary);
         font-weight: 700;
     }
 
     .filter-field input {
         width: 100%;
         min-height: 44px;
-        border: 1px solid #cbd4ca;
+        border: 1px solid var(--color-border-input);
         border-radius: 6px;
         padding: 0 13px;
-        color: #17211d;
+        color: var(--color-text);
         background: #fbfcfa;
         font: inherit;
         font-weight: 400;
     }
 
     .filter-field input:focus {
-        border-color: #235347;
-        outline: 3px solid rgb(35 83 71 / 20%);
+        border-color: var(--color-primary);
+        outline: 3px solid var(--focus-ring);
     }
 
     /* ── Sort chips ──────────────────────────────────────── */
@@ -393,7 +393,7 @@
         border: 1px solid #b8c9b8;
         border-radius: 99px;
         background: #f2f7f2;
-        color: #40544b;
+        color: var(--color-text-strong);
         font: inherit;
         font-size: 0.8rem;
         font-weight: 600;
@@ -406,21 +406,21 @@
 
     .chip:hover,
     .chip:focus-visible {
-        border-color: #235347;
+        border-color: var(--color-primary);
         background: #e4efe6;
-        color: #235347;
+        color: var(--color-primary);
         outline: none;
     }
 
     .chip--active {
-        border-color: #235347;
-        background: #235347;
+        border-color: var(--color-primary);
+        background: var(--color-primary);
         color: #fff;
     }
 
     .chip--active:hover,
     .chip--active:focus-visible {
-        background: #1a3f35;
+        background: var(--color-primary-hover);
         color: #fff;
     }
 
@@ -439,9 +439,9 @@
 
     /* Gelb: Offen */
     .chip--outdated {
-        border-color: #a16207;
-        background: #fef9c3;
-        color: #a16207;
+        border-color: var(--color-warning);
+        background: var(--color-warning-bg);
+        color: var(--color-warning);
     }
     .chip--outdated:hover,
     .chip--outdated:focus-visible {
@@ -449,8 +449,8 @@
         outline: none;
     }
     .chip--outdated.chip--active {
-        background: #a16207;
-        border-color: #a16207;
+        background: var(--color-warning);
+        border-color: var(--color-warning);
         color: #fff;
     }
     .chip--outdated.chip--active:hover,
@@ -460,9 +460,9 @@
 
     /* Grün: Abgearbeitet */
     .chip--current {
-        border-color: #235347;
-        background: #f0f7f4;
-        color: #235347;
+        border-color: var(--color-primary);
+        background: var(--color-surface-muted);
+        color: var(--color-primary);
     }
     .chip--current:hover,
     .chip--current:focus-visible {
@@ -470,20 +470,20 @@
         outline: none;
     }
     .chip--current.chip--active {
-        background: #235347;
-        border-color: #235347;
+        background: var(--color-primary);
+        border-color: var(--color-primary);
         color: #fff;
     }
     .chip--current.chip--active:hover,
     .chip--current.chip--active:focus-visible {
-        background: #1a3f35;
+        background: var(--color-primary-hover);
     }
 
     /* Weiß: Alle */
     .chip--all {
         border-color: #b8c9b8;
         background: #fff;
-        color: #40544b;
+        color: var(--color-text-strong);
     }
     .chip--all:hover,
     .chip--all:focus-visible {
@@ -491,13 +491,13 @@
         outline: none;
     }
     .chip--all.chip--active {
-        background: #40544b;
-        border-color: #40544b;
+        background: var(--color-text-strong);
+        border-color: var(--color-text-strong);
         color: #fff;
     }
     .chip--all.chip--active:hover,
     .chip--all.chip--active:focus-visible {
-        background: #31433b;
+        background: var(--color-text-secondary);
     }
 
     /* ── Result count ────────────────────────────────────── */
@@ -506,7 +506,7 @@
         min-height: 34px;
         display: grid;
         align-items: center;
-        color: #667970;
+        color: var(--color-muted);
         font-weight: 700;
         text-align: right;
         white-space: nowrap;
@@ -522,7 +522,7 @@
     }
 
     .backup-date {
-        color: #667970;
+        color: var(--color-muted);
         font-size: 0.8rem;
         white-space: nowrap;
     }
@@ -532,7 +532,7 @@
     .truncate-hint {
         text-align: center;
         padding: 1rem;
-        color: #667970;
+        color: var(--color-muted);
         font-size: 0.9rem;
     }
 
@@ -553,11 +553,7 @@
     /* ── Single card ─────────────────────────────────────── */
     .card {
         position: relative;
-        background: #fff;
-        border: 1px solid #d8ded4;
-        border-radius: 10px;
         padding: 0;
-        box-shadow: 0 4px 16px rgb(35 83 71 / 7%);
         display: flex;
         flex-direction: row;
         align-items: stretch;
@@ -568,8 +564,8 @@
     }
 
     .card:hover {
-        border-color: #235347;
-        box-shadow: 0 8px 28px rgb(35 83 71 / 14%);
+        border-color: var(--color-primary);
+        box-shadow: var(--card-shadow-hover);
     }
 
     /* ── Inspect button (left, full height) ─────────────── */
@@ -581,10 +577,10 @@
         width: 52px;
         align-self: stretch;
         border: none;
-        border-right: 1.5px solid #235347;
+        border-right: 1.5px solid var(--color-primary);
         border-radius: 0;
-        background: #f0f7f4;
-        color: #235347;
+        background: var(--color-surface-muted);
+        color: var(--color-primary);
         cursor: pointer;
         padding: 0;
         transition:
@@ -594,21 +590,21 @@
 
     .inspect-btn:hover,
     .inspect-btn:focus-visible {
-        background: #235347;
+        background: var(--color-primary);
         color: #fff;
         outline: none;
     }
 
     /* Aktuelle Prüfung fehlt → gelb */
     .inspect-btn--outdated {
-        background: #fef9c3;
-        border-right-color: #a16207;
-        color: #a16207;
+        background: var(--color-warning-bg);
+        border-right-color: var(--color-warning);
+        color: var(--color-warning);
     }
 
     .inspect-btn--outdated:hover,
     .inspect-btn--outdated:focus-visible {
-        background: #a16207;
+        background: var(--color-warning);
         color: #fff;
         outline: none;
     }
@@ -628,7 +624,7 @@
         margin: 0;
         font-size: 0.95rem;
         font-weight: 800;
-        color: #17211d;
+        color: var(--color-text);
         line-height: 1.35;
         word-break: break-word;
     }
@@ -650,14 +646,14 @@
 
     .card-details dt {
         flex-shrink: 0;
-        color: #667970;
+        color: var(--color-muted);
         font-weight: 700;
         min-width: 7rem;
     }
 
     .card-details dd {
         margin: 0;
-        color: #31433b;
+        color: var(--color-text-secondary);
         word-break: break-word;
     }
 
@@ -692,7 +688,7 @@
         height: 56px;
         border-radius: 50%;
         border: none;
-        background: #235347;
+        background: var(--color-primary);
         color: #fff;
         font-size: 2rem;
         line-height: 1;
@@ -708,7 +704,7 @@
 
     .fab:hover,
     .fab:focus-visible {
-        background: #1a3f35;
+        background: var(--color-primary-hover);
         box-shadow: 0 6px 24px rgb(35 83 71 / 50%);
         transform: scale(1.07);
         outline: none;

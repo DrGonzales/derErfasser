@@ -1,9 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { getRecords } from "./lib/db";
-    import AdminPage from "./components/AdminPage.svelte";
-    import EntriesList from "./components/EntriesList.svelte";
-    import Device from "./components/Device.svelte";
+    import AdminPage from "./components/admin/AdminPage.svelte";
+    import EntriesList from "./components/entries/EntriesList.svelte";
+    import Device from "./components/device/Device.svelte";
     import SplashScreen from "./components/SplashScreen.svelte";
 
     let showSplash = $state(true);

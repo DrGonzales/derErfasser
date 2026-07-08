@@ -1,74 +1,22 @@
 <script lang="ts">
-    import { onDestroy } from "svelte";
-    import type { Device as DeviceModel } from "../lib/models";
-    import { ImageReference } from "../lib/models";
-    import {
-        getImage,
-        saveImageBlob,
-        getRecord,
-        updateRecord,
-    } from "../lib/db";
+    import { ImageReference } from "../../lib/models";
+    import { saveImageBlob } from "../../lib/db";
 
     let {
-        device = null,
-        recordId = null,
-        onUpdated = undefined,
+        pictures = [],
+        onUploaded = undefined,
+        persist = undefined,
     }: {
-        device?: DeviceModel | null;
-        recordId?: number | null;
-        onUpdated?: (detail: { device: DeviceModel; recordId: number }) => void;
+        pictures?: ImageReference[];
+        onUploaded?: (pictures: ImageReference[]) => void;
+        persist?: (pictures: ImageReference[]) => void | Promise<void>;
     } = $props();
 
-    let displayPictures = $derived(
-        device?.pictures?.filter(
-            (pic) => typeof pic?.id === "string" && pic.id.trim().length > 0,
-        ) ?? [],
-    );
-
     let fileInput: HTMLInputElement | null = null;
-    let pictureUrls: Record<string, string> = {};
-    let blobUrls: string[] = [];
     let isUploading = $state(false);
     let uploadStatus = $state(
         "Bilder können per Drag & Drop oder Kamera hinzugefügt werden.",
     );
-
-    async function loadPictures() {
-        const validPics =
-            device?.pictures?.filter(
-                (pic) => typeof pic.id === "string" && pic.id.trim().length > 0,
-            ) ?? [];
-        if (validPics.length === 0) {
-            cleanupBlobUrls();
-            pictureUrls = {};
-            return;
-        }
-
-        const newUrls: Record<string, string> = {};
-        cleanupBlobUrls();
-
-        for (const pic of validPics) {
-            const stored = await getImage(pic.id);
-            if (stored && stored.blob) {
-                const url = URL.createObjectURL(stored.blob);
-                newUrls[pic.id] = url;
-                blobUrls.push(url);
-            }
-        }
-
-        pictureUrls = newUrls;
-    }
-
-    function cleanupBlobUrls() {
-        for (const url of blobUrls) {
-            URL.revokeObjectURL(url);
-        }
-        blobUrls = [];
-    }
-
-    onDestroy(() => {
-        cleanupBlobUrls();
-    });
 
     async function resizeImageFile(file: File): Promise<Blob> {
         const maxEdge = 1200;
@@ -111,11 +59,12 @@
     }
 
     async function handleImageFiles(files: FileList | File[]) {
-        if (!device || recordId == null) return;
         isUploading = true;
         uploadStatus = "Bilder werden verarbeitet...";
 
         try {
+            let updated = [...pictures];
+
             for (const file of Array.from(files)) {
                 if (!file.type.startsWith("image/")) {
                     continue;
@@ -127,19 +76,14 @@
                     continue;
                 }
 
-                const ref = new ImageReference({ id: stored.id });
-                device.pictures = [...device.pictures, ref];
-
-                const record = await getRecord(recordId);
-                if (record) {
-                    record.device = device;
-                    await updateRecord(record);
-                }
+                updated = [...updated, new ImageReference({ id: stored.id })];
             }
 
-            await loadPictures();
+            if (persist) {
+                await persist(updated);
+            }
+            onUploaded?.(updated);
             uploadStatus = "Bilder erfolgreich gespeichert.";
-            onUpdated?.({ device, recordId });
         } catch (error) {
             uploadStatus = `Fehler beim Speichern: ${error instanceof Error ? error.message : String(error)}`;
         } finally {
@@ -172,12 +116,6 @@
             fileInput?.click();
         }
     }
-
-    $effect(() => {
-        if (device) {
-            loadPictures();
-        }
-    });
 </script>
 
 <section class="images-section">

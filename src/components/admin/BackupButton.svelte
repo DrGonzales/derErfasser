@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createIndexedDBBackupZip, downloadBlob } from "../lib/zipService";
+    import { createIndexedDBBackupZip, downloadBlob } from "../../lib/zipService";
 
     let { onBackupDone }: { onBackupDone?: () => void } = $props();
 
@@ -43,8 +43,8 @@
 
     button {
         padding: 0.4rem 0.9rem;
-        border: 1px solid #235347;
-        background: #235347;
+        border: 1px solid var(--color-primary);
+        background: var(--color-primary);
         color: #fff;
         border-radius: 6px;
         font: inherit;
@@ -56,7 +56,7 @@
 
     button:hover,
     button:focus-visible {
-        background: #1a3f35;
+        background: var(--color-primary-hover);
         outline: none;
     }
 
@@ -67,7 +67,7 @@
 
     .error {
         margin-top: 0.5rem;
-        color: #a00;
+        color: var(--color-danger-text);
         font-size: 0.95rem;
     }
 </style>

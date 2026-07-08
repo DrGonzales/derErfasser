@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { restoreDatabaseFromBackup } from "../lib/db";
-    import { loadIndexedDBBackupZip } from "../lib/zipService";
+    import { restoreDatabaseFromBackup } from "../../lib/db";
+    import { loadIndexedDBBackupZip } from "../../lib/zipService";
 
     let { onRestored }: { onRestored?: () => void } = $props();
 
@@ -66,7 +66,7 @@
 
     .error {
         margin-top: 0.5rem;
-        color: #a00;
+        color: var(--color-danger-text);
         font-size: 0.95rem;
     }
 </style>

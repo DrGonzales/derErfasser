@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy } from "svelte";
-    import type { ImageReference } from "../lib/models";
-    import { getImage } from "../lib/db";
+    import type { ImageReference } from "../../lib/models";
+    import { getImage } from "../../lib/db";
 
     let {
         pictures = [] as ImageReference[],

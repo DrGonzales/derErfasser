@@ -1,7 +1,7 @@
 <script lang="ts">
     import { untrack } from "svelte";
-    import { Device as DeviceModel, Location } from "../lib/models";
-    import { getRecord, updateRecord, addRecord } from "../lib/db";
+    import { Device as DeviceModel, Location } from "../../lib/models";
+    import { getRecord, updateRecord, addRecord } from "../../lib/db";
 
     let {
         device = null,
@@ -187,7 +187,7 @@
         margin: 0;
         font-size: 1.1rem;
         font-weight: 800;
-        color: #17211d;
+        color: var(--color-text);
     }
 
     .close-btn {
@@ -196,7 +196,7 @@
         border: 0;
         border-radius: 6px;
         background: transparent;
-        color: #667970;
+        color: var(--color-muted);
         font-size: 1.6rem;
         line-height: 1;
         cursor: pointer;
@@ -206,8 +206,8 @@
 
     .close-btn:hover,
     .close-btn:focus-visible {
-        background: #f0f7f4;
-        color: #235347;
+        background: var(--color-surface-muted);
+        color: var(--color-primary);
         outline: none;
     }
 
@@ -227,23 +227,23 @@
     .field-group label {
         font-size: 0.85rem;
         font-weight: 700;
-        color: #31433b;
+        color: var(--color-text-secondary);
     }
 
     .field-group input {
         min-height: 44px;
-        border: 1px solid #cbd4ca;
+        border: 1px solid var(--color-border-input);
         border-radius: 6px;
         padding: 0 12px;
         font: inherit;
         font-size: 0.95rem;
-        color: #17211d;
+        color: var(--color-text);
         background: #fbfcfa;
     }
 
     .field-group input:focus {
-        border-color: #235347;
-        outline: 3px solid rgb(35 83 71 / 20%);
+        border-color: var(--color-primary);
+        outline: 3px solid var(--focus-ring);
     }
 
     .error {
@@ -264,7 +264,7 @@
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: #667970;
+        color: var(--color-muted);
     }
 
     .editor-actions {
@@ -285,26 +285,26 @@
     }
 
     .btn-cancel {
-        border: 1px solid #cbd4ca;
+        border: 1px solid var(--color-border-input);
         background: #fff;
-        color: #40544b;
+        color: var(--color-text-strong);
     }
 
     .btn-cancel:hover:not(:disabled),
     .btn-cancel:focus-visible:not(:disabled) {
-        background: #f0f7f4;
+        background: var(--color-surface-muted);
         outline: none;
     }
 
     .btn-save {
         border: 0;
-        background: #235347;
+        background: var(--color-primary);
         color: #fff;
     }
 
     .btn-save:hover:not(:disabled),
     .btn-save:focus-visible:not(:disabled) {
-        background: #1a3f35;
+        background: var(--color-primary-hover);
         outline: 2px solid rgb(35 83 71 / 40%);
         outline-offset: 2px;
     }
