@@ -1,13 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { getRecords, type StoredRecord } from "../lib/db";
-    import { Devices } from "../lib/models";
     import {
         entriesFilter,
         entriesSort,
         type EntriesSortKey,
     } from "../lib/stores/uiStore";
     import DeviceEditor from "./DeviceEditor.svelte";
+    import BackupButton from "./BackupButton.svelte";
 
     type Location = {
         locationName?: string;
@@ -33,6 +33,7 @@
         $props();
 
     let creating = $state(false);
+    let lastBackup = $state<number | undefined>(undefined);
 
     const sortChips: SortChip[] = [
         { key: "manufacturer", label: "Hersteller" },
@@ -49,6 +50,24 @@
         const records: StoredRecord[] = await getRecords();
         const all: EntryRow[] = [];
 
+        // Datum des letzten Backups aus dem neuesten Record holen
+        if (records.length > 0) {
+            const newest = records[0];
+            const meta = (newest as any).metadata;
+            const metaTs: number | undefined = meta?.lastback ?? undefined;
+            // localStorage-Timestamp vom letzten ZIP-Backup
+            const lsRaw = localStorage.getItem("der-erfasser-last-backup");
+            const lsTs = lsRaw ? Number(lsRaw) : undefined;
+            // Den neueren der beiden Werte anzeigen
+            if (metaTs && lsTs) {
+                lastBackup = Math.max(metaTs, lsTs);
+            } else {
+                lastBackup = metaTs ?? lsTs;
+            }
+        } else {
+            lastBackup = undefined;
+        }
+
         for (const r of records) {
             if (r.device) {
                 all.push({
@@ -56,23 +75,6 @@
                     device: r.device,
                     recordId: r.id,
                 });
-                continue;
-            }
-
-            const devicesRaw: any = (r as any).devices;
-            if (!devicesRaw) continue;
-
-            // Backward compatibility: support old records with `devices.entries`.
-            const devices = new Devices(devicesRaw as Partial<Devices>);
-
-            if (Array.isArray(devices.entries)) {
-                for (const e of devices.entries) {
-                    all.push({
-                        location: e.location,
-                        device: e.device,
-                        recordId: r.id,
-                    });
-                }
             }
         }
 
@@ -133,8 +135,7 @@
 
     const sorted = $derived(
         [...filtered].sort((a, b) => {
-            const direction =
-                $entriesSort.direction === "ascending" ? 1 : -1;
+            const direction = $entriesSort.direction === "ascending" ? 1 : -1;
             return (
                 getSortValue(a, $entriesSort.key).localeCompare(
                     getSortValue(b, $entriesSort.key),
@@ -145,7 +146,7 @@
         }),
     );
 
-    const MAX_VISIBLE = 500;
+    const MAX_VISIBLE = 250;
     const visible = $derived(sorted.slice(0, MAX_VISIBLE));
     const truncated = $derived(sorted.length > MAX_VISIBLE);
 </script>
@@ -185,6 +186,15 @@
         <div class="result-count" aria-live="polite">
             {sorted.length} / {entries.length}
         </div>
+
+        <div class="header-actions">
+            {#if lastBackup}
+                <span class="backup-date" title="Datum des letzten Backups">
+                    {new Date(lastBackup).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })}
+                </span>
+            {/if}
+            <BackupButton onBackupDone={load} />
+        </div>
     </div>
 
     <!-- Card Grid -->
@@ -213,7 +223,9 @@
                             aria-hidden="true"
                         >
                             <rect x="5" y="3" width="14" height="18" rx="2" />
-                            <path d="M9 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H9V3z" />
+                            <path
+                                d="M9 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H9V3z"
+                            />
                             <polyline points="9 12 11 14 15 10" />
                             <line x1="9" y1="17" x2="15" y2="17" />
                         </svg>
@@ -221,7 +233,8 @@
 
                     <div class="card-body">
                         <h3 class="card-title">
-                            {item.device?.manufacturer ?? "–"} — {item.device?.model ?? "–"}
+                            {item.device?.manufacturer ?? "–"} — {item.device
+                                ?.model ?? "–"}
                         </h3>
                         <dl class="card-details">
                             <div class="detail-row">
@@ -247,7 +260,8 @@
         </ul>
         {#if truncated}
             <p class="truncate-hint" aria-live="polite">
-                Nur die ersten 500 Treffer werden angezeigt — Filter verwenden um die Ergebnisse einzugrenzen.
+                Nur die ersten {MAX_VISIBLE} Treffer werden angezeigt — Filter verwenden
+                um die Ergebnisse einzugrenzen.
             </p>
         {/if}
     {/if}
@@ -257,12 +271,15 @@
     type="button"
     class="fab"
     aria-label="Neues Gerät erstellen"
-    onclick={() => (creating = true)}
->+</button>
+    onclick={() => (creating = true)}>+</button
+>
 
 {#if creating}
     <DeviceEditor
-        onSave={() => { creating = false; load(); }}
+        onSave={() => {
+            creating = false;
+            load();
+        }}
         onCancel={() => (creating = false)}
     />
 {/if}
@@ -331,7 +348,10 @@
         font-size: 0.8rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background 0.15s, border-color 0.15s, color 0.15s;
+        transition:
+            background 0.15s,
+            border-color 0.15s,
+            color 0.15s;
     }
 
     .chip:hover,
@@ -371,6 +391,20 @@
         font-size: 0.9rem;
     }
 
+    /* ── Header actions (Backup-Button + Datum) ──────────── */
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: auto;
+    }
+
+    .backup-date {
+        color: #667970;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
     /* ── Empty / truncate hint ───────────────────────────── */
     .empty-hint,
     .truncate-hint {
@@ -394,8 +428,6 @@
         gap: 1rem;
     }
 
-
-
     /* ── Single card ─────────────────────────────────────── */
     .card {
         position: relative;
@@ -407,7 +439,9 @@
         display: flex;
         flex-direction: row;
         align-items: stretch;
-        transition: box-shadow 0.18s, border-color 0.18s;
+        transition:
+            box-shadow 0.18s,
+            border-color 0.18s;
         overflow: hidden;
     }
 
@@ -431,7 +465,9 @@
         color: #235347;
         cursor: pointer;
         padding: 0;
-        transition: background 0.15s, color 0.15s;
+        transition:
+            background 0.15s,
+            color 0.15s;
     }
 
     .inspect-btn:hover,
@@ -528,7 +564,10 @@
         place-items: center;
         box-shadow: 0 4px 16px rgb(35 83 71 / 35%);
         cursor: pointer;
-        transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+        transition:
+            background 0.15s,
+            box-shadow 0.15s,
+            transform 0.1s;
     }
 
     .fab:hover,

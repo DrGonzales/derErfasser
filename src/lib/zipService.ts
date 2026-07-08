@@ -1,12 +1,18 @@
 import JSZip from 'jszip';
-import { getRecords, getAllImages, StoredImage, StoredRecord } from './db';
+import { getRecords, getAllImages, getMeta, restoreDatabaseFromBackup, StoredImage, StoredRecord } from './db';
+import type { Meta } from './db';
 
 export async function createIndexedDBBackupZip(): Promise<Blob> {
     const records = await getRecords();
     const images = await getAllImages();
+    const meta = await getMeta();
     const zip = new JSZip();
 
     zip.file('records.json', JSON.stringify({ records }, null, 2));
+
+    if (meta) {
+        zip.file('meta.json', JSON.stringify(meta, null, 2));
+    }
 
     const imageFolder = zip.folder('images');
     for (const image of images) {
@@ -18,7 +24,7 @@ export async function createIndexedDBBackupZip(): Promise<Blob> {
     return zip.generateAsync({ type: 'blob' });
 }
 
-export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: StoredRecord[]; images: StoredImage[] }> {
+export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: StoredRecord[]; images: StoredImage[]; meta?: Meta }> {
     const zip = await JSZip.loadAsync(file);
     const recordsFile = zip.file('records.json');
 
@@ -57,7 +63,23 @@ export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: Sto
         }
     }
 
-    return { records, images };
+    // meta.json ist optional — ältere Backups haben es nicht
+    let meta: Meta | undefined;
+    const metaFile = zip.file('meta.json');
+    if (metaFile) {
+        try {
+            const metaText = await metaFile.async('text');
+            const metaParsed = JSON.parse(metaText);
+            if (metaParsed && typeof metaParsed === 'object') {
+                const { Meta } = await import('./models');
+                meta = new Meta(metaParsed);
+            }
+        } catch {
+            // fehlerhafte meta.json ignorieren
+        }
+    }
+
+    return { records, images, meta };
 }
 
 export function downloadBlob(blob: Blob, filename: string) {

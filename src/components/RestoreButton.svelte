@@ -13,7 +13,7 @@
 
         try {
             const backup = await loadIndexedDBBackupZip(file);
-            await restoreDatabaseFromBackup(backup.records, backup.images);
+            await restoreDatabaseFromBackup(backup.records, backup.images, backup.meta);
             onRestored?.();
         } catch (err) {
             error = `Restore fehlgeschlagen: ${err instanceof Error ? err.message : String(err)}`;

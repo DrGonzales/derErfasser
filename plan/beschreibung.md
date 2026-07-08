@@ -1,0 +1,3 @@
+# Start der App
+Wir die App gestartet und es sind Daten in der IndexedDB wird die EntriesList angezeit. Sind keine Daten in der Indexed Db wird eine Admin Seite angezeigt mit einen "Backup wiederhestellen" Button.
+Die EntiesList Zeigt die Liste der Devices und den Filter und Sortiert chips. im header gibt es ein Status Info wieviel Records/devices angezeigt werden und wieviele in der Indexdb vorhanden, rechts einen Backup Button davor das Datum/Uhrzeit des letzten Backup, eine Admin Button der zur Admin ansicht navigiert. 
