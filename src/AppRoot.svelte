@@ -10,7 +10,7 @@
     let uploadVersion = $state(0);
     let selectedRecord: {
         device: any;
-        location: any;
+        location?: any;
         recordId: number;
     } | null = $state(null);
     let hasData = $state<boolean | null>(null);
@@ -35,7 +35,7 @@
 
     function openDevice(record: {
         device: any;
-        location: any;
+        location?: any;
         recordId: number;
     }) {
         selectedRecord = {
@@ -71,6 +71,15 @@
         metaConfirmed = true;
         showAdmin = false;
     }
+
+    async function handleDataCleared() {
+        // Nach dem Löschen aller Daten zurück in den "keine Daten"-Zustand
+        // versetzen, damit der Admin-Bereich (Prüfobjekt/Backup) erneut
+        // durchlaufen werden muss.
+        metaConfirmed = false;
+        showAdmin = false;
+        await checkData();
+    }
 </script>
 
 {#if showSplash}
@@ -86,6 +95,7 @@
                 hasData={hasData ?? false}
                 onRestored={handleRestored}
                 onMetaReady={handleMetaReady}
+                onDataCleared={handleDataCleared}
                 onBack={hasData || metaConfirmed ? () => (showAdmin = false) : undefined}
             />
         {:else}

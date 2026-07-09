@@ -74,7 +74,7 @@
 
         for (const r of records) {
             if (r.device) {
-                const inspections: any[] = r.device.inspections ?? [];
+                const inspections: any[] = (r.device as any).inspections ?? [];
                 // isCurrent: aktuellePruefung ist leer ODER mind. eine Inspection hat diesen Namen
                 const isCurrent =
                     !aktuellePruefung ||
