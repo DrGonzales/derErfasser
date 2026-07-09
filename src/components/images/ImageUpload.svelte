@@ -119,12 +119,11 @@
 </script>
 
 <section class="images-section">
-    <h3>Bilder</h3>
-
     <div
         class="image-drop"
         role="button"
         tabindex="0"
+        aria-label="Bild hochladen"
         ondrop={onImageDrop}
         ondragover={onImageDragOver}
         onclick={() => fileInput?.click()}
@@ -139,13 +138,20 @@
             onchange={onImageInputChange}
             hidden
         />
-        <div>
-            <strong>Bild hochladen</strong>
-        </div>
-        <div class="hint">
-            Drag & Drop oder tippen, um Bilder auszuwählen. Auf Mobilgeräten
-            kann auch die Kamera verwendet werden.
-        </div>
+        <svg
+            viewBox="0 0 24 24"
+            width="56"
+            height="56"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+        >
+            <path d="M9 4 7.5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.5L15 4Z" />
+            <circle cx="12" cy="13" r="3.5" />
+        </svg>
     </div>
     <p>{uploadStatus}</p>
 </section>
@@ -156,22 +162,21 @@
     }
 
     .image-drop {
+        width: 128px;
+        height: 128px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.75rem;
         border: 2px dashed var(--border, #bbb);
-        padding: 1rem;
         border-radius: 8px;
-        text-align: center;
         cursor: pointer;
         background: var(--bg, #fff);
-        margin-bottom: 0.75rem;
+        color: var(--color-primary, #555);
     }
 
     .image-drop:hover,
     .image-drop:focus {
         border-color: #006c5b;
-    }
-
-    .hint {
-        color: #555;
-        font-size: 0.95rem;
     }
 </style>

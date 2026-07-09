@@ -16,11 +16,15 @@
     let {
         device,
         recordId,
+        inspection = null,
+        readonly = false,
         onSave,
         onCancel,
     }: {
         device: DeviceModel;
         recordId: number;
+        inspection?: Inspection | null;
+        readonly?: boolean;
         onSave: (updatedDevice: DeviceModel) => void;
         onCancel: () => void;
     } = $props();
@@ -30,6 +34,18 @@
     onMount(async () => {
         const meta = await getMeta();
         aktuellePruefung = meta?.aktuellePruefung?.trim() ?? "";
+
+        if (inspection) {
+            isolationResistanceMohm = inspection.isolationResistanceMohm;
+            touchCurrentMa = inspection.touchCurrentMa;
+            visualTestResult = inspection.visualTestResult;
+            measurementTestResult = inspection.measurementTestResult;
+            functionTestResult = inspection.functionTestResult;
+            overallResult = inspection.overallResult;
+            status = inspection.status;
+            description = inspection.description;
+            pictures = inspection.pictures;
+        }
     });
 
     const resultOptions = Object.values(InspectionResult);
@@ -62,25 +78,62 @@
         error = "";
 
         try {
-            const today = new Date().toISOString().split("T")[0];
-            const newInspection = new Inspection({
-                isolationResistanceMohm: Number(isolationResistanceMohm),
-                touchCurrentMa: Number(touchCurrentMa),
-                visualTestResult,
-                measurementTestResult,
-                functionTestResult,
-                overallResult,
-                status,
-                description,
-                inspectionDate: today,
-                inspectionName: aktuellePruefung,
-                pictures,
-            });
+            let updatedDevice: DeviceModel;
 
-            const updatedDevice = new DeviceModel({
-                ...device,
-                inspections: [...device.inspections, newInspection],
-            });
+            if (inspection) {
+                const updatedInspection = new Inspection({
+                    isolationResistanceMohm: Number(isolationResistanceMohm),
+                    touchCurrentMa: Number(touchCurrentMa),
+                    visualTestResult,
+                    measurementTestResult,
+                    functionTestResult,
+                    overallResult,
+                    status,
+                    description,
+                    inspectionDate: inspection.inspectionDate,
+                    inspectionName: inspection.inspectionName,
+                    pictures,
+                });
+
+                const inspections = [...device.inspections];
+                let index = inspections.indexOf(inspection);
+                if (index === -1) {
+                    index = inspections.findIndex(
+                        (insp) =>
+                            insp.inspectionDate ===
+                                inspection.inspectionDate &&
+                            insp.inspectionName === inspection.inspectionName,
+                    );
+                }
+                if (index !== -1) {
+                    inspections[index] = updatedInspection;
+                }
+
+                updatedDevice = new DeviceModel({
+                    ...device,
+                    inspections,
+                });
+            } else {
+                const today = new Date().toISOString().split("T")[0];
+                const newInspection = new Inspection({
+                    isolationResistanceMohm: Number(isolationResistanceMohm),
+                    touchCurrentMa: Number(touchCurrentMa),
+                    visualTestResult,
+                    measurementTestResult,
+                    functionTestResult,
+                    overallResult,
+                    status,
+                    description,
+                    inspectionDate: today,
+                    inspectionName: aktuellePruefung,
+                    pictures,
+                });
+
+                updatedDevice = new DeviceModel({
+                    ...device,
+                    inspections: [...device.inspections, newInspection],
+                });
+            }
 
             const record = await getRecord(recordId);
             if (!record) throw new Error("Datensatz nicht gefunden.");
@@ -103,6 +156,7 @@
     labels: Record<string, string>,
     selected: string,
     onChange: (value: string) => void,
+    disabled: boolean,
 )}
     <fieldset class="field-group">
         <legend>{legend}</legend>
@@ -115,6 +169,7 @@
                         value={opt}
                         checked={selected === opt}
                         onchange={() => onChange(opt)}
+                        {disabled}
                     />
                     {labels[opt]}
                 </label>
@@ -123,15 +178,113 @@
     </fieldset>
 {/snippet}
 
+{#snippet formFields()}
+    {@render radioGroup(
+        "Sichtprüfung",
+        "visualTestResult",
+        resultOptions,
+        inspectionResultLabels,
+        visualTestResult,
+        (v) => (visualTestResult = v as InspectionResult),
+        readonly,
+    )}
+    {@render radioGroup(
+        "Messung",
+        "measurementTestResult",
+        resultOptions,
+        inspectionResultLabels,
+        measurementTestResult,
+        (v) => (measurementTestResult = v as InspectionResult),
+        readonly,
+    )}
+    {@render radioGroup(
+        "Funktionsprüfung",
+        "functionTestResult",
+        resultOptions,
+        inspectionResultLabels,
+        functionTestResult,
+        (v) => (functionTestResult = v as InspectionResult),
+        readonly,
+    )}
+    {@render radioGroup(
+        "Gesamtergebnis",
+        "overallResult",
+        resultOptions,
+        inspectionResultLabels,
+        overallResult,
+        (v) => (overallResult = v as InspectionResult),
+        readonly,
+    )}
+    {@render radioGroup(
+        "Gerätezustand",
+        "status",
+        statusOptions,
+        deviceStatusLabels,
+        status,
+        (v) => (status = v as DeviceStatus),
+        readonly,
+    )}
+
+    <div class="field-group">
+        <label for="ie-isolation">Isolationswiderstand (MΩ)</label>
+        <input
+            id="ie-isolation"
+            type="number"
+            step="any"
+            bind:value={isolationResistanceMohm}
+            disabled={readonly}
+        />
+    </div>
+    <div class="field-group">
+        <label for="ie-touch-current">Berührungsstrom (mA)</label>
+        <input
+            id="ie-touch-current"
+            type="number"
+            step="any"
+            bind:value={touchCurrentMa}
+            disabled={readonly}
+        />
+    </div>
+    <div class="field-group">
+        <label for="ie-description">Beschreibung</label>
+        <textarea
+            id="ie-description"
+            bind:value={description}
+            disabled={readonly}
+        ></textarea>
+    </div>
+
+    <hr class="section-divider" />
+    <p class="section-label">Bilder</p>
+    <PictureGrid {pictures} />
+    {#if !readonly}
+        <ImageUpload {pictures} onUploaded={handlePicturesUploaded} />
+    {/if}
+
+    {#if error}
+        <p class="error" role="alert">{error}</p>
+    {/if}
+{/snippet}
+
 <div
     class="editor-backdrop"
     role="dialog"
     aria-modal="true"
-    aria-label="Neue Inspektion"
+    aria-label={readonly
+        ? "Inspektion Übersicht"
+        : inspection
+          ? "Inspektion bearbeiten"
+          : "Neue Inspektion"}
 >
     <div class="editor-panel">
         <div class="editor-header">
-            <h2>Neue Inspektion</h2>
+            <h2>
+                {readonly
+                    ? "Inspektion Übersicht"
+                    : inspection
+                      ? "Inspektion bearbeiten"
+                      : "Neue Inspektion"}
+            </h2>
             <button
                 type="button"
                 class="close-btn"
@@ -142,95 +295,35 @@
             </button>
         </div>
 
-        <form class="editor-form" onsubmit={handleSubmit}>
-            {@render radioGroup(
-                "Sichtprüfung",
-                "visualTestResult",
-                resultOptions,
-                inspectionResultLabels,
-                visualTestResult,
-                (v) => (visualTestResult = v as InspectionResult),
-            )}
-            {@render radioGroup(
-                "Messung",
-                "measurementTestResult",
-                resultOptions,
-                inspectionResultLabels,
-                measurementTestResult,
-                (v) => (measurementTestResult = v as InspectionResult),
-            )}
-            {@render radioGroup(
-                "Funktionsprüfung",
-                "functionTestResult",
-                resultOptions,
-                inspectionResultLabels,
-                functionTestResult,
-                (v) => (functionTestResult = v as InspectionResult),
-            )}
-            {@render radioGroup(
-                "Gesamtergebnis",
-                "overallResult",
-                resultOptions,
-                inspectionResultLabels,
-                overallResult,
-                (v) => (overallResult = v as InspectionResult),
-            )}
-            {@render radioGroup(
-                "Gerätezustand",
-                "status",
-                statusOptions,
-                deviceStatusLabels,
-                status,
-                (v) => (status = v as DeviceStatus),
-            )}
+        {#if readonly}
+            <div class="editor-form">
+                {@render formFields()}
 
-            <div class="field-group">
-                <label for="ie-isolation">Isolationswiderstand (MΩ)</label>
-                <input
-                    id="ie-isolation"
-                    type="number"
-                    step="any"
-                    bind:value={isolationResistanceMohm}
-                />
+                <div class="editor-actions">
+                    <button type="button" class="btn-cancel" onclick={onCancel}>
+                        Schließen
+                    </button>
+                </div>
             </div>
-            <div class="field-group">
-                <label for="ie-touch-current">Berührungsstrom (mA)</label>
-                <input
-                    id="ie-touch-current"
-                    type="number"
-                    step="any"
-                    bind:value={touchCurrentMa}
-                />
-            </div>
-            <div class="field-group">
-                <label for="ie-description">Beschreibung</label>
-                <textarea id="ie-description" bind:value={description}
-                ></textarea>
-            </div>
+        {:else}
+            <form class="editor-form" onsubmit={handleSubmit}>
+                {@render formFields()}
 
-            <hr class="section-divider" />
-            <p class="section-label">Bilder</p>
-            <PictureGrid {pictures} />
-            <ImageUpload {pictures} onUploaded={handlePicturesUploaded} />
-
-            {#if error}
-                <p class="error" role="alert">{error}</p>
-            {/if}
-
-            <div class="editor-actions">
-                <button
-                    type="button"
-                    class="btn-cancel"
-                    onclick={onCancel}
-                    disabled={saving}
-                >
-                    Abbrechen
-                </button>
-                <button type="submit" class="btn-save" disabled={saving}>
-                    {saving ? "Speichern…" : "Speichern"}
-                </button>
-            </div>
-        </form>
+                <div class="editor-actions">
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        onclick={onCancel}
+                        disabled={saving}
+                    >
+                        Abbrechen
+                    </button>
+                    <button type="submit" class="btn-save" disabled={saving}>
+                        {saving ? "Speichern…" : "Speichern"}
+                    </button>
+                </div>
+            </form>
+        {/if}
     </div>
 </div>
 

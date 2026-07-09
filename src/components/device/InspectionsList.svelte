@@ -23,6 +23,7 @@
 
     let inspections = $derived(device.inspections ?? []);
     let creating = $state(false);
+    let editingInspection = $state<Inspection | null>(null);
 
     let aktuellePruefung = $state("");
 
@@ -48,12 +49,17 @@
         sortedInspections.some((insp) => isCurrent(insp)),
     );
 
+    let editingInspectionReadonly = $derived(
+        editingInspection ? !isCurrent(editingInspection) : false,
+    );
+
     let showAddButton = $derived(
         aktuellePruefung.length > 0 && !hasCurrentInspection,
     );
 
     function handleInspectionSaved(updatedDevice: DeviceModel) {
         creating = false;
+        editingInspection = null;
         onDeviceUpdated?.(updatedDevice);
     }
 
@@ -153,6 +159,15 @@
                             : index % 2 === 0
                               ? "row-even"
                               : "row-odd"}
+                        role="button"
+                        tabindex="0"
+                        onclick={() => (editingInspection = insp)}
+                        onkeydown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                editingInspection = insp;
+                            }
+                        }}
                     >
                         <td>{insp.inspectionDate}</td>
                         <td>{@render statusIcon(insp.status)}</td>
@@ -166,12 +181,17 @@
     {/if}
 </section>
 
-{#if creating && recordId != null}
+{#if (creating || editingInspection) && recordId != null}
     <InspectionEditor
         {device}
         {recordId}
+        inspection={editingInspection}
+        readonly={editingInspectionReadonly}
         onSave={handleInspectionSaved}
-        onCancel={() => (creating = false)}
+        onCancel={() => {
+            creating = false;
+            editingInspection = null;
+        }}
     />
 {/if}
 
@@ -238,15 +258,18 @@
 
     tr.row-even {
         background: #fff;
+        cursor: pointer;
     }
 
     tr.row-odd {
         background: #f4f6f3;
+        cursor: pointer;
     }
 
     tr.current {
         background: #dcf5e3;
         font-weight: 700;
+        cursor: pointer;
     }
 
     .empty {
