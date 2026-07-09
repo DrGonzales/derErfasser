@@ -8,10 +8,12 @@
         hasData,
         onRestored,
         onBack,
+        onMetaReady,
     }: {
         hasData: boolean;
         onRestored: () => void;
         onBack?: () => void;
+        onMetaReady?: () => void;
     } = $props();
 
     let metaData = $state<Meta | undefined>(undefined);
@@ -57,6 +59,16 @@
     async function handleSave() {
         saving = true;
         saveError = "";
+
+        const trimmedAktuellePruefung = fAktuellePruefung.trim();
+
+        if (!hasData && !trimmedAktuellePruefung) {
+            saveError =
+                "Solange keine Gerätedaten vorhanden sind, muss „Aktuelle Prüfung“ ausgefüllt werden, um fortfahren zu können.";
+            saving = false;
+            return;
+        }
+
         try {
             const { Meta } = await import("../../lib/models");
             const m = new Meta({
@@ -64,7 +76,7 @@
                 namen: fNamen.trim(),
                 anschrift: fAnschrift.trim(),
                 ort: fOrt.trim(),
-                aktuellePruefung: fAktuellePruefung.trim(),
+                aktuellePruefung: trimmedAktuellePruefung,
             });
             await saveMeta(m);
             metaData = m;
@@ -78,7 +90,7 @@
 </script>
 
 <div class="admin-page">
-    {#if hasData && onBack}
+    {#if onBack}
         <button class="back-btn" onclick={onBack}>← Zurück</button>
     {/if}
 
@@ -112,7 +124,14 @@
                     <dd>{metaData.aktuellePruefung || "–"}</dd>
                 </div>
             </dl>
-            <button type="button" class="btn btn--secondary" onclick={startEdit}>Bearbeiten</button>
+            <div class="form-actions">
+                <button type="button" class="btn btn--secondary" onclick={startEdit}>Bearbeiten</button>
+                {#if !hasData && metaData.aktuellePruefung && onMetaReady}
+                    <button type="button" class="btn btn--primary" onclick={onMetaReady}>
+                        Weiter zu den Einträgen
+                    </button>
+                {/if}
+            </div>
 
         {:else if editing}
             <!-- EDIT/CREATE form mode -->
@@ -134,9 +153,14 @@
                     <input type="text" bind:value={fOrt} />
                 </label>
                 <label class="field">
-                    <span>Aktuelle Prüfung</span>
-                    <input type="text" bind:value={fAktuellePruefung} />
+                    <span>Aktuelle Prüfung{!hasData ? " *" : ""}</span>
+                    <input type="text" bind:value={fAktuellePruefung} required={!hasData} />
                 </label>
+                {#if !hasData}
+                    <p class="field-hint">
+                        Ohne vorhandene Gerätedaten muss „Aktuelle Prüfung“ ausgefüllt werden, um mit dem Anlegen von Geräten fortfahren zu können.
+                    </p>
+                {/if}
                 {#if saveError}
                     <p class="save-error">{saveError}</p>
                 {/if}
@@ -159,7 +183,11 @@
 
     <!-- ── No-records hint ──────────────────────── -->
     {#if !hasData}
-        <p class="empty-hint">Keine Gerätedaten vorhanden. Bitte ein Backup wiederherstellen.</p>
+        <p class="empty-hint">
+            Keine Gerätedaten vorhanden. Entweder ein Backup wiederherstellen
+            oder oben „Aktuelle Prüfung“ ausfüllen und speichern, um
+            anschließend neue Geräte in der Einträge-Liste anzulegen.
+        </p>
     {/if}
 
     <!-- ── Backup wiederherstellen section ─────── -->
@@ -334,6 +362,12 @@
         color: var(--color-muted);
         font-size: 0.9rem;
         margin-bottom: 0.75rem;
+    }
+
+    .field-hint {
+        color: var(--color-muted);
+        font-size: 0.85rem;
+        margin: -0.35rem 0 0;
     }
 
     .save-error {

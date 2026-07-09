@@ -1,5 +1,9 @@
 <script lang="ts">
-    import { createIndexedDBBackupZip, downloadBlob } from "../../lib/zipService";
+    import {
+        buildBackupFilename,
+        createIndexedDBBackupZip,
+        downloadBlob,
+    } from "../../lib/zipService";
 
     let { onBackupDone }: { onBackupDone?: () => void } = $props();
 
@@ -11,12 +15,9 @@
         error = "";
 
         try {
-            const blob = await createIndexedDBBackupZip();
+            const { blob, meta } = await createIndexedDBBackupZip();
             const now = Date.now();
-            downloadBlob(
-                blob,
-                `der-erfasser-backup-${new Date(now).toISOString()}.zip`,
-            );
+            downloadBlob(blob, buildBackupFilename(meta?.pruefObjekt, new Date(now)));
             localStorage.setItem("der-erfasser-last-backup", String(now));
             onBackupDone?.();
         } catch (err) {

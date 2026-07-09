@@ -2,7 +2,7 @@ import JSZip from 'jszip';
 import { getRecords, getAllImages, getMeta, restoreDatabaseFromBackup, StoredImage, StoredRecord } from './db';
 import type { Meta } from './db';
 
-export async function createIndexedDBBackupZip(): Promise<Blob> {
+export async function createIndexedDBBackupZip(): Promise<{ blob: Blob; meta?: Meta }> {
     const records = await getRecords();
     const images = await getAllImages();
     const meta = await getMeta();
@@ -21,7 +21,8 @@ export async function createIndexedDBBackupZip(): Promise<Blob> {
         imageFolder?.file(filename, image.blob, { binary: true });
     }
 
-    return zip.generateAsync({ type: 'blob' });
+    const blob = await zip.generateAsync({ type: 'blob' });
+    return { blob, meta };
 }
 
 export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: StoredRecord[]; images: StoredImage[]; meta?: Meta }> {
@@ -91,4 +92,26 @@ export function downloadBlob(blob: Blob, filename: string) {
     a.click();
     a.remove();
     URL.revokeObjectURL(href);
+}
+
+function sanitizeFilenamePart(name: string): string {
+    return name
+        .trim()
+        .replace(/[\\/:*?"<>|]+/g, '_')
+        .replace(/\s+/g, '_');
+}
+
+function formatTimestampForFilename(date: Date): string {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}_${pad(date.getHours())}-${pad(date.getMinutes())}-${pad(date.getSeconds())}`;
+}
+
+/**
+ * Baut den Dateinamen für den Backup-Download.
+ * Nutzt meta.pruefObjekt als Basis, gefolgt von Datum und Uhrzeit.
+ * Fällt auf einen generischen Namen zurück, falls kein pruefObjekt gesetzt ist.
+ */
+export function buildBackupFilename(pruefObjekt: string | undefined, date: Date = new Date()): string {
+    const base = pruefObjekt?.trim() ? sanitizeFilenamePart(pruefObjekt) : 'der-erfasser-backup';
+    return `${base}_${formatTimestampForFilename(date)}.zip`;
 }
