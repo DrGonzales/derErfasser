@@ -181,6 +181,29 @@ Beim Arbeiten an diesem Projekt gilt:
 
 ---
 
+# Changelog Pflege
+
+Im Projektroot existiert eine `CHANGELOG.md`.
+
+Agenten müssen bei **jeder** fachlichen Änderung am Code (neue Funktionen,
+Bugfixes, sichtbare Verhaltensänderungen) automatisch einen Eintrag in der
+`CHANGELOG.md` ergänzen — ohne dass der Nutzer extra danach fragen muss.
+
+Dabei gilt:
+
+* Neue Einträge kommen unter die Überschrift `## Unreleased` (ggf. neu
+  anlegen, falls die Datei noch nicht existiert oder die Sektion fehlt).
+* Einträge werden in **einfacher, umgangssprachlicher deutscher Sprache**
+  formuliert — verständlich für Nutzer ohne technischen Hintergrund, keine
+  Code- oder Dateireferenzen.
+* Rein interne/technische Änderungen ohne erkennbare Auswirkung für den
+  Nutzer (z.B. reines Refactoring, Formatierung, Kommentare) müssen nicht
+  im Changelog erwähnt werden.
+* Bestehende Einträge nicht überschreiben, sondern neue Punkte ergänzen.
+* Die Datei bleibt Teil des normalen Commits der jeweiligen Änderung.
+
+---
+
 # Goal
 
 Das Ziel ist eine robuste, schnelle und vollständig offline nutzbare Anwendung zur Dokumentation elektrischer Sicherheitsprüfungen mit langfristig wartbarem Quellcode.
