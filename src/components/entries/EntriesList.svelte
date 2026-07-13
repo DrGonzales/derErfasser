@@ -132,6 +132,28 @@
 
     const filtered = $derived(
         entries.filter((e) => {
+            const isDeactivated = e.device?.deactivated === true;
+
+            // Ausgemustert-Filter: nur ausgemusterte Geräte, unabhängig von isCurrent/inspectionName
+            if ($entriesStatusFilter === "deactivated") {
+                if (!isDeactivated) return false;
+                const q = $entriesFilter.trim().toLowerCase();
+                if (!q) return true;
+                const loc = e.location ?? {};
+                const device = e.device ?? {};
+                return (
+                    (device.manufacturer ?? "").toLowerCase().includes(q) ||
+                    (device.model ?? "").toLowerCase().includes(q) ||
+                    (device.serialNumber ?? "").toLowerCase().includes(q) ||
+                    (loc.locationName ?? "").toLowerCase().includes(q) ||
+                    (loc.building ?? "").toLowerCase().includes(q) ||
+                    (loc.room ?? "").toLowerCase().includes(q)
+                );
+            }
+
+            // Ausgemusterte Geräte in allen anderen Ansichten ausblenden
+            if (isDeactivated) return false;
+
             // Status-Filter
             if ($entriesStatusFilter === "current" && !e.isCurrent)
                 return false;
@@ -208,6 +230,14 @@
                 onclick={() => entriesStatusFilter.set("all")}
                 aria-pressed={$entriesStatusFilter === "all"}>Alle</button
             >
+            <button
+                type="button"
+                class="chip chip--deactivated"
+                class:chip--active={$entriesStatusFilter === "deactivated"}
+                onclick={() => entriesStatusFilter.set("deactivated")}
+                aria-pressed={$entriesStatusFilter === "deactivated"}
+                >Ausgemustert</button
+            >
         </div>
 
         <div class="sort-chips" role="group" aria-label="Sortierung">
@@ -256,7 +286,10 @@
                     <button
                         type="button"
                         class="inspect-btn"
-                        class:inspect-btn--outdated={!item.isCurrent}
+                        class:inspect-btn--outdated={!item.isCurrent &&
+                            !item.device?.deactivated}
+                        class:inspect-btn--deactivated={item.device
+                            ?.deactivated}
                         aria-label="Gerät prüfen / öffnen"
                         onclick={() => onSelectDevice?.(item)}
                     >
@@ -500,6 +533,27 @@
         background: var(--color-text-secondary);
     }
 
+    /* Rot: Ausgemustert */
+    .chip--deactivated {
+        border-color: var(--color-danger);
+        background: var(--color-danger-bg);
+        color: var(--color-danger);
+    }
+    .chip--deactivated:hover,
+    .chip--deactivated:focus-visible {
+        background: #fecaca;
+        outline: none;
+    }
+    .chip--deactivated.chip--active {
+        background: var(--color-danger);
+        border-color: var(--color-danger);
+        color: #fff;
+    }
+    .chip--deactivated.chip--active:hover,
+    .chip--deactivated.chip--active:focus-visible {
+        background: #991b1b;
+    }
+
     /* ── Result count ────────────────────────────────────── */
     .result-count {
         min-width: 4.5rem;
@@ -605,6 +659,20 @@
     .inspect-btn--outdated:hover,
     .inspect-btn--outdated:focus-visible {
         background: var(--color-warning);
+        color: #fff;
+        outline: none;
+    }
+
+    /* Ausgemustert (deactivated = true) → rot */
+    .inspect-btn--deactivated {
+        background: var(--color-danger-bg);
+        border-right-color: var(--color-danger);
+        color: var(--color-danger);
+    }
+
+    .inspect-btn--deactivated:hover,
+    .inspect-btn--deactivated:focus-visible {
+        background: var(--color-danger);
         color: #fff;
         outline: none;
     }

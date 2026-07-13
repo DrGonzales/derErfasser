@@ -25,7 +25,8 @@
         out:fade={{ duration: 600 }}
         onoutroend={onDone}
     >
-        <h1>Der Erfasser!</h1>
+        <img src="/duspol.svg" alt="Prüftool Logo" class="splash-logo" />
+        <h1>Prüftool</h1>
         <p class="version">v{__APP_VERSION__} ({__GIT_COMMIT__})</p>
     </div>
 {/if}
@@ -50,6 +51,12 @@
         margin: 0;
         text-align: center;
         font-family: inherit;
+    }
+
+    .splash-logo {
+        width: clamp(96px, 28vw, 160px);
+        height: clamp(96px, 28vw, 160px);
+        margin-bottom: 1.25rem;
     }
 
     .version {

@@ -10,6 +10,7 @@ export class Device {
     ratedVoltage = 0;
     ratedPower = 0;
     inspection = true
+    deactivated = false;
 
     pictures: ImageReference[] = [];
     inspections: Inspection[] = [];

@@ -15,8 +15,8 @@ export type EntriesSort = {
   direction: EntriesSortDirection;
 };
 
-// 'current' = grün (abgearbeitet), 'outdated' = gelb (noch offen), 'all' = alle
-export type EntriesStatusFilter = 'current' | 'outdated' | 'all';
+// 'current' = grün (abgearbeitet), 'outdated' = gelb (noch offen), 'all' = alle, 'deactivated' = rot (ausgemustert)
+export type EntriesStatusFilter = 'current' | 'outdated' | 'all' | 'deactivated';
 
 // UI-related small stores
 export const entriesFilter = writable('');

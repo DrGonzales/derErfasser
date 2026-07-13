@@ -122,7 +122,10 @@
             />
         {:else}
             <header class="app-header">
-                <h1>Der Erfasser !</h1>
+                <div class="app-title">
+                    <img src="/duspol.svg" alt="" class="app-logo" />
+                    <h1>Prüftool</h1>
+                </div>
                 <button
                     type="button"
                     class="admin-btn"
@@ -177,6 +180,18 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 1rem;
+    }
+
+    .app-title {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .app-logo {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
     }
 
     .app-header h1 {

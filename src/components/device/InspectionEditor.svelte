@@ -112,6 +112,10 @@
                 updatedDevice = new DeviceModel({
                     ...device,
                     inspections,
+                    deactivated:
+                        status === DeviceStatus.AusserBetrieb
+                            ? true
+                            : device.deactivated,
                 });
             } else {
                 const today = new Date().toISOString().split("T")[0];
@@ -132,6 +136,10 @@
                 updatedDevice = new DeviceModel({
                     ...device,
                     inspections: [...device.inspections, newInspection],
+                    deactivated:
+                        status === DeviceStatus.AusserBetrieb
+                            ? true
+                            : device.deactivated,
                 });
             }
 
