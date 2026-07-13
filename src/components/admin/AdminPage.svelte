@@ -7,6 +7,10 @@
         createIndexedDBBackupZip,
         downloadBlob,
     } from "../../lib/zipService";
+    import {
+        inspectionNameSuggestions,
+        rememberInspectionName,
+    } from "../../lib/stores/inspectionNameSuggestions.svelte";
     import RestoreButton from "./RestoreButton.svelte";
 
     let {
@@ -93,6 +97,10 @@
             await saveMeta(m);
             metaData = m;
             editing = false;
+
+            // Neu eingegebenen Prüfungsnamen sofort für zukünftige Eingaben
+            // (Dropdown-Vorschläge) verfügbar machen.
+            rememberInspectionName(trimmedAktuellePruefung);
         } catch (err) {
             saveError = `Speichern fehlgeschlagen: ${err instanceof Error ? err.message : String(err)}`;
         } finally {
@@ -204,7 +212,18 @@
                     </label>
                     <label class="field">
                         <span>Aktuelle Prüfung{!hasData ? " *" : ""}</span>
-                        <input type="text" bind:value={fAktuellePruefung} required={!hasData} />
+                        <input
+                            type="text"
+                            list="aktuelle-pruefung-options"
+                            autocomplete="off"
+                            bind:value={fAktuellePruefung}
+                            required={!hasData}
+                        />
+                        <datalist id="aktuelle-pruefung-options">
+                            {#each inspectionNameSuggestions.names as suggestion (suggestion)}
+                                <option value={suggestion}></option>
+                            {/each}
+                        </datalist>
                     </label>
                     {#if !hasData}
                         <p class="field-hint">

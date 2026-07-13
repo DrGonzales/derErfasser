@@ -1,6 +1,14 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { getRecords } from "./lib/db";
+    import {
+        initLocationSuggestions,
+        resetLocationSuggestions,
+    } from "./lib/stores/locationSuggestions.svelte";
+    import {
+        initInspectionNameSuggestions,
+        resetInspectionNameSuggestions,
+    } from "./lib/stores/inspectionNameSuggestions.svelte";
     import AdminPage from "./components/admin/AdminPage.svelte";
     import EntriesList from "./components/entries/EntriesList.svelte";
     import Device from "./components/device/Device.svelte";
@@ -31,6 +39,12 @@
 
     onMount(() => {
         checkData();
+        // Standort-Vorschläge (Standortname/Gebäude/Raum) einmalig beim
+        // Start der App aus dem gesamten Datenbestand aggregieren.
+        initLocationSuggestions();
+        // Prüfungsnamen-Vorschläge ("Aktuelle Prüfung") ebenfalls einmalig
+        // beim Start aggregieren.
+        initInspectionNameSuggestions();
     });
 
     function openDevice(record: {
@@ -55,7 +69,13 @@
 
     async function handleRestored() {
         showAdmin = false;
+        // Datenbestand wurde vollständig ersetzt: Vorschlagslisten müssen
+        // beim nächsten Zugriff neu aus der Datenbank aggregiert werden.
+        resetLocationSuggestions();
+        resetInspectionNameSuggestions();
         await checkData();
+        initLocationSuggestions();
+        initInspectionNameSuggestions();
         uploadVersion += 1;
     }
 
@@ -78,6 +98,8 @@
         // durchlaufen werden muss.
         metaConfirmed = false;
         showAdmin = false;
+        resetLocationSuggestions();
+        resetInspectionNameSuggestions();
         await checkData();
     }
 </script>

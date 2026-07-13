@@ -2,6 +2,10 @@
     import { untrack } from "svelte";
     import { Device as DeviceModel, Location } from "../../lib/models";
     import { getRecord, updateRecord, addRecord } from "../../lib/db";
+    import {
+        locationSuggestions,
+        rememberLocation,
+    } from "../../lib/stores/locationSuggestions.svelte";
 
     let {
         device = null,
@@ -65,6 +69,10 @@
                 await updateRecord(record);
             }
 
+            // Neu eingegebene Standort-Werte sofort für zukünftige
+            // Eingaben (Dropdown-Vorschläge) verfügbar machen.
+            rememberLocation(updatedLocation);
+
             onSave(updated);
         } catch (err) {
             error = err instanceof Error ? err.message : String(err);
@@ -123,15 +131,48 @@
 
             <div class="field-group">
                 <label for="ed-location-name">Standortname</label>
-                <input id="ed-location-name" type="text" bind:value={locationName} />
+                <input
+                    id="ed-location-name"
+                    type="text"
+                    list="ed-location-name-options"
+                    autocomplete="off"
+                    bind:value={locationName}
+                />
+                <datalist id="ed-location-name-options">
+                    {#each locationSuggestions.locationNames as suggestion (suggestion)}
+                        <option value={suggestion}></option>
+                    {/each}
+                </datalist>
             </div>
             <div class="field-group">
                 <label for="ed-building">Gebäude</label>
-                <input id="ed-building" type="text" bind:value={building} />
+                <input
+                    id="ed-building"
+                    type="text"
+                    list="ed-building-options"
+                    autocomplete="off"
+                    bind:value={building}
+                />
+                <datalist id="ed-building-options">
+                    {#each locationSuggestions.buildings as suggestion (suggestion)}
+                        <option value={suggestion}></option>
+                    {/each}
+                </datalist>
             </div>
             <div class="field-group">
                 <label for="ed-room">Raum</label>
-                <input id="ed-room" type="text" bind:value={room} />
+                <input
+                    id="ed-room"
+                    type="text"
+                    list="ed-room-options"
+                    autocomplete="off"
+                    bind:value={room}
+                />
+                <datalist id="ed-room-options">
+                    {#each locationSuggestions.rooms as suggestion (suggestion)}
+                        <option value={suggestion}></option>
+                    {/each}
+                </datalist>
             </div>
 
             {#if error}
