@@ -12,6 +12,7 @@
         rememberInspectionName,
     } from "../../lib/stores/inspectionNameSuggestions.svelte";
     import RestoreButton from "./RestoreButton.svelte";
+    import ChangelogModal from "./ChangelogModal.svelte";
 
     let {
         hasData,
@@ -44,6 +45,9 @@
     let confirmDeleteOpen = $state(false);
     let isDeleting = $state(false);
     let deleteError = $state("");
+
+    // Changelog-Anzeige
+    let changelogOpen = $state(false);
 
     onMount(async () => {
         metaData = await getMeta();
@@ -280,7 +284,19 @@
             {/if}
         </section>
     </div>
+
+    <button
+        type="button"
+        class="changelog-link"
+        onclick={() => (changelogOpen = true)}
+    >
+        Changelog
+    </button>
 </div>
+
+{#if changelogOpen}
+    <ChangelogModal onClose={() => (changelogOpen = false)} />
+{/if}
 
 {#if confirmDeleteOpen}
     <div class="confirm-backdrop" role="dialog" aria-modal="true" aria-label="Daten löschen bestätigen">
@@ -341,6 +357,24 @@
 
     .back-btn:hover {
         text-decoration: underline;
+    }
+
+    .changelog-link {
+        background: none;
+        border: none;
+        color: var(--color-muted);
+        cursor: pointer;
+        font-size: 0.85rem;
+        margin: 1.5rem auto 0;
+        display: block;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    .changelog-link:hover,
+    .changelog-link:focus-visible {
+        color: var(--color-primary);
+        outline: none;
     }
 
     h2 {

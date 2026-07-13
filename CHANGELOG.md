@@ -19,3 +19,6 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 - Nach dem Wiederherstellen eines Backups oder dem Löschen aller Daten
   werden diese Vorschlagslisten automatisch neu aufgebaut, damit sie immer
   zum aktuellen Datenbestand passen.
+- Im Admin-Bereich gibt es jetzt unten einen Link „Changelog“. Darüber lässt
+  sich diese Liste der Änderungen direkt in der App als Fenster (Modal)
+  anzeigen, ganz ohne Internetverbindung.
