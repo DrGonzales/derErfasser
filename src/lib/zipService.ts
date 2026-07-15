@@ -45,7 +45,12 @@ export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: Sto
     const imageFolder = zip.folder('images');
 
     if (imageFolder) {
-        const fileEntries = Object.values(imageFolder.files).filter((entry) => !entry.dir);
+        const fileEntries: JSZip.JSZipObject[] = [];
+        imageFolder.forEach((_relativePath, entry) => {
+            if (!entry.dir) {
+                fileEntries.push(entry);
+            }
+        });
 
         for (const entry of fileEntries) {
             const blob = await entry.async('blob');

@@ -20,6 +20,8 @@
   "devDependencies": {
     "@faker-js/faker": "^10.5.0",
     "@types/node": "^26.0.1",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^29.1.1",
     "svelte-check": "^4.1.1",
     "typescript": "^5.7.2",
     "vitest": "^4.1.9"
