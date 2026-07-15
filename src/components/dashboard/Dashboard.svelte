@@ -73,8 +73,34 @@
 
     const openCount = $derived(activeCount - currentCount);
 
-    const currentPct = $derived(
-        activeCount > 0 ? Math.round((currentCount / activeCount) * 100) : 0,
+    const deactivatedThisRoundCount = $derived.by(() => {
+        let count = 0;
+        for (const d of devices) {
+            const relevant = inspectionForCurrentRound(d);
+            if (relevant?.status === DeviceStatus.AusserBetrieb) count += 1;
+        }
+        return count;
+    });
+
+    const pruefstatusSegments = $derived([
+        {
+            label: "Aktuell geprüft",
+            value: currentCount,
+            color: "var(--color-success)",
+        },
+        {
+            label: "Offen",
+            value: openCount,
+            color: "var(--color-warning)",
+        },
+        {
+            label: "Ausgemustert",
+            value: deactivatedThisRoundCount,
+            color: "var(--color-danger)",
+        },
+    ]);
+    const pruefstatusTotal = $derived(
+        currentCount + openCount + deactivatedThisRoundCount,
     );
 
     const resultCounts = $derived.by(() => {
@@ -195,30 +221,35 @@
             <!-- ── Kachel: Prüfstatus ─────────────────── -->
             <section class="tile panel-card">
                 <h3>Prüfstatus</h3>
-                {#if activeCount === 0}
-                    <p class="tile-empty">Keine aktiven Geräte vorhanden.</p>
+                {#if pruefstatusTotal === 0}
+                    <p class="tile-empty">Keine Geräte vorhanden.</p>
                 {:else}
-                    <div class="stat-row">
-                        <div class="stat">
-                            <span class="stat-number">{currentCount}</span>
-                            <span class="stat-label">Aktuell geprüft</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">{openCount}</span>
-                            <span class="stat-label">Offen</span>
-                        </div>
+                    <div class="tile-chart-row">
+                        <DonutChart
+                            segments={pruefstatusSegments}
+                            centerLabel={String(pruefstatusTotal)}
+                        />
+                        <ul class="stat-list">
+                            <li>
+                                <span class="dot dot--success"></span>
+                                <span class="icon-count">{currentCount}</span>
+                                <span class="icon-label">Aktuell geprüft</span
+                                >
+                            </li>
+                            <li>
+                                <span class="dot dot--warning"></span>
+                                <span class="icon-count">{openCount}</span>
+                                <span class="icon-label">Offen</span>
+                            </li>
+                            <li>
+                                <span class="dot dot--danger"></span>
+                                <span class="icon-count"
+                                    >{deactivatedThisRoundCount}</span
+                                >
+                                <span class="icon-label">Ausgemustert</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div
-                        class="progress-bar"
-                        role="img"
-                        aria-label="{currentPct}% aktuell geprüft"
-                    >
-                        <div
-                            class="progress-bar-fill"
-                            style="width: {currentPct}%"
-                        ></div>
-                    </div>
-                    <p class="progress-label">{currentPct}% aktuell geprüft</p>
                 {/if}
             </section>
 
@@ -431,28 +462,6 @@
         font-weight: 600;
     }
 
-    /* ── Fortschrittsbalken ───────────────────────── */
-    .progress-bar {
-        width: 100%;
-        height: 10px;
-        border-radius: 99px;
-        background: var(--color-warning-bg);
-        overflow: hidden;
-    }
-
-    .progress-bar-fill {
-        height: 100%;
-        background: var(--color-success);
-        border-radius: 99px;
-        transition: width 0.2s;
-    }
-
-    .progress-label {
-        margin: 0;
-        font-size: 0.8rem;
-        color: var(--color-muted);
-    }
-
     /* ── Donut-Chart + Legende nebeneinander ──────── */
     .tile-chart-row {
         display: flex;
@@ -497,6 +506,26 @@
 
     .icon--muted {
         color: var(--color-muted);
+    }
+
+    .dot {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .dot--success {
+        background: var(--color-success);
+    }
+
+    .dot--warning {
+        background: var(--color-warning);
+    }
+
+    .dot--danger {
+        background: var(--color-danger);
     }
 
     .icon-count {
