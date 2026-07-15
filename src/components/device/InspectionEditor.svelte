@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, type Snippet } from "svelte";
     import {
         Inspection,
         InspectionResult,
@@ -12,6 +12,7 @@
     import { getMeta, getRecord, updateRecord } from "../../lib/db";
     import ImageUpload from "../images/ImageUpload.svelte";
     import PictureGrid from "../images/PictureGrid.svelte";
+    import { ResultIcon, StatusIcon } from "../icons";
 
     let {
         device,
@@ -112,10 +113,7 @@
                 updatedDevice = new DeviceModel({
                     ...device,
                     inspections,
-                    deactivated:
-                        status === DeviceStatus.AusserBetrieb
-                            ? true
-                            : device.deactivated,
+                    deactivated: status === DeviceStatus.AusserBetrieb,
                 });
             } else {
                 const today = new Date().toISOString().split("T")[0];
@@ -136,10 +134,7 @@
                 updatedDevice = new DeviceModel({
                     ...device,
                     inspections: [...device.inspections, newInspection],
-                    deactivated:
-                        status === DeviceStatus.AusserBetrieb
-                            ? true
-                            : device.deactivated,
+                    deactivated: status === DeviceStatus.AusserBetrieb,
                 });
             }
 
@@ -157,6 +152,14 @@
     }
 </script>
 
+{#snippet resultIcon(result: string)}
+    <ResultIcon result={result as InspectionResult} size={16} />
+{/snippet}
+
+{#snippet statusIcon(status: string)}
+    <StatusIcon status={status as DeviceStatus} size={16} />
+{/snippet}
+
 {#snippet radioGroup(
     legend: string,
     name: string,
@@ -165,13 +168,15 @@
     selected: string,
     onChange: (value: string) => void,
     disabled: boolean,
+    icon: Snippet<[string]>,
 )}
     <fieldset class="field-group">
         <legend>{legend}</legend>
         <div class="radio-row">
             {#each options as opt (opt)}
-                <label class="radio-option">
+                <label class="radio-option" class:radio-option--selected={selected === opt}>
                     <input
+                        class="radio-option__input"
                         type="radio"
                         {name}
                         value={opt}
@@ -179,7 +184,8 @@
                         onchange={() => onChange(opt)}
                         {disabled}
                     />
-                    {labels[opt]}
+                    <span class="radio-option__icon">{@render icon(opt)}</span>
+                    <span>{labels[opt]}</span>
                 </label>
             {/each}
         </div>
@@ -187,87 +193,110 @@
 {/snippet}
 
 {#snippet formFields()}
-    {@render radioGroup(
-        "Sichtprüfung",
-        "visualTestResult",
-        resultOptions,
-        inspectionResultLabels,
-        visualTestResult,
-        (v) => (visualTestResult = v as InspectionResult),
-        readonly,
-    )}
-    {@render radioGroup(
-        "Messung",
-        "measurementTestResult",
-        resultOptions,
-        inspectionResultLabels,
-        measurementTestResult,
-        (v) => (measurementTestResult = v as InspectionResult),
-        readonly,
-    )}
-    {@render radioGroup(
-        "Funktionsprüfung",
-        "functionTestResult",
-        resultOptions,
-        inspectionResultLabels,
-        functionTestResult,
-        (v) => (functionTestResult = v as InspectionResult),
-        readonly,
-    )}
-    {@render radioGroup(
-        "Gesamtergebnis",
-        "overallResult",
-        resultOptions,
-        inspectionResultLabels,
-        overallResult,
-        (v) => (overallResult = v as InspectionResult),
-        readonly,
-    )}
-    {@render radioGroup(
-        "Gerätezustand",
-        "status",
-        statusOptions,
-        deviceStatusLabels,
-        status,
-        (v) => (status = v as DeviceStatus),
-        readonly,
-    )}
-
-    <div class="field-group">
-        <label for="ie-isolation">Isolationswiderstand (MΩ)</label>
-        <input
-            id="ie-isolation"
-            type="number"
-            step="any"
-            bind:value={isolationResistanceMohm}
-            disabled={readonly}
-        />
-    </div>
-    <div class="field-group">
-        <label for="ie-touch-current">Berührungsstrom (mA)</label>
-        <input
-            id="ie-touch-current"
-            type="number"
-            step="any"
-            bind:value={touchCurrentMa}
-            disabled={readonly}
-        />
-    </div>
-    <div class="field-group">
-        <label for="ie-description">Beschreibung</label>
-        <textarea
-            id="ie-description"
-            bind:value={description}
-            disabled={readonly}
-        ></textarea>
+    <div class="form-row panel-card">
+        {@render radioGroup(
+            "Sichtprüfung",
+            "visualTestResult",
+            resultOptions,
+            inspectionResultLabels,
+            visualTestResult,
+            (v) => (visualTestResult = v as InspectionResult),
+            readonly,
+            resultIcon,
+        )}
     </div>
 
-    <hr class="section-divider" />
-    <p class="section-label">Bilder</p>
-    <PictureGrid {pictures} />
-    {#if !readonly}
-        <ImageUpload {pictures} onUploaded={handlePicturesUploaded} />
-    {/if}
+    <div class="form-row panel-card">
+        {@render radioGroup(
+            "Funktionsprüfung",
+            "functionTestResult",
+            resultOptions,
+            inspectionResultLabels,
+            functionTestResult,
+            (v) => (functionTestResult = v as InspectionResult),
+            readonly,
+            resultIcon,
+        )}
+    </div>
+
+    <div class="form-row panel-card">
+        {@render radioGroup(
+            "Gerätezustand",
+            "status",
+            statusOptions,
+            deviceStatusLabels,
+            status,
+            (v) => (status = v as DeviceStatus),
+            readonly,
+            statusIcon,
+        )}
+    </div>
+
+    <div class="form-row panel-card">
+        {@render radioGroup(
+            "Messung",
+            "measurementTestResult",
+            resultOptions,
+            inspectionResultLabels,
+            measurementTestResult,
+            (v) => (measurementTestResult = v as InspectionResult),
+            readonly,
+            resultIcon,
+        )}
+
+        <div class="field-group">
+            <label for="ie-isolation">Isolationswiderstand (MΩ)</label>
+            <input
+                id="ie-isolation"
+                type="number"
+                step="any"
+                bind:value={isolationResistanceMohm}
+                disabled={readonly}
+            />
+        </div>
+        <div class="field-group">
+            <label for="ie-touch-current">Berührungsstrom (mA)</label>
+            <input
+                id="ie-touch-current"
+                type="number"
+                step="any"
+                bind:value={touchCurrentMa}
+                disabled={readonly}
+            />
+        </div>
+    </div>
+
+    <div class="form-row panel-card">
+        {@render radioGroup(
+            "Gesamtergebnis",
+            "overallResult",
+            resultOptions,
+            inspectionResultLabels,
+            overallResult,
+            (v) => (overallResult = v as InspectionResult),
+            readonly,
+            resultIcon,
+        )}
+    </div>
+
+    <div class="form-row panel-card">
+        <div class="field-group">
+            <label for="ie-description">Beschreibung</label>
+            <textarea
+                id="ie-description"
+                bind:value={description}
+                disabled={readonly}
+            ></textarea>
+        </div>
+    </div>
+
+    <div class="form-row panel-card">
+        <p class="section-label">Bilder</p>
+        <PictureGrid {pictures} />
+        {#if !readonly}
+            <ImageUpload {pictures} onUploaded={handlePicturesUploaded} />
+        {/if}
+    </div>
 
     {#if error}
         <p class="error" role="alert">{error}</p>
@@ -404,6 +433,13 @@
         gap: 1rem;
     }
 
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+    }
+
     .field-group {
         display: grid;
         gap: 0.35rem;
@@ -418,6 +454,10 @@
         font-weight: 700;
         color: var(--color-text-secondary);
         padding: 0;
+    }
+
+    .field-group label.radio-option {
+        color: var(--color-text);
     }
 
     .field-group input[type="number"],
@@ -447,29 +487,71 @@
     .radio-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.6rem;
+        gap: 0.5rem;
     }
 
     .radio-option {
+        position: relative;
         display: inline-flex;
         align-items: center;
-        gap: 0.35rem;
+        justify-content: center;
+        gap: 0.4rem;
+        flex: 1 1 0;
+        min-width: 88px;
+        min-height: 40px;
+        padding: 0 0.9rem;
+        border: 1px solid var(--color-border-input);
+        border-radius: 8px;
+        background: #fff;
         font-size: 0.85rem;
-        font-weight: 500;
+        font-weight: 600;
         color: var(--color-text);
         cursor: pointer;
+        text-align: center;
+        transition:
+            background-color 0.15s,
+            border-color 0.15s,
+            color 0.15s;
+    }
+
+    .radio-option__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .radio-option:hover {
+        border-color: var(--color-primary);
+    }
+
+    .radio-option:focus-within {
+        outline: 3px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    .field-group label.radio-option--selected {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+        color: #fff;
+    }
+
+    .field-group label.radio-option--selected:hover {
+        border-color: var(--color-primary);
+    }
+
+    .radio-option__input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        width: 1px;
+        height: 1px;
     }
 
     .error {
         color: #b91c1c;
         font-size: 0.875rem;
         margin: 0;
-    }
-
-    .section-divider {
-        border: none;
-        border-top: 1px solid #e4ece4;
-        margin: 0.25rem 0;
     }
 
     .section-label {

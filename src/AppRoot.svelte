@@ -10,9 +10,11 @@
         resetInspectionNameSuggestions,
     } from "./lib/stores/inspectionNameSuggestions.svelte";
     import AdminPage from "./components/admin/AdminPage.svelte";
+    import Dashboard from "./components/dashboard/Dashboard.svelte";
     import EntriesList from "./components/entries/EntriesList.svelte";
     import Device from "./components/device/Device.svelte";
     import SplashScreen from "./components/SplashScreen.svelte";
+    import { TableCalcIcon } from "./components/icons";
 
     let showSplash = $state(true);
     let uploadVersion = $state(0);
@@ -23,6 +25,7 @@
     } | null = $state(null);
     let hasData = $state<boolean | null>(null);
     let showAdmin = $state(false);
+    let showDashboard = $state(false);
     // Wird true, sobald im Admin-Bereich (ohne vorhandene Geräte) die Meta-Daten
     // inkl. "aktuelle Prüfung" gespeichert wurden und der Nutzer in die
     // Einträge-Liste gewechselt ist, um neue Geräte anzulegen.
@@ -84,6 +87,11 @@
         selectedRecord = null;
     }
 
+    function handleDashboardNav() {
+        showDashboard = true;
+        selectedRecord = null;
+    }
+
     function handleMetaReady() {
         // Meta-Daten (mit aktuellePruefung) wurden gespeichert, obwohl noch
         // keine Geräte existieren. Navigation in die Einträge-Liste freigeben,
@@ -112,6 +120,8 @@
     <main>
         {#if hasData === null}
             <p class="loading">Lädt...</p>
+        {:else if showDashboard}
+            <Dashboard onBack={() => (showDashboard = false)} />
         {:else if showAdminView}
             <AdminPage
                 hasData={hasData ?? false}
@@ -126,29 +136,40 @@
                     <img src="/duspol.svg" alt="" class="app-logo" />
                     <h1>Prüftool</h1>
                 </div>
-                <button
-                    type="button"
-                    class="admin-btn"
-                    aria-label="Admin"
-                    title="Admin"
-                    onclick={handleAdminNav}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="22"
-                        height="22"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
+                <div class="header-actions">
+                    <button
+                        type="button"
+                        class="dashboard-btn"
+                        aria-label="Dashboard"
+                        title="Dashboard"
+                        onclick={handleDashboardNav}
                     >
-                        <path d="M3 11.5 12 4l9 7.5" />
-                        <path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" />
-                    </svg>
-                </button>
+                        <TableCalcIcon size={22} />
+                    </button>
+                    <button
+                        type="button"
+                        class="admin-btn"
+                        aria-label="Admin"
+                        title="Admin"
+                        onclick={handleAdminNav}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="22"
+                            height="22"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M3 11.5 12 4l9 7.5" />
+                            <path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" />
+                        </svg>
+                    </button>
+                </div>
             </header>
 
             <div hidden={!!selectedRecord}>
@@ -198,6 +219,12 @@
         margin: 0;
     }
 
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
     .admin-btn {
         display: inline-flex;
         align-items: center;
@@ -218,6 +245,30 @@
     .admin-btn:hover,
     .admin-btn:focus-visible {
         background: #235347;
+        color: #fff;
+        outline: none;
+    }
+
+    .dashboard-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 1px solid var(--color-primary);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--color-primary);
+        cursor: pointer;
+        transition:
+            background 0.15s,
+            color 0.15s;
+    }
+
+    .dashboard-btn:hover,
+    .dashboard-btn:focus-visible {
+        background: var(--color-primary);
         color: #fff;
         outline: none;
     }

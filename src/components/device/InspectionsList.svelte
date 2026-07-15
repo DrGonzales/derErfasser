@@ -10,6 +10,7 @@
     } from "../../lib/models";
     import { getMeta } from "../../lib/db";
     import InspectionEditor from "./InspectionEditor.svelte";
+    import { ResultIcon, StatusIcon } from "../icons";
 
     let {
         device,
@@ -74,21 +75,7 @@
         aria-label={resultLabels[result]}
         title={resultLabels[result]}
     >
-        {#if result === InspectionResult.Passed}
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="4 13 9 18 20 6" />
-            </svg>
-        {:else if result === InspectionResult.Failed}
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="5" y1="5" x2="19" y2="19" />
-                <line x1="19" y1="5" x2="5" y2="19" />
-            </svg>
-        {:else}
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.9.5-1.5 1-1.5 2.2" />
-                <line x1="12" y1="17.5" x2="12" y2="17.6" />
-            </svg>
-        {/if}
+        <ResultIcon {result} />
     </span>
 {/snippet}
 
@@ -99,29 +86,7 @@
         aria-label={statusLabels[status]}
         title={statusLabels[status]}
     >
-        {#if status === DeviceStatus.Vorhanden}
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" />
-                <polyline points="8 12.5 11 15.5 16 9" />
-            </svg>
-        {:else if status === DeviceStatus.Defekt}
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 3 21 19 3 19Z" />
-                <line x1="12" y1="9.5" x2="12" y2="13.5" />
-                <line x1="12" y1="16.3" x2="12" y2="16.4" />
-            </svg>
-        {:else if status === DeviceStatus.AusserBetrieb}
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 3v7" />
-                <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
-            </svg>
-        {:else}
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 21s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" />
-                <circle cx="12" cy="9" r="2.3" />
-                <line x1="4.5" y1="4.5" x2="19.5" y2="19.5" />
-            </svg>
-        {/if}
+        <StatusIcon {status} />
     </span>
 {/snippet}
 

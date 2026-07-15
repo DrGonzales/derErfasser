@@ -13,7 +13,9 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
   solcher Geräte wird zur besseren Erkennbarkeit rot dargestellt.
 - Wird bei einer Prüfung der Gerätezustand auf „Außer Betrieb“ gesetzt, wird
   das Gerät automatisch als „ausgemustert“ markiert und erscheint danach nur
-  noch im „Ausgemustert“-Filter der Geräteliste.
+  noch im „Ausgemustert“-Filter der Geräteliste. Wird bei einer späteren
+  Prüfung ein anderer Gerätezustand gewählt, wird die Markierung als
+  „ausgemustert“ wieder aufgehoben.
 - Neues Logo (Messleitungen-Symbol) für App-Icon, Startbildschirm und
   Splash-Screen eingesetzt. Der Titel der App wurde von „Der Erfasser!“ in
   „Prüftool“ geändert und wird zusammen mit dem neuen Logo im Kopfbereich
