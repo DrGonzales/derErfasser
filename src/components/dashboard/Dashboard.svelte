@@ -8,6 +8,7 @@
         type Inspection,
     } from "../../lib/models";
     import { ResultIcon, StatusIcon } from "../icons";
+    import DonutChart from "../charts/DonutChart.svelte";
 
     let { onBack }: { onBack?: () => void } = $props();
 
@@ -105,6 +106,58 @@
         }
         return counts;
     });
+
+    const resultSegments = $derived([
+        {
+            label: "Bestanden",
+            value: resultCounts[InspectionResult.Passed],
+            color: "var(--color-success)",
+        },
+        {
+            label: "Nicht bestanden",
+            value: resultCounts[InspectionResult.Failed],
+            color: "var(--color-danger)",
+        },
+        {
+            label: "Kein Ergebnis",
+            value: resultCounts[InspectionResult.NoResult],
+            color: "var(--color-warning)",
+        },
+    ]);
+    const resultTotal = $derived(
+        resultCounts[InspectionResult.Passed] +
+            resultCounts[InspectionResult.Failed] +
+            resultCounts[InspectionResult.NoResult],
+    );
+
+    const statusSegments = $derived([
+        {
+            label: "Vorhanden",
+            value: statusCounts[DeviceStatus.Vorhanden],
+            color: "var(--color-success)",
+        },
+        {
+            label: "Defekt",
+            value: statusCounts[DeviceStatus.Defekt],
+            color: "var(--color-danger)",
+        },
+        {
+            label: "Außer Betrieb",
+            value: statusCounts[DeviceStatus.AusserBetrieb],
+            color: "var(--color-muted)",
+        },
+        {
+            label: "Nicht auffindbar",
+            value: statusCounts[DeviceStatus.NichtAuffindbar],
+            color: "var(--color-warning)",
+        },
+    ]);
+    const statusTotal = $derived(
+        statusCounts[DeviceStatus.Vorhanden] +
+            statusCounts[DeviceStatus.Defekt] +
+            statusCounts[DeviceStatus.AusserBetrieb] +
+            statusCounts[DeviceStatus.NichtAuffindbar],
+    );
 </script>
 
 <div class="dashboard-page">
@@ -172,78 +225,114 @@
             <!-- ── Kachel: Prüfergebnis für aktuelle Prüfung ──── -->
             <section class="tile panel-card">
                 <h3>Prüfergebnis</h3>
-                <ul class="stat-list">
-                    <li>
-                        <span class="icon icon--passed">
-                            <ResultIcon result={InspectionResult.Passed} />
-                        </span>
-                        <span class="icon-count"
-                            >{resultCounts[InspectionResult.Passed]}</span
-                        >
-                        <span class="icon-label">Bestanden</span>
-                    </li>
-                    <li>
-                        <span class="icon icon--failed">
-                            <ResultIcon result={InspectionResult.Failed} />
-                        </span>
-                        <span class="icon-count"
-                            >{resultCounts[InspectionResult.Failed]}</span
-                        >
-                        <span class="icon-label">Nicht bestanden</span>
-                    </li>
-                    <li>
-                        <span class="icon icon--warning">
-                            <ResultIcon result={InspectionResult.NoResult} />
-                        </span>
-                        <span class="icon-count"
-                            >{resultCounts[InspectionResult.NoResult]}</span
-                        >
-                        <span class="icon-label">Kein Ergebnis</span>
-                    </li>
-                </ul>
+                <div class="tile-chart-row">
+                    <DonutChart
+                        segments={resultSegments}
+                        centerLabel={String(resultTotal)}
+                    />
+                    <ul class="stat-list">
+                        <li>
+                            <span class="icon icon--passed">
+                                <ResultIcon
+                                    result={InspectionResult.Passed}
+                                />
+                            </span>
+                            <span class="icon-count"
+                                >{resultCounts[
+                                    InspectionResult.Passed
+                                ]}</span
+                            >
+                            <span class="icon-label">Bestanden</span>
+                        </li>
+                        <li>
+                            <span class="icon icon--failed">
+                                <ResultIcon
+                                    result={InspectionResult.Failed}
+                                />
+                            </span>
+                            <span class="icon-count"
+                                >{resultCounts[
+                                    InspectionResult.Failed
+                                ]}</span
+                            >
+                            <span class="icon-label">Nicht bestanden</span>
+                        </li>
+                        <li>
+                            <span class="icon icon--warning">
+                                <ResultIcon
+                                    result={InspectionResult.NoResult}
+                                />
+                            </span>
+                            <span class="icon-count"
+                                >{resultCounts[
+                                    InspectionResult.NoResult
+                                ]}</span
+                            >
+                            <span class="icon-label">Kein Ergebnis</span>
+                        </li>
+                    </ul>
+                </div>
             </section>
 
             <!-- ── Kachel: Gerätezustand ──────────────── -->
             <section class="tile panel-card">
                 <h3>Gerätezustand</h3>
-                <ul class="stat-list">
-                    <li>
-                        <span class="icon icon--passed">
-                            <StatusIcon status={DeviceStatus.Vorhanden} />
-                        </span>
-                        <span class="icon-count"
-                            >{statusCounts[DeviceStatus.Vorhanden]}</span
-                        >
-                        <span class="icon-label">Vorhanden</span>
-                    </li>
-                    <li>
-                        <span class="icon icon--failed">
-                            <StatusIcon status={DeviceStatus.Defekt} />
-                        </span>
-                        <span class="icon-count"
-                            >{statusCounts[DeviceStatus.Defekt]}</span
-                        >
-                        <span class="icon-label">Defekt</span>
-                    </li>
-                    <li>
-                        <span class="icon icon--muted">
-                            <StatusIcon status={DeviceStatus.AusserBetrieb} />
-                        </span>
-                        <span class="icon-count"
-                            >{statusCounts[DeviceStatus.AusserBetrieb]}</span
-                        >
-                        <span class="icon-label">Außer Betrieb</span>
-                    </li>
-                    <li>
-                        <span class="icon icon--warning">
-                            <StatusIcon status={DeviceStatus.NichtAuffindbar} />
-                        </span>
-                        <span class="icon-count"
-                            >{statusCounts[DeviceStatus.NichtAuffindbar]}</span
-                        >
-                        <span class="icon-label">Nicht auffindbar</span>
-                    </li>
-                </ul>
+                <div class="tile-chart-row">
+                    <DonutChart
+                        segments={statusSegments}
+                        centerLabel={String(statusTotal)}
+                    />
+                    <ul class="stat-list">
+                        <li>
+                            <span class="icon icon--passed">
+                                <StatusIcon
+                                    status={DeviceStatus.Vorhanden}
+                                />
+                            </span>
+                            <span class="icon-count"
+                                >{statusCounts[
+                                    DeviceStatus.Vorhanden
+                                ]}</span
+                            >
+                            <span class="icon-label">Vorhanden</span>
+                        </li>
+                        <li>
+                            <span class="icon icon--failed">
+                                <StatusIcon status={DeviceStatus.Defekt} />
+                            </span>
+                            <span class="icon-count"
+                                >{statusCounts[DeviceStatus.Defekt]}</span
+                            >
+                            <span class="icon-label">Defekt</span>
+                        </li>
+                        <li>
+                            <span class="icon icon--muted">
+                                <StatusIcon
+                                    status={DeviceStatus.AusserBetrieb}
+                                />
+                            </span>
+                            <span class="icon-count"
+                                >{statusCounts[
+                                    DeviceStatus.AusserBetrieb
+                                ]}</span
+                            >
+                            <span class="icon-label">Außer Betrieb</span>
+                        </li>
+                        <li>
+                            <span class="icon icon--warning">
+                                <StatusIcon
+                                    status={DeviceStatus.NichtAuffindbar}
+                                />
+                            </span>
+                            <span class="icon-count"
+                                >{statusCounts[
+                                    DeviceStatus.NichtAuffindbar
+                                ]}</span
+                            >
+                            <span class="icon-label">Nicht auffindbar</span>
+                        </li>
+                    </ul>
+                </div>
             </section>
         </div>
     {/if}
@@ -362,6 +451,14 @@
         margin: 0;
         font-size: 0.8rem;
         color: var(--color-muted);
+    }
+
+    /* ── Donut-Chart + Legende nebeneinander ──────── */
+    .tile-chart-row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
     /* ── Ergebnis- / Zustands-Listen ──────────────── */
