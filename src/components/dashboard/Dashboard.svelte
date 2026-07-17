@@ -6,24 +6,32 @@
         DeviceStatus,
         type Device as DeviceModel,
         type Inspection,
+        type Location as LocationModel,
     } from "../../lib/models";
     import { ResultIcon, StatusIcon } from "../icons";
     import DonutChart from "../charts/DonutChart.svelte";
+    import ReportButton from "./ReportButton.svelte";
+    import type { ReportDeviceEntry } from "../../lib/reportService";
 
     let { onBack }: { onBack?: () => void } = $props();
 
     type StatusCounts = Record<DeviceStatus, number>;
 
     let devices: DeviceModel[] = $state([]);
+    let deviceEntries: { device: DeviceModel; location?: LocationModel }[] =
+        $state([]);
     let aktuellePruefung = $state("");
     let loaded = $state(false);
 
     onMount(async () => {
         const [records, meta] = await Promise.all([getRecords(), getMeta()]);
         aktuellePruefung = meta?.aktuellePruefung?.trim() ?? "";
-        devices = records
-            .filter((r) => r.device)
-            .map((r) => r.device as DeviceModel);
+        const recordsWithDevice = records.filter((r) => r.device);
+        devices = recordsWithDevice.map((r) => r.device as DeviceModel);
+        deviceEntries = recordsWithDevice.map((r) => ({
+            device: r.device as DeviceModel,
+            location: r.location as LocationModel | undefined,
+        }));
         loaded = true;
     });
 
@@ -184,6 +192,76 @@
             statusCounts[DeviceStatus.AusserBetrieb] +
             statusCounts[DeviceStatus.NichtAuffindbar],
     );
+
+    const chartSections = $derived([
+        {
+            title: "Prüfstatus",
+            segments: pruefstatusSegments,
+            total: pruefstatusTotal,
+        },
+        {
+            title: "Prüfergebnis",
+            segments: resultSegments,
+            total: resultTotal,
+        },
+        {
+            title: "Gerätezustand",
+            segments: statusSegments,
+            total: statusTotal,
+        },
+    ]);
+
+    // Geräte gruppiert nach dem Gesamtergebnis ihrer Inspection für die aktuelle
+    // Prüfung (für die Ergebnislisten ab Seite 3 des PDF-Berichts). Die passende
+    // Inspection wird mitgegeben, damit der Bericht auch die Prüfdetails anzeigen kann.
+    // Nur Geräte mit Zustand "Vorhanden" oder "Defekt" werden gelistet.
+    function devicesByResult(result: InspectionResult): ReportDeviceEntry[] {
+        return deviceEntries.flatMap((entry): ReportDeviceEntry[] => {
+            const inspections: Inspection[] = entry.device.inspections ?? [];
+            const inspection = inspections.find(
+                (ins) =>
+                    (ins.inspectionName ?? "").trim() === aktuellePruefung &&
+                    ins.overallResult === result &&
+                    (ins.status === DeviceStatus.Vorhanden ||
+                        ins.status === DeviceStatus.Defekt),
+            );
+            if (!inspection) return [];
+            return [{ device: entry.device, location: entry.location, inspection }];
+        });
+    }
+
+    const passedDevices: ReportDeviceEntry[] = $derived(
+        devicesByResult(InspectionResult.Passed),
+    );
+    const failedDevices: ReportDeviceEntry[] = $derived(
+        devicesByResult(InspectionResult.Failed),
+    );
+    const noResultDevices: ReportDeviceEntry[] = $derived(
+        devicesByResult(InspectionResult.NoResult),
+    );
+
+    // Geräte gruppiert nach ihrem Zustand (unabhängig vom Prüfergebnis) für die
+    // aktuelle Prüfung – für die Listen "Nicht auffindbar" und "Außer Betrieb"
+    // ab Seite 3 des PDF-Berichts (ohne Ergebnis-Tabelle).
+    function devicesByStatus(status: DeviceStatus): ReportDeviceEntry[] {
+        return deviceEntries.flatMap((entry): ReportDeviceEntry[] => {
+            const inspections: Inspection[] = entry.device.inspections ?? [];
+            const inspection = inspections.find(
+                (ins) =>
+                    (ins.inspectionName ?? "").trim() === aktuellePruefung &&
+                    ins.status === status,
+            );
+            if (!inspection) return [];
+            return [{ device: entry.device, location: entry.location, inspection }];
+        });
+    }
+
+    const notFoundDevices: ReportDeviceEntry[] = $derived(
+        devicesByStatus(DeviceStatus.NichtAuffindbar),
+    );
+    const outOfServiceDevices: ReportDeviceEntry[] = $derived(
+        devicesByStatus(DeviceStatus.AusserBetrieb),
+    );
 </script>
 
 <div class="dashboard-page">
@@ -191,7 +269,17 @@
         <button class="back-btn" onclick={onBack}>← Zurück</button>
     {/if}
 
-    <h2>Dashboard</h2>
+    <div class="dashboard-header">
+        <h2>Dashboard</h2>
+        <ReportButton
+            {chartSections}
+            {passedDevices}
+            {failedDevices}
+            {noResultDevices}
+            {notFoundDevices}
+            {outOfServiceDevices}
+        />
+    </div>
 
     {#if !loaded}
         <p class="loading-hint">Lädt...</p>
@@ -393,6 +481,18 @@
 
     h2 {
         margin-top: 0;
+    }
+
+    .dashboard-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .dashboard-header h2 {
+        margin-bottom: 0;
     }
 
     .loading-hint {

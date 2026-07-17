@@ -1,6 +1,5 @@
 <script lang="ts">
     import { restoreDatabaseFromBackup } from "../../lib/db";
-    import { loadIndexedDBBackupZip } from "../../lib/zipService";
 
     let { onRestored }: { onRestored?: () => void } = $props();
 
@@ -12,6 +11,11 @@
         error = "";
 
         try {
+            // jszip wird bewusst erst hier dynamisch nachgeladen, damit der
+            // initiale App-Bundle nicht mit dem ZIP-Code aufgebläht wird.
+            const { loadIndexedDBBackupZip } = await import(
+                "../../lib/zipService"
+            );
             const backup = await loadIndexedDBBackupZip(file);
             await restoreDatabaseFromBackup(backup.records, backup.images, backup.meta);
             onRestored?.();

@@ -1,9 +1,5 @@
 <script lang="ts">
-    import {
-        buildBackupFilename,
-        createIndexedDBBackupZip,
-        downloadBlob,
-    } from "../../lib/zipService";
+    import { downloadBlob } from "../../lib/download";
 
     let { onBackupDone }: { onBackupDone?: () => void } = $props();
 
@@ -15,6 +11,11 @@
         error = "";
 
         try {
+            // jszip wird bewusst erst hier dynamisch nachgeladen, damit der
+            // initiale App-Bundle nicht mit dem ZIP-Code aufgebläht wird.
+            const { createIndexedDBBackupZip, buildBackupFilename } = await import(
+                "../../lib/zipService"
+            );
             const { blob, meta } = await createIndexedDBBackupZip();
             const now = Date.now();
             downloadBlob(blob, buildBackupFilename(meta?.pruefObjekt, new Date(now)));

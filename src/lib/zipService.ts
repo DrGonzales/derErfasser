@@ -1,6 +1,8 @@
 import JSZip from 'jszip';
 import { getRecords, getAllImages, getMeta, restoreDatabaseFromBackup, StoredImage, StoredRecord } from './db';
 import type { Meta } from './db';
+import { sanitizeFilenamePart, formatTimestampForFilename } from './filenameUtils';
+export { downloadBlob } from './download';
 
 export async function createIndexedDBBackupZip(): Promise<{ blob: Blob; meta?: Meta }> {
     const records = await getRecords();
@@ -86,29 +88,6 @@ export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: Sto
     }
 
     return { records, images, meta };
-}
-
-export function downloadBlob(blob: Blob, filename: string) {
-    const href = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = href;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(href);
-}
-
-function sanitizeFilenamePart(name: string): string {
-    return name
-        .trim()
-        .replace(/[\\/:*?"<>|]+/g, '_')
-        .replace(/\s+/g, '_');
-}
-
-function formatTimestampForFilename(date: Date): string {
-    const pad = (n: number) => String(n).padStart(2, '0');
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}_${pad(date.getHours())}-${pad(date.getMinutes())}-${pad(date.getSeconds())}`;
 }
 
 /**

@@ -37,3 +37,35 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 - Im Admin-Bereich gibt es jetzt unten einen Link „Changelog“. Darüber lässt
   sich diese Liste der Änderungen direkt in der App als Fenster (Modal)
   anzeigen, ganz ohne Internetverbindung.
+- Neu: ein **Dashboard** mit Übersicht über die aktuelle Prüfung, erreichbar
+  über einen eigenen Button im Kopfbereich der App. Es zeigt auf einen Blick:
+  - die Gesamtzahl der Geräte sowie die Anzahl aktiver und ausgemusterter
+    Geräte,
+  - den Prüfstatus (aktuell geprüft / offen / ausgemustert) als Diagramm,
+  - das Prüfergebnis (bestanden / nicht bestanden / kein Ergebnis) als
+    Diagramm,
+  - den Gerätezustand (vorhanden / defekt / außer Betrieb / nicht
+    auffindbar) als Diagramm.
+  Alle Zahlen und Diagramme beziehen sich auf die aktuell eingestellte
+  Prüfung.
+- Im Dashboard gibt es jetzt einen Button „Bericht erzeugen“, mit dem sich
+  ein PDF-Bericht zur aktuellen Prüfung herunterladen lässt. Der Bericht
+  enthält:
+  - ein Deckblatt mit den Angaben zum Prüfobjekt, Namen, Anschrift, Ort und
+    der aktuellen Prüfung,
+  - eine Übersichtsseite mit den Diagrammen zu Prüfstatus, Prüfergebnis und
+    Gerätezustand,
+  - Listen aller geprüften Geräte, getrennt nach den Ergebnissen „Bestanden“,
+    „Nicht bestanden“ und „Kein Ergebnis“, jeweils mit Standort, Seriennummer,
+    den einzelnen Prüfwerten (Sichtprüfung, Funktionsprüfung, Messung,
+    Gesamtergebnis) als Tabelle sowie einem eventuell hinterlegten Hinweis,
+  - eigene Listen für Geräte mit dem Zustand „Nicht auffindbar“ und
+    „Außer Betrieb“,
+  - eine Seitenzahl am Ende jeder Seite.
+  Geräte ohne aktuelle Prüfung oder mit einem anderen Gerätezustand tauchen
+  in diesen Listen nicht auf.
+
+### Verbessert
+- Die App startet jetzt merklich schneller, da der Code für den PDF-Bericht
+  und für Backup/Wiederherstellung erst bei tatsächlicher Nutzung geladen
+  wird, statt beim App-Start immer mitgeladen zu werden.

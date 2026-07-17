@@ -2,11 +2,7 @@
     import { onMount } from "svelte";
     import { deleteDatabase, getMeta, saveMeta } from "../../lib/db";
     import type { Meta } from "../../lib/db";
-    import {
-        buildBackupFilename,
-        createIndexedDBBackupZip,
-        downloadBlob,
-    } from "../../lib/zipService";
+    import { downloadBlob } from "../../lib/download";
     import {
         inspectionNameSuggestions,
         rememberInspectionName,
@@ -127,6 +123,11 @@
         deleteError = "";
 
         try {
+            // jszip wird bewusst erst hier dynamisch nachgeladen, damit der
+            // initiale App-Bundle nicht mit dem ZIP-Code aufgebläht wird.
+            const { createIndexedDBBackupZip, buildBackupFilename } = await import(
+                "../../lib/zipService"
+            );
             const { blob, meta } = await createIndexedDBBackupZip();
             downloadBlob(blob, buildBackupFilename(meta?.pruefObjekt));
             await deleteDatabase();
