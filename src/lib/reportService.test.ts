@@ -84,6 +84,18 @@ function makeDeviceEntry(
 	};
 }
 
+/**
+ * Extrahiert grob alle Textausgaben (Tj-Operatoren) aus einem PDF-Blob, um in
+ * Tests ohne echten PDF-Parser prüfen zu können, welche Texte enthalten sind
+ * und in welcher Reihenfolge sie auftauchen (z. B. für Inhaltsverzeichnis-Checks).
+ */
+async function extractPdfTexts(blob: Blob): Promise<string[]> {
+	const buf = Buffer.from(await blob.arrayBuffer());
+	const text = buf.toString('latin1');
+	const matches = text.match(/\(((?:[^()\\]|\\.)*)\)\s*Tj/g) || [];
+	return matches.map((m) => m.slice(1, -4));
+}
+
 describe('resolveColor', () => {
 	it('bildet bekannte CSS-Variablen auf Hex-Farben ab', () => {
 		expect(resolveColor('var(--color-success)')).toBe('#16a34a');
@@ -161,6 +173,21 @@ describe('createReportPdf', () => {
 		const blob = await createReportPdf(makeMeta(), [], [withDescription]);
 		expect(blob).toBeInstanceOf(Blob);
 		expect(blob.size).toBeGreaterThan(0);
+	});
+
+	it('bricht lange Hinweistexte in mehrere Zeilen um, statt über den Seitenrand hinauszulaufen', async () => {
+		const longText =
+			'Dies ist ein sehr langer Hinweistext, der definitiv über den rechten Seitenrand hinauslaufen würde, wenn er nicht automatisch umgebrochen werden würde und mehrere Zeilen benötigt.';
+		const withLongDescription = makeDeviceEntry({}, true, makeInspection({ description: longText }));
+		const blob = await createReportPdf(makeMeta(), [], [withLongDescription]);
+		const texts = await extractPdfTexts(blob);
+
+		const hintLines = texts.filter((t) => t.startsWith('Hinweis : ') || (t.length > 0 && longText.includes(t)));
+		// Der Text muss auf mehr als eine Textzeile (Tj-Aufruf) verteilt werden.
+		expect(hintLines.length).toBeGreaterThan(1);
+		// Jede einzelne ausgegebene Zeile darf keine Zeilenumbrüche/zu lange Segmente enthalten,
+		// d.h. der komplette Originaltext darf nicht als ein einziges Tj vorkommen.
+		expect(texts).not.toContain(`Hinweis : ${longText}`);
 	});
 
 	it('erzeugt ein PDF-Blob auch ohne Inspection-Daten am Eintrag', async () => {
@@ -253,6 +280,22 @@ describe('createReportPdf', () => {
 		expect(blob.size).toBeGreaterThan(0);
 	});
 
+	it('bricht lange Hinweistexte in der Geräteliste "Nicht auffindbar" ebenfalls um', async () => {
+		const longText =
+			'Auch in der einfachen Geräteliste ohne Ergebnis-Tabelle muss ein sehr langer Hinweistext automatisch umgebrochen werden, damit er nicht über den rechten Seitenrand hinausläuft.';
+		const withLongDescription = makeDeviceEntry(
+			{},
+			true,
+			makeInspection({ status: DeviceStatus.NichtAuffindbar, description: longText })
+		);
+		const blob = await createReportPdf(makeMeta(), [], [], [], [], [withLongDescription]);
+		const texts = await extractPdfTexts(blob);
+
+		expect(texts).not.toContain(`Hinweis : ${longText}`);
+		const hintLines = texts.filter((t) => longText.includes(t) && t.length > 0);
+		expect(hintLines.length).toBeGreaterThan(1);
+	});
+
 	it('erzeugt ein PDF-Blob mit allen fünf Geräte-Abschnitten gleichzeitig', async () => {
 		const passed = makeDeviceEntry({ serialNumber: 'SN-P' }, true, makeInspection({ overallResult: InspectionResult.Passed }));
 		const failed = makeDeviceEntry({ serialNumber: 'SN-F' }, true, makeInspection({ overallResult: InspectionResult.Failed }));
@@ -282,6 +325,56 @@ describe('createReportPdf', () => {
 		);
 		expect(blob).toBeInstanceOf(Blob);
 		expect(blob.size).toBeGreaterThan(0);
+	});
+});
+
+describe('createReportPdf – Inhaltsverzeichnis', () => {
+	it('fügt kein Inhaltsverzeichnis ein, wenn nur das Deckblatt existiert', async () => {
+		const blob = await createReportPdf(makeMeta());
+		const texts = await extractPdfTexts(blob);
+		expect(texts).not.toContain('Inhaltsverzeichnis');
+	});
+
+	it('listet nur tatsächlich vorhandene Berichtsteile mit korrekter Seitenzahl auf', async () => {
+		const passed = makeDeviceEntry({ serialNumber: 'SN-P' }, true, makeInspection({ overallResult: InspectionResult.Passed }));
+		const failed = makeDeviceEntry({ serialNumber: 'SN-F' }, true, makeInspection({ overallResult: InspectionResult.Failed }));
+		const notFound = makeDeviceEntry(
+			{ serialNumber: 'SN-NF' },
+			true,
+			makeInspection({ status: DeviceStatus.NichtAuffindbar })
+		);
+
+		const blob = await createReportPdf(makeMeta(), sampleChartSections, [passed], [failed], [], [notFound]);
+		const texts = await extractPdfTexts(blob);
+
+		const tocIndex = texts.indexOf('Inhaltsverzeichnis');
+		expect(tocIndex).toBeGreaterThanOrEqual(0);
+
+		// Deckblatt = Seite 1, TOC selbst = Seite 2, danach folgen die Abschnitte.
+		expect(texts).toEqual(
+			expect.arrayContaining(['Übersicht', '3', 'Ergebnisse : Bestanden', '4', 'Ergebnisse : Nicht bestanden', '5', 'Ergebnisse : Nicht auffindbar', '6'])
+		);
+
+		// Leere Abschnitte ("Kein Ergebnis", "Außer Betrieb") dürfen nicht auftauchen.
+		expect(texts).not.toContain('Ergebnisse : Kein Ergebnis');
+		expect(texts).not.toContain('Ergebnisse : Außer Betrieb');
+
+		// Die letzte Seitenzahl-Angabe im Fußbereich muss die tatsächliche Gesamtseitenzahl sein.
+		const lastPageFooter = [...texts].reverse().find((t) => /^Seite \d+ von \d+$/.test(t));
+		expect(lastPageFooter).toBe('Seite 6 von 6');
+	});
+
+	it('platziert das Inhaltsverzeichnis direkt nach dem Deckblatt', async () => {
+		const passed = makeDeviceEntry();
+		const blob = await createReportPdf(makeMeta(), sampleChartSections, [passed]);
+		const texts = await extractPdfTexts(blob);
+
+		const coverIndex = texts.indexOf('Prüfobjekt');
+		const tocIndex = texts.indexOf('Inhaltsverzeichnis');
+		const overviewIndex = texts.indexOf('Übersicht');
+
+		expect(coverIndex).toBeLessThan(tocIndex);
+		expect(tocIndex).toBeLessThan(overviewIndex);
 	});
 });
 

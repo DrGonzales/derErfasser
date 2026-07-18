@@ -16,6 +16,18 @@ export type ReportDeviceEntry = {
     inspection?: Inspection;
 };
 
+type TocEntry = {
+    title: string;
+    page: number;
+};
+
+// Hinweistexte (Beschreibung/description) können beliebig lang sein und
+// werden daher kleiner als der übrige Fließtext (11pt) dargestellt sowie
+// automatisch umgebrochen, damit sie nicht über den rechten Seitenrand
+// hinauslaufen.
+const HINT_FONT_SIZE = 9;
+const HINT_LINE_HEIGHT = 4.5;
+
 /**
  * Bildet die im Dashboard verwendeten CSS-Variablen-Farben (z. B. "var(--color-success)")
  * auf konkrete Hex-Werte ab, da diese im PDF (Canvas-Rendering) nicht per CSS aufgelöst werden.
@@ -105,10 +117,11 @@ function addCoverPage(doc: jsPDF, meta: Meta | undefined): void {
  * (Prüfstatus, Prüfergebnis, Gerätezustand) vertikal gestapelt,
  * jeweils mit Überschrift, Donut-Chart und Legende (farbiger Punkt + Zahl + Label).
  */
-function addChartsPage(doc: jsPDF, chartSections: ReportChartSection[]): void {
+function addChartsPage(doc: jsPDF, chartSections: ReportChartSection[], toc: TocEntry[]): void {
     if (chartSections.length === 0) return;
 
     doc.addPage();
+    toc.push({ title: 'Übersicht', page: doc.getNumberOfPages() });
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const marginX = 20;
@@ -247,6 +260,35 @@ function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspe
 }
 
 /**
+ * Berechnet die Anzahl der Zeilen, in die ein Hinweistext bei gegebener
+ * Breite und Schriftgröße umgebrochen wird. Wird für die
+ * Seitenumbruch-Berechnung (blockHeight) benötigt, bevor der Text
+ * tatsächlich gezeichnet wird.
+ */
+function countHintLines(doc: jsPDF, text: string, maxWidth: number): number {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(HINT_FONT_SIZE);
+    return doc.splitTextToSize(text, maxWidth).length;
+}
+
+/**
+ * Zeichnet den (optionalen) Hinweistext "Hinweis : <description>" mit einer
+ * kleineren Schriftgröße als der übrige Fließtext und bricht ihn automatisch
+ * innerhalb der verfügbaren Breite um, damit er nicht über den rechten
+ * Seitenrand hinausläuft. Gibt die y-Position unterhalb des Textes zurück.
+ */
+function drawHint(doc: jsPDF, x: number, y: number, maxWidth: number, text: string): number {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(HINT_FONT_SIZE);
+    const lines: string[] = doc.splitTextToSize(`Hinweis : ${text}`, maxWidth);
+    for (const line of lines) {
+        doc.text(line, x, y);
+        y += HINT_LINE_HEIGHT;
+    }
+    return y;
+}
+
+/**
  * Zeichnet eine Ergebnisliste für eine Gruppe von Geräten (z. B. "Bestanden",
  * "Nicht bestanden", "Kein Ergebnis") mit zentrierter Seitenüberschrift.
  * Jeder Geräte-Block besteht aus:
@@ -256,17 +298,20 @@ function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspe
  *   4. Ergebnis-Tabelle: Status | Sichtprüfung | Funktionsprüfung | Messung | Gesamtergebnis (fett),
  *      darunter die jeweiligen Ergebniswerte; in der Messung-Spalte zusätzlich
  *      Isolationswiderstand (MOhm) und Berührungsstrom (mA)
- *   5. (optional) "Hinweis : " description
+ *   5. (optional) "Hinweis : " description, in kleinerer Schrift und mit
+ *      automatischem Zeilenumbruch, damit lange Texte nicht über den
+ *      rechten Seitenrand hinauslaufen
  * Zwischen den Geräten wird ein größerer Abstand eingefügt. Geräte werden
  * dabei möglichst nicht über einen Seitenumbruch hinweg getrennt: reicht
  * der verbleibende Platz auf der aktuellen Seite nicht für einen ganzen
  * Block, wird vorher eine neue Seite begonnen. Bleibt devices leer, wird
  * kein zusätzlicher Abschnitt erzeugt.
  */
-function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[]): void {
+function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[], toc: TocEntry[]): void {
     if (devices.length === 0) return;
 
     doc.addPage();
+    toc.push({ title, page: doc.getNumberOfPages() });
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
@@ -275,6 +320,7 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
     const lineHeight = 6;
     const blockGap = 12;
     const tableHeight = 7 + 7 + 6 + 6; // Header + Ergebniszeile + 2 Messwertzeilen
+    const contentWidth = pageWidth - marginX * 2;
 
     let y = 20;
 
@@ -286,9 +332,11 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
 
     for (const entry of devices) {
         const { device, location, inspection } = entry;
-        const hasDescription = Boolean(inspection?.description?.trim());
-        // Zeilen: Titel, Seriennummer, Standort, Tabelle, (optional) Hinweis-Zeile.
-        const blockHeight = lineHeight * 3 + tableHeight + (hasDescription ? lineHeight : 0);
+        const description = inspection?.description?.trim();
+        const hasDescription = Boolean(description);
+        const hintLines = hasDescription ? countHintLines(doc, description!, contentWidth) : 0;
+        // Zeilen: Titel, Seriennummer, Standort, Tabelle, (optional) Hinweis-Zeile(n).
+        const blockHeight = lineHeight * 3 + tableHeight + hintLines * HINT_LINE_HEIGHT;
 
         // Neue Seite beginnen, falls der Block nicht mehr vollständig passt,
         // damit ein Gerät nicht über zwei Seiten verteilt wird.
@@ -324,12 +372,9 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
         y = drawResultsTable(doc, marginX, y, tableWidth, inspection);
         y += 4 + lineHeight;
 
-        // Zeile (optional): Hinweis
+        // Zeile (optional): Hinweis — kleinere Schrift, automatischer Zeilenumbruch
         if (hasDescription) {
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(11);
-            doc.text(`Hinweis : ${inspection!.description.trim()}`, marginX, y);
-            y += lineHeight;
+            y = drawHint(doc, marginX, y, contentWidth, description!);
         }
 
         // Größerer Abstand zwischen den Geräten
@@ -344,15 +389,18 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
  *   1. Hersteller - Modell (fett)
  *   2. "Seriennummer : " + Seriennummer
  *   3. "Standort : " Standortname - Gebäude - Raum
- *   4. (optional) "Hinweis : " description
+ *   4. (optional) "Hinweis : " description, in kleinerer Schrift und mit
+ *      automatischem Zeilenumbruch, damit lange Texte nicht über den
+ *      rechten Seitenrand hinauslaufen
  * Zwischen den Geräten wird ein größerer Abstand eingefügt. Geräte werden
  * dabei möglichst nicht über einen Seitenumbruch hinweg getrennt. Bleibt
  * devices leer, wird kein zusätzlicher Abschnitt erzeugt.
  */
-function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[]): void {
+function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[], toc: TocEntry[]): void {
     if (devices.length === 0) return;
 
     doc.addPage();
+    toc.push({ title, page: doc.getNumberOfPages() });
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
@@ -360,6 +408,7 @@ function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry
     const marginBottom = 20;
     const lineHeight = 6;
     const blockGap = 12;
+    const contentWidth = pageWidth - marginX * 2;
 
     let y = 20;
 
@@ -371,9 +420,11 @@ function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry
 
     for (const entry of devices) {
         const { device, location, inspection } = entry;
-        const hasDescription = Boolean(inspection?.description?.trim());
-        // Zeilen: Titel, Seriennummer, Standort, (optional) Hinweis-Zeile.
-        const blockHeight = lineHeight * (hasDescription ? 4 : 3);
+        const description = inspection?.description?.trim();
+        const hasDescription = Boolean(description);
+        const hintLines = hasDescription ? countHintLines(doc, description!, contentWidth) : 0;
+        // Zeilen: Titel, Seriennummer, Standort, (optional) Hinweis-Zeile(n).
+        const blockHeight = lineHeight * 3 + hintLines * HINT_LINE_HEIGHT;
 
         // Neue Seite beginnen, falls der Block nicht mehr vollständig passt,
         // damit ein Gerät nicht über zwei Seiten verteilt wird.
@@ -404,14 +455,65 @@ function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry
         doc.text(`Standort : ${locationParts.join(' - ')}`, marginX, y);
         y += lineHeight;
 
-        // Zeile (optional): Hinweis
+        // Zeile (optional): Hinweis — kleinere Schrift, automatischer Zeilenumbruch
         if (hasDescription) {
-            doc.text(`Hinweis : ${inspection!.description.trim()}`, marginX, y);
-            y += lineHeight;
+            y = drawHint(doc, marginX, y, contentWidth, description!);
         }
 
         // Größerer Abstand zwischen den Geräten
         y += blockGap;
+    }
+}
+
+/**
+ * Fügt eine Inhaltsverzeichnis-Seite als neue Seite 2 ein (nach dem Deckblatt,
+ * vor der Übersichtsseite) und listet darin alle tatsächlich vorhandenen
+ * Berichtsteile (Übersicht, Ergebnislisten, Gerätelisten) mit ihrer jeweiligen
+ * Seitenzahl auf. Abschnitte ohne Inhalt (z. B. leere Ergebnislisten) tauchen
+ * gar nicht erst in `toc` auf und werden somit auch nicht im Inhaltsverzeichnis
+ * aufgeführt. Da das Einfügen der Seite alle nachfolgenden Seiten um eins
+ * verschiebt, werden die zuvor gesammelten Seitenzahlen entsprechend korrigiert.
+ * Bleibt `toc` leer, wird keine Inhaltsverzeichnis-Seite erzeugt.
+ */
+function addTableOfContentsPage(doc: jsPDF, toc: TocEntry[]): void {
+    if (toc.length === 0) return;
+
+    doc.insertPage(2);
+    for (const entry of toc) {
+        entry.page += 1;
+    }
+    doc.setPage(2);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const marginX = 20;
+    const rightX = pageWidth - marginX;
+    let y = 20;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text('Inhaltsverzeichnis', pageWidth / 2, y, { align: 'center' });
+    y += 16;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+
+    for (const entry of toc) {
+        const pageLabel = String(entry.page);
+        const pageLabelWidth = doc.getTextWidth(pageLabel);
+        const titleWidth = doc.getTextWidth(entry.title);
+
+        doc.text(entry.title, marginX, y);
+        doc.text(pageLabel, rightX, y, { align: 'right' });
+
+        // Gepunktete Leitlinie zwischen Titel und Seitenzahl
+        const dotsStartX = marginX + titleWidth + 3;
+        const dotsEndX = rightX - pageLabelWidth - 3;
+        const dotSpacing = 2;
+        for (let dotX = dotsStartX; dotX < dotsEndX; dotX += dotSpacing) {
+            doc.text('.', dotX, y);
+        }
+
+        y += 9;
     }
 }
 
@@ -439,8 +541,11 @@ function addPageNumbers(doc: jsPDF): void {
 /**
  * Erzeugt den Prüfbericht als PDF-Blob.
  * Seite 1: Deckblatt mit den Meta-Informationen.
- * Seite 2 (optional): Diagramme Prüfstatus, Prüfergebnis, Gerätezustand.
- * Seite 3+ (optional): Ergebnislisten "Bestanden", "Nicht bestanden" und
+ * Seite 2 (optional): Inhaltsverzeichnis, das alle tatsächlich vorhandenen
+ * Berichtsteile mit ihrer jeweiligen Seitenzahl auflistet (fehlt, wenn keiner
+ * der übrigen Abschnitte Inhalt hat).
+ * Danach (optional): Diagramme Prüfstatus, Prüfergebnis, Gerätezustand.
+ * Anschließend (optional): Ergebnislisten "Bestanden", "Nicht bestanden" und
  * "Kein Ergebnis" (mit Ergebnis-Tabelle), sowie Gerätelisten "Nicht auffindbar"
  * und "Außer Betrieb" (ohne Ergebnis-Tabelle). Jede Liste nur, wenn sie
  * Geräte enthält.
@@ -449,8 +554,8 @@ function addPageNumbers(doc: jsPDF): void {
  *
  *   const doc = createDocument();
  *   addCoverPage(doc, meta);
- *   addChartsPage(doc, chartSections);
- *   addResultsListPage(doc, 'Ergebnisse : Bestanden', passedDevices);
+ *   addChartsPage(doc, chartSections, toc);
+ *   addResultsListPage(doc, 'Ergebnisse : Bestanden', passedDevices, toc);
  *   return doc.output('blob');
  */
 export async function createReportPdf(
@@ -463,13 +568,15 @@ export async function createReportPdf(
     outOfServiceDevices: ReportDeviceEntry[] = [],
 ): Promise<Blob> {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const toc: TocEntry[] = [];
     addCoverPage(doc, meta);
-    addChartsPage(doc, chartSections);
-    addResultsListPage(doc, 'Ergebnisse : Bestanden', passedDevices);
-    addResultsListPage(doc, 'Ergebnisse : Nicht bestanden', failedDevices);
-    addResultsListPage(doc, 'Ergebnisse : Kein Ergebnis', noResultDevices);
-    addDeviceListPage(doc, 'Ergebnisse : Nicht auffindbar', notFoundDevices);
-    addDeviceListPage(doc, 'Ergebnisse : Außer Betrieb', outOfServiceDevices);
+    addChartsPage(doc, chartSections, toc);
+    addResultsListPage(doc, 'Ergebnisse : Bestanden', passedDevices, toc);
+    addResultsListPage(doc, 'Ergebnisse : Nicht bestanden', failedDevices, toc);
+    addResultsListPage(doc, 'Ergebnisse : Kein Ergebnis', noResultDevices, toc);
+    addDeviceListPage(doc, 'Ergebnisse : Nicht auffindbar', notFoundDevices, toc);
+    addDeviceListPage(doc, 'Ergebnisse : Außer Betrieb', outOfServiceDevices, toc);
+    addTableOfContentsPage(doc, toc);
     addPageNumbers(doc);
     return doc.output('blob');
 }
