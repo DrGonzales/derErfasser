@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import { getRecords, getAllImages, getMeta, restoreDatabaseFromBackup, StoredImage, StoredRecord } from './db';
+import { getRecords, getAllImages, getMeta, StoredImage, StoredRecord } from './db';
 import type { Meta } from './db';
 import { sanitizeFilenamePart, formatTimestampForFilename } from './filenameUtils';
 export { downloadBlob } from './download';

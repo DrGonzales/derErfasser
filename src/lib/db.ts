@@ -281,23 +281,3 @@ export async function saveMeta(meta: Meta): Promise<void> {
     (store) => store.put(JSON.parse(JSON.stringify(meta)))
   );
 }
-
-export class DBService {
-  async getRecords() {
-    return getRecords();
-  }
-
-  async getRecord(id: number) {
-    return getRecord(id);
-  }
-
-  async addRecord(r: NewRecord) {
-    return addRecord(r);
-  }
-
-  async upsertDevice(recordId: number | null, deviceData: Partial<Device> & { id?: string }, locationData?: Partial<Location>) {
-    return upsertDevice(recordId, deviceData, locationData);
-  }
-}
-
-export const DB = new DBService();

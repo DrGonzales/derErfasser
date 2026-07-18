@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
 	addRecord,
 	clearRecords,
-	DB,
 	deleteDatabase,
 	deleteRecord,
 	getAllImages,
@@ -325,24 +324,5 @@ describe('getMeta / saveMeta', () => {
 
 		const loaded = await getMeta();
 		expect(loaded?.pruefObjekt).toBe('Zweit');
-	});
-});
-
-describe('DBService (DB-Singleton)', () => {
-	it('delegiert getRecords/addRecord/getRecord an die Modulfunktionen', async () => {
-		await DB.addRecord({ title: 'Über Singleton' });
-
-		const records = await DB.getRecords();
-		expect(records).toHaveLength(1);
-
-		const record = await DB.getRecord(records[0].id);
-		expect(record?.title).toBe('Über Singleton');
-	});
-
-	it('delegiert upsertDevice an die Modulfunktion', async () => {
-		await DB.upsertDevice(null, { manufacturer: 'Singleton-Gerät' });
-
-		const [record] = await DB.getRecords();
-		expect((record.device as unknown as Device).manufacturer).toBe('Singleton-Gerät');
 	});
 });

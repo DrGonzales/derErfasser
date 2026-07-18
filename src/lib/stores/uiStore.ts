@@ -8,7 +8,7 @@ export type EntriesSortKey =
   | 'building'
   | 'room';
 
-export type EntriesSortDirection = 'ascending' | 'descending';
+type EntriesSortDirection = 'ascending' | 'descending';
 
 export type EntriesSort = {
   key: EntriesSortKey;

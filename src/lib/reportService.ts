@@ -206,19 +206,18 @@ function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspe
 
     const colX = (index: number) => x + index * colWidth;
     const centerOf = (index: number) => colX(index) + colWidth / 2;
+    const tableBottomY = y + headerRowHeight + resultRowHeight + measurementRowHeight * 2;
 
     // ── Kopfzeile (5 Zellen) ──
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     for (let i = 0; i < colCount; i++) {
-        doc.rect(colX(i), y, colWidth, headerRowHeight);
         doc.text(headers[i], centerOf(i), y + headerRowHeight / 2 + 1, { align: 'center' });
     }
 
     // ── Ergebniszeile (5 Zellen, letzte fett) ──
     const resultRowY = y + headerRowHeight;
     for (let i = 0; i < colCount; i++) {
-        doc.rect(colX(i), resultRowY, colWidth, resultRowHeight);
         doc.setFont('helvetica', i === colCount - 1 ? 'bold' : 'normal');
         doc.setFontSize(10);
         doc.text(results[i], centerOf(i), resultRowY + resultRowHeight / 2 + 1, { align: 'center' });
@@ -230,12 +229,16 @@ function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspe
     doc.setFontSize(9);
 
     const row3Y = resultRowY + resultRowHeight;
-    doc.rect(colX(measurementColIndex), row3Y, colWidth, measurementRowHeight);
     doc.text(isolationText, centerOf(measurementColIndex), row3Y + measurementRowHeight / 2 + 1, { align: 'center' });
 
     const row4Y = row3Y + measurementRowHeight;
-    doc.rect(colX(measurementColIndex), row4Y, colWidth, measurementRowHeight);
     doc.text(touchCurrentText, centerOf(measurementColIndex), row4Y + measurementRowHeight / 2 + 1, { align: 'center' });
+
+    // ── Nur vertikale Trennlinien, alle über die volle Tabellenhöhe
+    //    (bis zur längsten Spalte, also inkl. der Messwertzeilen) ──
+    for (let i = 0; i <= colCount; i++) {
+        doc.line(colX(i), y, colX(i), tableBottomY);
+    }
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
