@@ -64,6 +64,22 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
   - eine Seitenzahl am Ende jeder Seite.
   Geräte ohne aktuelle Prüfung oder mit einem anderen Gerätezustand tauchen
   in diesen Listen nicht auf.
+- In der Geräteliste gibt es jetzt am rechten Rand jeder Karte einen
+  zusätzlichen Schnellzugriff auf die Prüfung: Ist noch keine aktuelle
+  Prüfung vorhanden, erscheint ein grünes „+“-Feld zum Anlegen einer neuen
+  Prüfung; ist bereits eine aktuelle Prüfung vorhanden, erscheint ein gelbes
+  Stift-Feld zum Bearbeiten. Beide öffnen direkt den Prüfungs-Editor, ohne
+  den Umweg über die Geräteansicht.
+- Neben Bildern können bei einem Gerät und bei einer Prüfung jetzt auch
+  **PDF-Dateien** (z. B. Datenblätter oder Prüfprotokolle) hochgeladen
+  werden, per Klick oder Drag & Drop, bis zu 20 MB je Datei. PDFs werden in
+  einer eigenen Liste getrennt von den Bildern angezeigt, mit einem
+  PDF-Symbol und dem Dateinamen. Ein Klick öffnet die Datei in einem neuen
+  Tab.
+- Hochgeladene Bilder und PDFs lassen sich jetzt auch wieder löschen: Beim
+  Überfahren mit der Maus erscheint ein roter Papierkorb (bei Bildern oben
+  rechts auf der Vorschau, bei PDFs rechts neben dem Dateinamen). Vor dem
+  endgültigen Löschen erscheint eine Sicherheitsabfrage.
 
 ### Verbessert
 - Die App startet jetzt merklich schneller, da der Code für den PDF-Bericht

@@ -9,6 +9,7 @@
         type EntriesStatusFilter,
     } from "../../lib/stores/uiStore";
     import DeviceEditor from "../device/DeviceEditor.svelte";
+    import InspectionEditor from "../device/InspectionEditor.svelte";
     import BackupButton from "../admin/BackupButton.svelte";
 
     type Location = {
@@ -37,6 +38,8 @@
 
     let creating = $state(false);
     let lastBackup = $state<number | undefined>(undefined);
+    let aktuellePruefung = $state("");
+    let inspectionTarget = $state<EntryRow | null>(null);
 
     const sortChips: SortChip[] = [
         { key: "manufacturer", label: "Hersteller" },
@@ -52,7 +55,7 @@
     async function load() {
         const [records, meta] = await Promise.all([getRecords(), getMeta()]);
         const all: EntryRow[] = [];
-        const aktuellePruefung = meta?.aktuellePruefung?.trim() ?? "";
+        aktuellePruefung = meta?.aktuellePruefung?.trim() ?? "";
 
         // Datum des letzten Backups aus dem neuesten Record holen
         if (records.length > 0) {
@@ -93,6 +96,28 @@
         }
 
         entries = all;
+    }
+
+    function findCurrentInspection(item: EntryRow) {
+        const inspections: any[] = item.device?.inspections ?? [];
+        return (
+            inspections.find(
+                (ins) => (ins.inspectionName ?? "").trim() === aktuellePruefung,
+            ) ?? null
+        );
+    }
+
+    function openInspectionShortcut(item: EntryRow) {
+        inspectionTarget = item;
+    }
+
+    function handleInspectionSaved() {
+        inspectionTarget = null;
+        load();
+    }
+
+    function closeInspectionShortcut() {
+        inspectionTarget = null;
     }
 
     function getSortValue(entry: EntryRow, key: EntriesSortKey) {
@@ -338,6 +363,60 @@
                             </div>
                         </dl>
                     </div>
+
+                    {#if aktuellePruefung}
+                        <button
+                            type="button"
+                            class="action-btn"
+                            class:action-btn--add={!item.isCurrent}
+                            class:action-btn--edit={item.isCurrent}
+                            aria-label={item.isCurrent
+                                ? "Aktuelle Prüfung bearbeiten"
+                                : "Neue Prüfung anlegen"}
+                            title={item.isCurrent
+                                ? "Aktuelle Prüfung bearbeiten"
+                                : "Neue Prüfung anlegen"}
+                            onclick={() => openInspectionShortcut(item)}
+                        >
+                            {#if item.isCurrent}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    width="20"
+                                    height="20"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                                    />
+                                    <path
+                                        d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                                    />
+                                </svg>
+                            {:else}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    width="22"
+                                    height="22"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                            {/if}
+                        </button>
+                    {/if}
                 </li>
             {/each}
         </ul>
@@ -364,6 +443,17 @@
             load();
         }}
         onCancel={() => (creating = false)}
+    />
+{/if}
+
+{#if inspectionTarget}
+    <InspectionEditor
+        device={inspectionTarget.device}
+        recordId={inspectionTarget.recordId}
+        inspection={findCurrentInspection(inspectionTarget)}
+        readonly={false}
+        onSave={handleInspectionSaved}
+        onCancel={closeInspectionShortcut}
     />
 {/if}
 
@@ -673,6 +763,54 @@
     .inspect-btn--deactivated:hover,
     .inspect-btn--deactivated:focus-visible {
         background: var(--color-danger);
+        color: #fff;
+        outline: none;
+    }
+
+    /* ── Action button (right, full height) ──────────────── */
+    .action-btn {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        align-self: stretch;
+        border: none;
+        border-left: 1.5px solid var(--color-primary);
+        border-radius: 0;
+        background: var(--color-surface-muted);
+        color: var(--color-primary);
+        cursor: pointer;
+        padding: 0;
+        transition:
+            background 0.15s,
+            color 0.15s;
+    }
+
+    /* Grün: Neue Prüfung anlegen (keine aktuelle Prüfung vorhanden) */
+    .action-btn--add {
+        background: var(--color-surface-muted);
+        border-left-color: var(--color-primary);
+        color: var(--color-primary);
+    }
+
+    .action-btn--add:hover,
+    .action-btn--add:focus-visible {
+        background: var(--color-primary);
+        color: #fff;
+        outline: none;
+    }
+
+    /* Gelb: Aktuelle Prüfung bearbeiten */
+    .action-btn--edit {
+        background: var(--color-warning-bg);
+        border-left-color: var(--color-warning);
+        color: var(--color-warning);
+    }
+
+    .action-btn--edit:hover,
+    .action-btn--edit:focus-visible {
+        background: var(--color-warning);
         color: #fff;
         outline: none;
     }

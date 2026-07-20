@@ -8,10 +8,13 @@
         inspectionResultLabels,
         deviceStatusLabels,
         type ImageReference,
+        type PdfReference,
     } from "../../lib/models";
-    import { getMeta, getRecord, updateRecord } from "../../lib/db";
+    import { getMeta, getRecord, updateRecord, deleteImage } from "../../lib/db";
     import ImageUpload from "../images/ImageUpload.svelte";
     import PictureGrid from "../images/PictureGrid.svelte";
+    import PdfUpload from "../images/PdfUpload.svelte";
+    import PdfList from "../images/PdfList.svelte";
     import { ResultIcon, StatusIcon } from "../icons";
 
     let {
@@ -46,6 +49,7 @@
             status = inspection.status;
             description = inspection.description;
             pictures = inspection.pictures;
+            pdfs = inspection.pdfs ?? [];
         }
     });
 
@@ -65,12 +69,27 @@
     let touchCurrentMa = $state(0);
     let description = $state("");
     let pictures = $state<ImageReference[]>([]);
+    let pdfs = $state<PdfReference[]>([]);
 
     let saving = $state(false);
     let error = $state("");
 
     function handlePicturesUploaded(updated: ImageReference[]) {
         pictures = updated;
+    }
+
+    function handlePdfsUploaded(updated: PdfReference[]) {
+        pdfs = updated;
+    }
+
+    async function handleDeletePicture(picture: ImageReference) {
+        await deleteImage(picture.id);
+        pictures = pictures.filter((p) => p.id !== picture.id);
+    }
+
+    async function handleDeletePdf(pdf: PdfReference) {
+        await deleteImage(pdf.id);
+        pdfs = pdfs.filter((p) => p.id !== pdf.id);
     }
 
     async function handleSubmit(e: SubmitEvent) {
@@ -94,6 +113,7 @@
                     inspectionDate: inspection.inspectionDate,
                     inspectionName: inspection.inspectionName,
                     pictures,
+                    pdfs,
                 });
 
                 const inspections = [...device.inspections];
@@ -129,6 +149,7 @@
                     inspectionDate: today,
                     inspectionName: aktuellePruefung,
                     pictures,
+                    pdfs,
                 });
 
                 updatedDevice = new DeviceModel({
@@ -292,9 +313,17 @@
 
     <div class="form-row panel-card">
         <p class="section-label">Bilder</p>
-        <PictureGrid {pictures} />
+        <PictureGrid {pictures} onDelete={readonly ? undefined : handleDeletePicture} />
         {#if !readonly}
             <ImageUpload {pictures} onUploaded={handlePicturesUploaded} />
+        {/if}
+    </div>
+
+    <div class="form-row panel-card">
+        <p class="section-label">PDFs</p>
+        <PdfList {pdfs} onDelete={readonly ? undefined : handleDeletePdf} />
+        {#if !readonly}
+            <PdfUpload {pdfs} onUploaded={handlePdfsUploaded} />
         {/if}
     </div>
 

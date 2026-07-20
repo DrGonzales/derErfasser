@@ -159,6 +159,20 @@ export async function saveImageBlob(blob: Blob, name?: string): Promise<StoredIm
   return image;
 }
 
+export async function savePdfBlob(blob: Blob, name?: string): Promise<StoredImage> {
+  const pdf: StoredImage = {
+    id: crypto.randomUUID?.() ?? `pdf-${Math.random().toString(36).slice(2)}`,
+    blob,
+    name,
+    type: blob.type || 'application/pdf',
+    size: blob.size,
+    createdAt: Date.now()
+  };
+
+  await withObjectStore<IDBValidKey>(IMAGE_STORE_NAME, 'readwrite', (store) => store.put(pdf));
+  return pdf;
+}
+
 export async function getImage(id: string): Promise<StoredImage | undefined> {
   if (!id) {
     return undefined;
@@ -169,6 +183,10 @@ export async function getImage(id: string): Promise<StoredImage | undefined> {
 
 export async function getAllImages(): Promise<StoredImage[]> {
   return withObjectStore<StoredImage[]>(IMAGE_STORE_NAME, 'readonly', (store) => store.getAll() as IDBRequest<StoredImage[]>);
+}
+
+export async function deleteImage(id: string): Promise<undefined> {
+  return withObjectStore<undefined>(IMAGE_STORE_NAME, 'readwrite', (store) => store.delete(id));
 }
 
 export function deleteRecord(id: number): Promise<undefined> {

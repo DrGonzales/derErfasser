@@ -1,4 +1,5 @@
 import { ImageReference } from "./ImageReference";
+import { PdfReference } from "./PdfReference";
 import { Inspection } from "./Inspection";
 
 export class Device {
@@ -13,6 +14,7 @@ export class Device {
     deactivated = false;
 
     pictures: ImageReference[] = [];
+    pdfs: PdfReference[] = [];
     inspections: Inspection[] = [];
 
     constructor(data?: Partial<Device>) {

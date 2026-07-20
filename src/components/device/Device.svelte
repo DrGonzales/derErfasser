@@ -7,6 +7,7 @@
     import DeviceEditor from "./DeviceEditor.svelte";
     import DeviceInfoCard from "./DeviceInfoCard.svelte";
     import DeviceImages from "./DeviceImages.svelte";
+    import DevicePdfs from "./DevicePdfs.svelte";
     import InspectionsList from "./InspectionsList.svelte";
 
     let {
@@ -27,6 +28,14 @@
     let editing = $state(false);
 
     function handleImageUpdated(detail: {
+        device: DeviceModel;
+        recordId: number;
+    }) {
+        device = detail.device;
+        onDeviceUpdated?.();
+    }
+
+    function handlePdfsUpdated(detail: {
         device: DeviceModel;
         recordId: number;
     }) {
@@ -89,6 +98,8 @@
         />
 
         <DeviceImages {device} {recordId} onUpdated={handleImageUpdated} />
+
+        <DevicePdfs {device} {recordId} onUpdated={handlePdfsUpdated} />
     </div>
 
     {#if editing && recordId != null}

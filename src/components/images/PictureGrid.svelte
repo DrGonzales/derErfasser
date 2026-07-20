@@ -2,19 +2,25 @@
     import { onDestroy } from "svelte";
     import type { ImageReference } from "../../lib/models";
     import { getImage } from "../../lib/db";
+    import { TrashIcon } from "../icons";
+    import ConfirmDialog from "../shared/ConfirmDialog.svelte";
 
     let {
         pictures = [] as ImageReference[],
         pictureUrls = undefined as Record<string, string> | undefined,
+        onDelete = undefined,
     }: {
         pictures?: ImageReference[];
         pictureUrls?: Record<string, string> | undefined;
+        onDelete?: (picture: ImageReference) => void | Promise<void>;
     } = $props();
 
     let internalPictureUrls: Record<string, string> = $state({});
     let blobUrls: string[] = [];
     let loadToken = 0;
     let selectedIndex: number | null = $state(null);
+    let confirmTarget = $state<ImageReference | null>(null);
+    let deleting = $state(false);
 
     const validPictures = $derived(
         pictures.filter(
@@ -81,6 +87,26 @@
         selectedIndex = index;
     }
 
+    function requestDelete(picture: ImageReference, e: MouseEvent) {
+        e.stopPropagation();
+        confirmTarget = picture;
+    }
+
+    function cancelDeleteConfirm() {
+        confirmTarget = null;
+    }
+
+    async function confirmDeleteConfirm() {
+        if (!confirmTarget) return;
+        deleting = true;
+        try {
+            await onDelete?.(confirmTarget);
+        } finally {
+            deleting = false;
+            confirmTarget = null;
+        }
+    }
+
     function closeLightbox() {
         selectedIndex = null;
     }
@@ -129,19 +155,32 @@
 {#if visiblePictures.length > 0}
     <div class="picture-grid">
         {#each visiblePictures as picture, index (picture.id)}
-            <button
-                class="picture-thumb"
-                type="button"
-                aria-label="Gerätebild groß anzeigen"
-                onclick={() => openLightbox(index)}
-            >
-                <img
-                    src={urls[picture.id]}
-                    alt="Gerätebild"
-                    width="64"
-                    height="64"
-                />
-            </button>
+            <div class="picture-thumb-wrap">
+                <button
+                    class="picture-thumb"
+                    type="button"
+                    aria-label="Gerätebild groß anzeigen"
+                    onclick={() => openLightbox(index)}
+                >
+                    <img
+                        src={urls[picture.id]}
+                        alt="Gerätebild"
+                        width="64"
+                        height="64"
+                    />
+                </button>
+                {#if onDelete}
+                    <button
+                        class="picture-delete-btn"
+                        type="button"
+                        aria-label="Bild löschen"
+                        title="Bild löschen"
+                        onclick={(e) => requestDelete(picture, e)}
+                    >
+                        <TrashIcon size={16} />
+                    </button>
+                {/if}
+            </div>
         {/each}
     </div>
 {/if}
@@ -188,6 +227,15 @@
     </div>
 {/if}
 
+<ConfirmDialog
+    open={confirmTarget !== null}
+    title="Bild löschen?"
+    message="Dieses Bild wird unwiderruflich gelöscht."
+    busy={deleting}
+    onConfirm={confirmDeleteConfirm}
+    onCancel={cancelDeleteConfirm}
+/>
+
 <style>
     .picture-grid {
         display: grid;
@@ -220,6 +268,44 @@
         border-color: #006c5b;
         outline: 2px solid #006c5b;
         outline-offset: 2px;
+    }
+
+    .picture-thumb-wrap {
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+
+    .picture-delete-btn {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 50%;
+        background: var(--color-danger);
+        color: #fff;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.15s, background 0.15s;
+        box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
+    }
+
+    .picture-thumb-wrap:hover .picture-delete-btn,
+    .picture-thumb-wrap:focus-within .picture-delete-btn,
+    .picture-delete-btn:focus-visible {
+        opacity: 1;
+    }
+
+    .picture-delete-btn:hover,
+    .picture-delete-btn:focus-visible {
+        background: #b91c1c;
+        outline: none;
     }
 
     .lightbox {

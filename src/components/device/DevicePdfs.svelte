@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Device as DeviceModel, type ImageReference } from "../../lib/models";
+    import { Device as DeviceModel, type PdfReference } from "../../lib/models";
     import { getRecord, updateRecord, deleteImage } from "../../lib/db";
-    import ImageUpload from "../images/ImageUpload.svelte";
-    import PictureGrid from "../images/PictureGrid.svelte";
+    import PdfUpload from "../images/PdfUpload.svelte";
+    import PdfList from "../images/PdfList.svelte";
 
     let {
         device,
@@ -14,14 +14,14 @@
         onUpdated?: (detail: { device: DeviceModel; recordId: number }) => void;
     } = $props();
 
-    let pictures = $derived(device.pictures ?? []);
+    let pdfs = $derived(device.pdfs ?? []);
 
-    async function persist(updatedPictures: ImageReference[]) {
+    async function persist(updatedPdfs: PdfReference[]) {
         if (recordId == null) return;
 
         const updatedDevice = new DeviceModel({
             ...device,
-            pictures: updatedPictures,
+            pdfs: updatedPdfs,
         });
 
         const record = await getRecord(recordId);
@@ -31,25 +31,25 @@
         }
     }
 
-    function handleUploaded(updatedPictures: ImageReference[]) {
+    function handleUploaded(updatedPdfs: PdfReference[]) {
         if (recordId == null) return;
 
         const updatedDevice = new DeviceModel({
             ...device,
-            pictures: updatedPictures,
+            pdfs: updatedPdfs,
         });
         onUpdated?.({ device: updatedDevice, recordId });
     }
 
-    async function handleDeletePicture(picture: ImageReference) {
+    async function handleDeletePdf(pdf: PdfReference) {
         if (recordId == null) return;
 
-        await deleteImage(picture.id);
+        await deleteImage(pdf.id);
 
-        const updatedPictures = pictures.filter((p) => p.id !== picture.id);
+        const updatedPdfs = pdfs.filter((p) => p.id !== pdf.id);
         const updatedDevice = new DeviceModel({
             ...device,
-            pictures: updatedPictures,
+            pdfs: updatedPdfs,
         });
 
         const record = await getRecord(recordId);
@@ -62,18 +62,18 @@
     }
 </script>
 
-<section class="device-images">
-    <h3>Bilder</h3>
-    <PictureGrid {pictures} onDelete={handleDeletePicture} />
-    <ImageUpload {pictures} {persist} onUploaded={handleUploaded} />
+<section class="device-pdfs">
+    <h3>PDFs</h3>
+    <PdfList {pdfs} onDelete={handleDeletePdf} />
+    <PdfUpload {pdfs} {persist} onUploaded={handleUploaded} />
 </section>
 
 <style>
-    .device-images {
+    .device-pdfs {
         margin-top: 1rem;
     }
 
-    .device-images h3 {
+    .device-pdfs h3 {
         margin: 0 0 0.5rem 0;
     }
 </style>

@@ -1,4 +1,5 @@
 import { ImageReference } from "./ImageReference";
+import { PdfReference } from "./PdfReference";
 
 export enum InspectionResult {
     Passed = 'passed',
@@ -39,6 +40,7 @@ export class Inspection {
     inspectionDate = '';
     inspectionName = '';
     pictures: ImageReference[] = [];
+    pdfs: PdfReference[] = [];
 
 
     constructor(data?: Partial<Inspection>) {
