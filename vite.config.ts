@@ -2,6 +2,7 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import pkg from './package.json' with { type: 'json' };
 
 function getGitCommitHash(): string {
@@ -22,7 +23,44 @@ const unusedJsPdfOptionalDep = fileURLToPath(
 );
 
 export default defineConfig({
-  plugins: [svelte()],
+  plugins: [
+    svelte(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      injectRegister: null,
+      manifest: {
+        id: '/',
+        name: 'derErfasser',
+        short_name: 'Erfasser',
+        description:
+          'Offlinefähige App zum Speichern von Daten und Bildern in IndexedDB.',
+        lang: 'de',
+        start_url: '/',
+        scope: '/',
+        display: 'standalone',
+        orientation: 'portrait',
+        background_color: '#f6f7f4',
+        theme_color: '#235347',
+        icons: [
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+          { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }
+        ]
+      },
+      includeAssets: [],
+      workbox: {
+        // Erfasst alle Build-Outputs, inkl. dynamisch nachgeladener Chunks
+        // (reportService, zipService, filenameUtils, models), damit die
+        // App nach dem ersten Laden vollständig offline funktioniert.
+        globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'],
+        navigateFallback: '/index.html',
+        cleanupOutdatedCaches: true
+      },
+      devOptions: {
+        enabled: false
+      }
+    })
+  ],
   resolve: {
     alias: {
       html2canvas: unusedJsPdfOptionalDep,

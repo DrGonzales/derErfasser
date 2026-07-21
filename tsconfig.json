@@ -6,6 +6,7 @@
     "isolatedModules": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
