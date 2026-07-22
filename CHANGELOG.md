@@ -80,8 +80,18 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
   Überfahren mit der Maus erscheint ein roter Papierkorb (bei Bildern oben
   rechts auf der Vorschau, bei PDFs rechts neben dem Dateinamen). Vor dem
   endgültigen Löschen erscheint eine Sicherheitsabfrage.
+- Im Admin-Bereich gibt es jetzt zusätzlich einen Link „Anleitung“. Darüber
+  öffnet sich eine ausführliche Bedienungsanleitung der App direkt als
+  Fenster, ganz ohne Internetverbindung.
 
 ### Verbessert
 - Die App startet jetzt merklich schneller, da der Code für den PDF-Bericht
   und für Backup/Wiederherstellung erst bei tatsächlicher Nutzung geladen
   wird, statt beim App-Start immer mitgeladen zu werden.
+- Der Kopfbereich der App mit Logo, Titel und den Buttons für Dashboard und
+  Administration wird jetzt einheitlich in allen Bereichen angezeigt (bisher
+  nur in der Geräteliste). Von Dashboard und Administration kann dadurch
+  direkt zum jeweils anderen Bereich gewechselt werden, ohne zuerst zur
+  Geräteliste zurückzukehren.
+- Alle „Zurück“-Schaltflächen (in der Geräte-Detailansicht, im Dashboard und
+  in der Administration) sehen jetzt einheitlich aus.

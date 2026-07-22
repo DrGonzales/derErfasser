@@ -14,7 +14,7 @@
     import EntriesList from "./components/entries/EntriesList.svelte";
     import Device from "./components/device/Device.svelte";
     import SplashScreen from "./components/SplashScreen.svelte";
-    import { TableCalcIcon } from "./components/icons";
+    import AppHeader from "./components/shared/AppHeader.svelte";
 
     let showSplash = $state(true);
     let uploadVersion = $state(0);
@@ -34,6 +34,12 @@
     const showAdminView = $derived(
         showAdmin || (hasData === false && !metaConfirmed),
     );
+
+    // Solange noch keine Daten vorhanden sind und der Nutzer die
+    // Ersteinrichtung (Prüfobjekt anlegen / Backup wiederherstellen) noch
+    // nicht abgeschlossen hat, darf nicht über den Header weggenavigiert
+    // werden können.
+    const canNavigate = $derived(hasData === true || metaConfirmed);
 
     async function checkData() {
         const records = await getRecords();
@@ -84,11 +90,13 @@
 
     function handleAdminNav() {
         showAdmin = true;
+        showDashboard = false;
         selectedRecord = null;
     }
 
     function handleDashboardNav() {
         showDashboard = true;
+        showAdmin = false;
         selectedRecord = null;
     }
 
@@ -120,70 +128,43 @@
     <main>
         {#if hasData === null}
             <p class="loading">Lädt...</p>
-        {:else if showDashboard}
-            <Dashboard onBack={() => (showDashboard = false)} />
-        {:else if showAdminView}
-            <AdminPage
-                hasData={hasData ?? false}
-                onRestored={handleRestored}
-                onMetaReady={handleMetaReady}
-                onDataCleared={handleDataCleared}
-                onBack={hasData || metaConfirmed ? () => (showAdmin = false) : undefined}
-            />
         {:else}
-            <header class="app-header">
-                <div class="app-title">
-                    <img src="/duspol.svg" alt="" class="app-logo" />
-                    <h1>Prüftool</h1>
-                </div>
-                <div class="header-actions">
-                    <button
-                        type="button"
-                        class="dashboard-btn"
-                        aria-label="Dashboard"
-                        title="Dashboard"
-                        onclick={handleDashboardNav}
-                    >
-                        <TableCalcIcon size={22} />
-                    </button>
-                    <button
-                        type="button"
-                        class="admin-btn"
-                        aria-label="Admin"
-                        title="Admin"
-                        onclick={handleAdminNav}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="22"
-                            height="22"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path d="M3 11.5 12 4l9 7.5" />
-                            <path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" />
-                        </svg>
-                    </button>
-                </div>
-            </header>
+            <AppHeader
+                onDashboard={canNavigate ? handleDashboardNav : undefined}
+                onAdmin={canNavigate ? handleAdminNav : undefined}
+                activeNav={showDashboard
+                    ? "dashboard"
+                    : showAdminView
+                      ? "admin"
+                      : null}
+            />
 
-            <div hidden={!!selectedRecord}>
-                <EntriesList onSelectDevice={openDevice} {uploadVersion} />
-            </div>
-
-            {#if selectedRecord}
-                <Device
-                    device={selectedRecord.device}
-                    location={selectedRecord.location}
-                    recordId={selectedRecord.recordId}
-                    onBack={closeDevice}
-                    onDeviceUpdated={handleDeviceUpdated}
+            {#if showDashboard}
+                <Dashboard onBack={() => (showDashboard = false)} />
+            {:else if showAdminView}
+                <AdminPage
+                    hasData={hasData ?? false}
+                    onRestored={handleRestored}
+                    onMetaReady={handleMetaReady}
+                    onDataCleared={handleDataCleared}
+                    onBack={hasData || metaConfirmed
+                        ? () => (showAdmin = false)
+                        : undefined}
                 />
+            {:else}
+                <div hidden={!!selectedRecord}>
+                    <EntriesList onSelectDevice={openDevice} {uploadVersion} />
+                </div>
+
+                {#if selectedRecord}
+                    <Device
+                        device={selectedRecord.device}
+                        location={selectedRecord.location}
+                        recordId={selectedRecord.recordId}
+                        onBack={closeDevice}
+                        onDeviceUpdated={handleDeviceUpdated}
+                    />
+                {/if}
             {/if}
         {/if}
     </main>
@@ -194,83 +175,6 @@
         padding: 1rem;
         max-width: 900px;
         margin: 0 auto;
-    }
-
-    .app-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-    }
-
-    .app-title {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-    }
-
-    .app-logo {
-        width: 32px;
-        height: 32px;
-        flex-shrink: 0;
-    }
-
-    .app-header h1 {
-        margin: 0;
-    }
-
-    .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .admin-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        padding: 0;
-        border: 1px solid #235347;
-        border-radius: 6px;
-        background: transparent;
-        color: #235347;
-        cursor: pointer;
-        transition:
-            background 0.15s,
-            color 0.15s;
-    }
-
-    .admin-btn:hover,
-    .admin-btn:focus-visible {
-        background: #235347;
-        color: #fff;
-        outline: none;
-    }
-
-    .dashboard-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        padding: 0;
-        border: 1px solid var(--color-primary);
-        border-radius: 6px;
-        background: transparent;
-        color: var(--color-primary);
-        cursor: pointer;
-        transition:
-            background 0.15s,
-            color 0.15s;
-    }
-
-    .dashboard-btn:hover,
-    .dashboard-btn:focus-visible {
-        background: var(--color-primary);
-        color: #fff;
-        outline: none;
     }
 
     .loading {

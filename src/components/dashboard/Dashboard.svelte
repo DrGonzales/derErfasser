@@ -11,6 +11,7 @@
     import { ResultIcon, StatusIcon } from "../icons";
     import DonutChart from "../charts/DonutChart.svelte";
     import ReportButton from "./ReportButton.svelte";
+    import BackButton from "../shared/BackButton.svelte";
     import type { ReportDeviceEntry } from "../../lib/reportService";
 
     let { onBack }: { onBack?: () => void } = $props();
@@ -266,7 +267,9 @@
 
 <div class="dashboard-page">
     {#if onBack}
-        <button class="back-btn" onclick={onBack}>← Zurück</button>
+        <div class="back-row">
+            <BackButton onClick={onBack} />
+        </div>
     {/if}
 
     <div class="dashboard-header">
@@ -464,19 +467,8 @@
         padding: 0 1rem;
     }
 
-    .back-btn {
-        background: none;
-        border: none;
-        color: var(--color-primary);
-        cursor: pointer;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        display: block;
-        padding: 0;
-    }
-
-    .back-btn:hover {
-        text-decoration: underline;
+    .back-row {
+        margin-bottom: 0.75rem;
     }
 
     h2 {

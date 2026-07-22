@@ -15,3 +15,11 @@ npm run dev
 npm run build
 npm run preview
 ```
+
+## Dokumentation
+
+Eine ausführliche Anleitung zur Bedienung der App befindet sich in
+[`ANWENDERHANDBUCH.md`](./ANWENDERHANDBUCH.md). Sie wird außerdem direkt in
+der App im Administrationsbereich über den Link „Anleitung“ angezeigt
+(`src/components/admin/HelpModal.svelte`).
+

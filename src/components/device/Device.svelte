@@ -9,6 +9,7 @@
     import DeviceImages from "./DeviceImages.svelte";
     import DevicePdfs from "./DevicePdfs.svelte";
     import InspectionsList from "./InspectionsList.svelte";
+    import BackButton from "../shared/BackButton.svelte";
 
     let {
         device: deviceProp = null,
@@ -58,9 +59,7 @@
 {#if device}
     <div class="device-view">
         <div class="device-header">
-            <button class="back" onclick={() => onBack && onBack()}
-                >← Zurück</button
-            >
+            <BackButton onClick={() => onBack && onBack()} />
             <button
                 class="edit-btn"
                 type="button"
@@ -122,24 +121,6 @@
         justify-content: space-between;
         gap: 1rem;
         margin-bottom: 0.75rem;
-    }
-
-    .back {
-        border: 1px solid var(--color-border-input);
-        border-radius: 6px;
-        padding: 0 14px;
-        min-height: 36px;
-        background: #fff;
-        color: var(--color-text-strong);
-        font: inherit;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .back:hover,
-    .back:focus-visible {
-        background: var(--color-surface-muted);
-        outline: none;
     }
 
     .edit-btn {

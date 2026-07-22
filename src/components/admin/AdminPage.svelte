@@ -9,6 +9,8 @@
     } from "../../lib/stores/inspectionNameSuggestions.svelte";
     import RestoreButton from "./RestoreButton.svelte";
     import ChangelogModal from "./ChangelogModal.svelte";
+    import HelpModal from "./HelpModal.svelte";
+    import BackButton from "../shared/BackButton.svelte";
 
     let {
         hasData,
@@ -44,6 +46,9 @@
 
     // Changelog-Anzeige
     let changelogOpen = $state(false);
+
+    // Anleitung-Anzeige
+    let helpOpen = $state(false);
 
     onMount(async () => {
         metaData = await getMeta();
@@ -144,7 +149,9 @@
 
 <div class="admin-page">
     {#if onBack}
-        <button class="back-btn" onclick={onBack}>← Zurück</button>
+        <div class="back-row">
+            <BackButton onClick={onBack} />
+        </div>
     {/if}
 
     <h2>Administration</h2>
@@ -286,14 +293,27 @@
         </section>
     </div>
 
-    <button
-        type="button"
-        class="changelog-link"
-        onclick={() => (changelogOpen = true)}
-    >
-        Changelog
-    </button>
+    <div class="footer-links">
+        <button
+            type="button"
+            class="changelog-link"
+            onclick={() => (helpOpen = true)}
+        >
+            Anleitung
+        </button>
+        <button
+            type="button"
+            class="changelog-link"
+            onclick={() => (changelogOpen = true)}
+        >
+            Changelog
+        </button>
+    </div>
 </div>
+
+{#if helpOpen}
+    <HelpModal onClose={() => (helpOpen = false)} />
+{/if}
 
 {#if changelogOpen}
     <ChangelogModal onClose={() => (changelogOpen = false)} />
@@ -345,19 +365,8 @@
         padding: 0 1rem;
     }
 
-    .back-btn {
-        background: none;
-        border: none;
-        color: var(--color-primary);
-        cursor: pointer;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        display: block;
-        padding: 0;
-    }
-
-    .back-btn:hover {
-        text-decoration: underline;
+    .back-row {
+        margin-bottom: 0.75rem;
     }
 
     .changelog-link {
@@ -366,10 +375,15 @@
         color: var(--color-muted);
         cursor: pointer;
         font-size: 0.85rem;
-        margin: 1.5rem auto 0;
-        display: block;
         padding: 0;
         text-decoration: underline;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin: 1.5rem 0 0;
     }
 
     .changelog-link:hover,
