@@ -11,8 +11,8 @@
     } from "./lib/stores/inspectionNameSuggestions.svelte";
     import AdminPage from "./components/admin/AdminPage.svelte";
     import Dashboard from "./components/dashboard/Dashboard.svelte";
-    import EntriesList from "./components/entries/EntriesList.svelte";
-    import Device from "./components/device/Device.svelte";
+    import EntriesList from "./components/mobiles/EntriesList.svelte";
+    import Device from "./components/mobiles/Device.svelte";
     import SplashScreen from "./components/SplashScreen.svelte";
     import AppHeader from "./components/shared/AppHeader.svelte";
 

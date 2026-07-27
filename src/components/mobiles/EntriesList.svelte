@@ -8,8 +8,8 @@
         type EntriesSortKey,
         type EntriesStatusFilter,
     } from "../../lib/stores/uiStore";
-    import DeviceEditor from "../device/DeviceEditor.svelte";
-    import InspectionEditor from "../device/InspectionEditor.svelte";
+    import DeviceEditor from "./DeviceEditor.svelte";
+    import InspectionEditor from "./InspectionEditor.svelte";
     import BackupButton from "../admin/BackupButton.svelte";
 
     type Location = {

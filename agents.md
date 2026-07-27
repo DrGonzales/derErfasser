@@ -164,6 +164,25 @@ Er gehört nicht zum eigentlichen Quellcode.
 
 ---
 
+# Komponenten-Struktur
+
+`src/components/` ist in fachliche Module gegliedert (ein Ordner pro Modul,
+flach, kein Barrel-Export):
+
+* `mobiles/` – Erfassung und Prüfung ortsveränderlicher Geräte
+  (Einträge-Liste, Gerät, Inspektionen).
+* `dashboard/` und `admin/` stehen den Fach-Modulen übergeordnet (eigene
+  Navigationsebene, kein Bestandteil eines Fach-Moduls).
+* `images/`, `icons/`, `shared/`, `charts/` sind modulübergreifend nutzbare,
+  generische Bausteine ohne Fachlogik (z. B. Bild-/PDF-Upload und -Anzeige).
+
+Neue Fach-Module (z. B. für RCD-Prüfungen) folgen demselben Muster: ein
+flacher Ordner unter `src/components/`, benannt nach der fachlichen Domäne,
+ohne Barrel-Export. Generische Bausteine (`images/`, `icons/`, `shared/`)
+werden von mehreren Fach-Modulen gemeinsam genutzt statt dupliziert.
+
+---
+
 # Agent Instructions
 
 Beim Arbeiten an diesem Projekt gilt:
