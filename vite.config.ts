@@ -22,29 +22,37 @@ const unusedJsPdfOptionalDep = fileURLToPath(
   new URL('./src/lib/stubs/unused-jspdf-optional-dep.ts', import.meta.url)
 );
 
+// Erlaubt einen abweichenden Unterpfad für Deployments, bei denen die App
+// nicht unter der Domain-Root liegt (z. B. GitHub Pages unter
+// https://<user>.github.io/derErfasser/). Standard-Deployment (eigener
+// Server via `pideploy`) bleibt unverändert auf '/'.
+// Beispiel: BASE_PATH=/derErfasser/ npm run build
+const base = process.env.BASE_PATH ?? '/';
+
 export default defineConfig({
+  base,
   plugins: [
     svelte(),
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: null,
       manifest: {
-        id: '/',
+        id: base,
         name: 'derErfasser',
         short_name: 'Erfasser',
         description:
           'Offlinefähige App zum Speichern von Daten und Bildern in IndexedDB.',
         lang: 'de',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#f6f7f4',
         theme_color: '#235347',
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
-          { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }
+          { src: `${base}icon-192.png`, sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: `${base}icon-512.png`, sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+          { src: `${base}icon.svg`, sizes: 'any', type: 'image/svg+xml', purpose: 'any' }
         ]
       },
       includeAssets: [],
@@ -53,7 +61,7 @@ export default defineConfig({
         // (reportService, zipService, filenameUtils, models), damit die
         // App nach dem ersten Laden vollständig offline funktioniert.
         globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'],
-        navigateFallback: '/index.html',
+        navigateFallback: `${base}index.html`,
         cleanupOutdatedCaches: true
       },
       devOptions: {

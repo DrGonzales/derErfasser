@@ -1,5 +1,6 @@
 <script lang="ts">
     import { TableCalcIcon, HouseIcon } from "../icons";
+    import duspolLogo from "../../assets/duspol.svg";
 
     let {
         onDashboard,
@@ -14,7 +15,7 @@
 
 <header class="app-header">
     <div class="app-title">
-        <img src="/duspol.svg" alt="" class="app-logo" />
+        <img src={duspolLogo} alt="" class="app-logo" />
         <h1>Prüftool</h1>
     </div>
     <div class="header-actions">

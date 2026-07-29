@@ -1,5 +1,6 @@
 <script lang="ts">
     import { fade } from 'svelte/transition';
+    import duspolLogo from '../assets/duspol.svg';
 
     interface Props {
         onDone: () => void;
@@ -25,7 +26,7 @@
         out:fade={{ duration: 600 }}
         onoutroend={onDone}
     >
-        <img src="/duspol.svg" alt="Prüftool Logo" class="splash-logo" />
+        <img src={duspolLogo} alt="Prüftool Logo" class="splash-logo" />
         <h1>Prüftool</h1>
         <p class="version">v{__APP_VERSION__} ({__GIT_COMMIT__})</p>
     </div>
