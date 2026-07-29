@@ -1,13 +1,21 @@
 <script lang="ts">
     import helpRaw from "../../../ANWENDERHANDBUCH.md?raw";
+    import prozessPruefungSvg from "../../assets/prozess-pruefung.svg?url";
 
     let { onClose }: { onClose: () => void } = $props();
 
+    // Bild-Dateinamen aus dem Markdown auf die per Vite importierten
+    // Asset-URLs abbilden (der einfache Parser kann keine relativen Pfade
+    // auflösen, da das Markdown als roher Text eingebunden wird).
+    const imagesByFilename: Record<string, string> = {
+        "prozess-pruefung.svg": prozessPruefungSvg
+    };
+
     // Sehr einfache Markdown-Darstellung (keine zusätzliche Bibliothek nötig):
-    // Überschriften, Aufzählungen, Blockquotes und Fett-Text werden in HTML
-    // umgewandelt, Verlinkungen zu Abschnitten (#anker) sowie ein Zurück-Link
-    // ("← Inhalt") werden übersprungen bzw. entfernt, alles andere bleibt als
-    // Absatz stehen.
+    // Überschriften, Aufzählungen, Blockquotes, Fett-Text und Bilder werden
+    // in HTML umgewandelt, Verlinkungen zu Abschnitten (#anker) sowie ein
+    // Zurück-Link ("← Inhalt") werden übersprungen bzw. entfernt, alles
+    // andere bleibt als Absatz stehen.
     function renderMarkdown(markdown: string): string {
         const escapeHtml = (text: string) =>
             text
@@ -35,11 +43,40 @@
             }
         };
 
+        let inCodeBlock = false;
+
         for (const rawLine of lines) {
             const line = rawLine.trimEnd();
 
+            // Fenced Code-Blöcke (z. B. ```mermaid ... ```) werden nicht als
+            // Diagramm gerendert, sondern komplett übersprungen: Das jeweilige
+            // Diagramm liegt bereits als vorgerendertes Bild vor (siehe
+            // imagesByFilename) und wird über eine eigene Bild-Zeile im
+            // Markdown eingebunden.
+            if (/^```/.test(line.trim())) {
+                inCodeBlock = !inCodeBlock;
+                continue;
+            }
+            if (inCodeBlock) {
+                continue;
+            }
+
             if (!line.trim()) {
                 closeList();
+                continue;
+            }
+
+            const imageMatch = /^!\[(.*?)\]\((.+?)\)$/.exec(line.trim());
+            if (imageMatch) {
+                closeList();
+                const [, altText, src] = imageMatch;
+                const filename = src.split("/").pop() ?? "";
+                const resolvedSrc = imagesByFilename[filename];
+                if (resolvedSrc) {
+                    html.push(
+                        `<img src="${escapeHtml(resolvedSrc)}" alt="${escapeHtml(altText)}" />`
+                    );
+                }
                 continue;
             }
 
@@ -222,6 +259,15 @@
         background: #fff8e1;
         color: #78350f;
         border-radius: 0 6px 6px 0;
+    }
+
+    .modal-body :global(img) {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 0 0.75rem;
+        border: 1px solid #e4ece4;
+        border-radius: 8px;
     }
 
     .modal-actions {

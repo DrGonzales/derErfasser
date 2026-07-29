@@ -10,6 +10,7 @@ Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs
 - [Geräte verwalten](#geräte-verwalten)
 - [Geräteliste – Filtern und Sortieren](#geräteliste--filtern-und-sortieren)
 - [Eine Prüfung durchführen](#eine-prüfung-durchführen)
+- [Prozessübersicht: Abarbeitung und Prüfung](#prozessübersicht-abarbeitung-und-prüfung)
 - [Dashboard](#dashboard)
 - [PDF-Bericht erzeugen](#pdf-bericht-erzeugen)
 - [Backup und Wiederherstellung](#backup-und-wiederherstellung)
@@ -128,6 +129,18 @@ Wird bei einer späteren Prüfung ein anderer Gerätezustand gewählt, wird die 
 ### Historie vergangener Prüfungen
 
 In der Geräte-Detailansicht listet der Bereich „Inspektionen“ alle bisherigen Prüfungen des Geräts, sortiert nach Datum. Die Prüfung der aktuellen Prüfrunde ist farblich hervorgehoben. Ein Klick auf eine vergangene Prüfung öffnet sie in einer reinen Übersichtsansicht (nicht mehr bearbeitbar), ein Klick auf die aktuelle Prüfung öffnet sie zur Bearbeitung.
+
+## Prozessübersicht: Abarbeitung und Prüfung
+
+Der Status eines Geräts ("Offen" oder "Abgearbeitet") wird nicht fest gespeichert, sondern bei jeder Anzeige neu ermittelt: Ein Gerät gilt als abgearbeitet, sobald es eine Prüfung besitzt, die zur aktuell eingestellten Prüfrunde gehört. Das folgende Diagramm fasst den gesamten Ablauf zusammen:
+
+![Ablaufdiagramm: Abarbeitung und Prüfung](assets/prozess-pruefung.svg)
+
+**Wichtig:**
+
+- Die vier Teilergebnisse (Sichtprüfung, Funktionsprüfung, Messung, Gesamtergebnis) werden unabhängig voneinander erfasst – das Gesamtergebnis wird nicht automatisch aus den anderen abgeleitet, sondern muss manuell gesetzt werden.
+- Ein „Nicht bestanden“-Ergebnis führt zu keiner automatischen Statusänderung; es wird lediglich im Dashboard und im PDF-Bericht separat ausgewiesen.
+- Alte Prüfungen bleiben dauerhaft als Historie erhalten (siehe [Historie vergangener Prüfungen](#historie-vergangener-prüfungen)).
 
 ## Dashboard
 
