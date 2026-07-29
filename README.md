@@ -18,12 +18,8 @@ npm run preview
 
 ## Deployment
 
-Die App liegt fest auf `base: '/'` ausgelegt und kann so unverändert auf
-einem eigenen Server unter der Domain-Root deployt werden (siehe
-`npm run pideploy`, kopiert `dist/` per `scp` auf einen Raspberry Pi).
-
-Zusätzlich wird die App bei jedem Push auf `main` automatisch per GitHub
-Actions (`.github/workflows/deploy-pages.yml`) auf **GitHub Pages** unter
+Die App wird bei jedem Push auf `main` automatisch per GitHub Actions
+(`.github/workflows/deploy-pages.yml`) auf **GitHub Pages** unter
 `https://<user>.github.io/derErfasser/` veröffentlicht. Da GitHub Pages
 Projekt-Seiten unter einem Unterordner ausliefert, baut der Workflow mit
 `BASE_PATH=/derErfasser/`, wodurch alle Asset-, Icon- und PWA-Manifest-Pfade

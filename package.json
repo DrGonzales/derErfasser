@@ -9,8 +9,7 @@
     "build:pages": "BASE_PATH=/derErfasser/ vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "vitest run",
-    "pideploy": "scp -r dist/. anthes@pi:/media/hdd/dist"
+    "test": "vitest run"
   },
   "dependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
