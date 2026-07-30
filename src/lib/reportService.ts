@@ -191,9 +191,9 @@ function addChartsPage(doc: jsPDF, chartSections: ReportChartSection[], toc: Toc
  * Zeichnet die Ergebnis-Tabelle für ein Gerät: 5 Spalten
  * (Status, Sichtprüfung, Funktionsprüfung, Messung, Gesamtergebnis) mit
  * vollem Gitternetz. Zeile 1 = Spaltenüberschriften, Zeile 2 = Ergebniswerte
- * (Gesamtergebnis fett). Nur die Messung-Spalte hat zusätzlich Zeile 3
- * (Isolationswiderstand) und Zeile 4 (Berührungsstrom); die anderen
- * Spalten enden nach Zeile 2.
+ * (Gesamtergebnis fett). Nur die Messung-Spalte hat zusätzlich vier weitere
+ * Zeilen mit den Messwerten (Schutzleiterwiderstand, Isolationswiderstand,
+ * Ersatzableitstrom, Berührungsstrom); die anderen Spalten enden nach Zeile 2.
  *
  * Gibt die y-Position unterhalb der Tabelle zurück.
  */
@@ -213,13 +213,17 @@ function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspe
         inspection ? inspectionResultLabels[inspection.overallResult] : '',
     ];
     // Hinweis: "Ω" liegt außerhalb der WinAnsi-Kodierung der jsPDF-Standardfonts
-    // (helvetica) und würde falsch dargestellt (z. B. als "©"). Daher "MΩ" als "MOhm".
-    const isolationText = `${formatMeasurementValue(inspection?.isolationResistanceMohm ?? 0)} MOhm`;
-    const touchCurrentText = `${formatMeasurementValue(inspection?.touchCurrentMa ?? 0)} mA`;
+    // (helvetica) und würde falsch dargestellt (z. B. als "©"). Daher "Ω" als "Ohm".
+    const measurementTexts = [
+        `${formatMeasurementValue(inspection?.protectiveConductorResistanceOhm ?? 0)} Ohm`,
+        `${formatMeasurementValue(inspection?.isolationResistanceMohm ?? 0)} MOhm`,
+        `${formatMeasurementValue(inspection?.substituteLeakageCurrentMa ?? 0)} mA`,
+        `${formatMeasurementValue(inspection?.touchCurrentMa ?? 0)} mA`,
+    ];
 
     const colX = (index: number) => x + index * colWidth;
     const centerOf = (index: number) => colX(index) + colWidth / 2;
-    const tableBottomY = y + headerRowHeight + resultRowHeight + measurementRowHeight * 2;
+    const tableBottomY = y + headerRowHeight + resultRowHeight + measurementRowHeight * measurementTexts.length;
 
     // ── Kopfzeile (5 Zellen) ──
     doc.setFont('helvetica', 'bold');
@@ -236,16 +240,16 @@ function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspe
         doc.text(results[i], centerOf(i), resultRowY + resultRowHeight / 2 + 1, { align: 'center' });
     }
 
-    // ── Zeile 3 + 4: nur Messung-Spalte ──
+    // ── Weitere Zeilen: nur Messung-Spalte ──
     const measurementColIndex = 3;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
 
-    const row3Y = resultRowY + resultRowHeight;
-    doc.text(isolationText, centerOf(measurementColIndex), row3Y + measurementRowHeight / 2 + 1, { align: 'center' });
-
-    const row4Y = row3Y + measurementRowHeight;
-    doc.text(touchCurrentText, centerOf(measurementColIndex), row4Y + measurementRowHeight / 2 + 1, { align: 'center' });
+    let rowY = resultRowY + resultRowHeight;
+    for (const text of measurementTexts) {
+        doc.text(text, centerOf(measurementColIndex), rowY + measurementRowHeight / 2 + 1, { align: 'center' });
+        rowY += measurementRowHeight;
+    }
 
     // ── Nur vertikale Trennlinien, alle über die volle Tabellenhöhe
     //    (bis zur längsten Spalte, also inkl. der Messwertzeilen) ──
@@ -256,7 +260,7 @@ function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspe
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
 
-    return row4Y + measurementRowHeight;
+    return rowY;
 }
 
 /**
@@ -297,7 +301,8 @@ function drawHint(doc: jsPDF, x: number, y: number, maxWidth: number, text: stri
  *   3. "Standort : " Standortname - Gebäude - Raum
  *   4. Ergebnis-Tabelle: Status | Sichtprüfung | Funktionsprüfung | Messung | Gesamtergebnis (fett),
  *      darunter die jeweiligen Ergebniswerte; in der Messung-Spalte zusätzlich
- *      Isolationswiderstand (MOhm) und Berührungsstrom (mA)
+ *      Schutzleiterwiderstand (Ohm), Isolationswiderstand (MOhm),
+ *      Ersatzableitstrom (mA) und Berührungsstrom (mA)
  *   5. (optional) "Hinweis : " description, in kleinerer Schrift und mit
  *      automatischem Zeilenumbruch, damit lange Texte nicht über den
  *      rechten Seitenrand hinauslaufen
@@ -319,7 +324,7 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
     const marginBottom = 20;
     const lineHeight = 6;
     const blockGap = 12;
-    const tableHeight = 7 + 7 + 6 + 6; // Header + Ergebniszeile + 2 Messwertzeilen
+    const tableHeight = 7 + 7 + 6 * 4; // Header + Ergebniszeile + 4 Messwertzeilen
     const contentWidth = pageWidth - marginX * 2;
 
     let y = 20;

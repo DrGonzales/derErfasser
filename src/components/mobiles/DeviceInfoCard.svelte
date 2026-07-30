@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Device as DeviceModel, Location as LocationModel } from "../../lib/models";
+    import { protectionClassLabels } from "../../lib/models";
 
     let {
         device,
@@ -32,7 +33,7 @@
             </div>
             <div>
                 <dt>Schutzklasse</dt>
-                <dd>{device.protectionClass}</dd>
+                <dd>{device.protectionClass ? protectionClassLabels[device.protectionClass] : "–"}</dd>
             </div>
             <div>
                 <dt>Nennspannung</dt>

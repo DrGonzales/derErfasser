@@ -29,7 +29,9 @@ export const deviceStatusLabels: Record<DeviceStatus, string> = {
 };
 
 export class Inspection {
+    protectiveConductorResistanceOhm = 0;
     isolationResistanceMohm = 0;
+    substituteLeakageCurrentMa = 0;
     touchCurrentMa = 0;
     visualTestResult: InspectionResult = InspectionResult.NoResult;
     measurementTestResult: InspectionResult = InspectionResult.NoResult;
