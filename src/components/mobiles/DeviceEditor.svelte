@@ -5,6 +5,7 @@
         Location,
         ProtectionClass,
         protectionClassLabels,
+        protectionClassInfo,
     } from "../../lib/models";
     import { getRecord, updateRecord, addRecord } from "../../lib/db";
     import {
@@ -137,6 +138,20 @@
                         </label>
                     {/each}
                 </div>
+                {#if protectionClass}
+                    <div class="protection-hint">
+                        <dl>
+                            <div>
+                                <dt>Kennzeichen</dt>
+                                <dd>{protectionClassInfo[protectionClass].kennzeichen}</dd>
+                            </div>
+                            <div>
+                                <dt>Erforderliche Prüfungen</dt>
+                                <dd>{protectionClassInfo[protectionClass].erforderlichePruefungen}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                {/if}
             </fieldset>
             <div class="field-group">
                 <label for="ed-voltage">Nennspannung (V)</label>
@@ -372,6 +387,42 @@
         pointer-events: none;
         width: 1px;
         height: 1px;
+    }
+
+    .protection-hint {
+        margin-top: 0.25rem;
+        padding: 0.75rem 0.9rem;
+        border-radius: 8px;
+        border-left: 3px solid var(--color-primary);
+        background: var(--color-surface-muted);
+    }
+
+    .protection-hint dl {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .protection-hint div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+    }
+
+    .protection-hint dt {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--color-muted);
+    }
+
+    .protection-hint dd {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--color-text);
+        line-height: 1.4;
     }
 
     .error {
