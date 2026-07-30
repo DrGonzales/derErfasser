@@ -112,7 +112,9 @@ Der Prüfungs-Editor erfasst folgende Werte:
 - **Funktionsprüfung** – Bestanden / Nicht bestanden / Kein Ergebnis
 - **Gerätezustand** – Vorhanden / Defekt / Außer Betrieb / Nicht auffindbar
 - **Messung** – Bestanden / Nicht bestanden / Kein Ergebnis, sowie:
+  - **Schutzleiterwiderstand (Ω)**
   - **Isolationswiderstand (MΩ)**
+  - **Ersatzableitstrom (mA)**
   - **Berührungsstrom (mA)**
 - **Gesamtergebnis** – Bestanden / Nicht bestanden / Kein Ergebnis
 - **Beschreibung** – Freitext für Auffälligkeiten oder Hinweise
@@ -161,7 +163,7 @@ Im Dashboard steht der Button **„Bericht erzeugen“** zur Verfügung. Er erst
 
 - ein **Deckblatt** mit den Angaben zum Prüfobjekt (Namen, Anschrift, Ort, aktuelle Prüfung),
 - eine **Übersichtsseite** mit den drei Diagrammen aus dem Dashboard,
-- Listen aller geprüften Geräte, getrennt nach den Ergebnissen **Bestanden**, **Nicht bestanden** und **Kein Ergebnis** – jeweils mit Standort, Seriennummer und den einzelnen Prüfwerten (Sichtprüfung, Funktionsprüfung, Messung, Gesamtergebnis) sowie einem eventuell hinterlegten Hinweis,
+- Listen aller geprüften Geräte, getrennt nach den Ergebnissen **Bestanden**, **Nicht bestanden** und **Kein Ergebnis** – jeweils mit Standort, Seriennummer und den einzelnen Prüfwerten (Sichtprüfung, Funktionsprüfung, Messung inkl. Schutzleiterwiderstand, Isolationswiderstand, Ersatzableitstrom und Berührungsstrom, Gesamtergebnis) sowie einem eventuell hinterlegten Hinweis,
 - eigene Listen für Geräte mit dem Zustand **„Nicht auffindbar“** und **„Außer Betrieb“**,
 - eine Seitenzahl am Ende jeder Seite.
 

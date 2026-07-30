@@ -83,6 +83,15 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 - Im Admin-Bereich gibt es jetzt zusätzlich einen Link „Anleitung“. Darüber
   öffnet sich eine ausführliche Bedienungsanleitung der App direkt als
   Fenster, ganz ohne Internetverbindung.
+- Beim Anlegen/Bearbeiten eines Geräts kann jetzt die **Schutzklasse**
+  (Schutzklasse I, II oder III) über Auswahlflächen festgelegt werden. Nach
+  Auswahl zeigt die App direkt einen Hinweis mit dem typischen Kennzeichen
+  und den dafür erforderlichen Prüfungen dieser Schutzklasse an.
+- Im Prüfungs-Editor können bei der Messung jetzt zusätzlich der
+  **Schutzleiterwiderstand (Ω)** und der **Ersatzableitstrom (mA)** erfasst
+  werden, neben den bereits vorhandenen Werten Isolationswiderstand und
+  Berührungsstrom. Alle vier Messwerte erscheinen auch in der
+  Ergebnis-Tabelle im PDF-Bericht.
 
 ### Verbessert
 - Die App startet jetzt merklich schneller, da der Code für den PDF-Bericht

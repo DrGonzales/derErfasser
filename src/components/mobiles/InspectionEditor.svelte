@@ -40,7 +40,10 @@
         aktuellePruefung = meta?.aktuellePruefung?.trim() ?? "";
 
         if (inspection) {
+            protectiveConductorResistanceOhm =
+                inspection.protectiveConductorResistanceOhm;
             isolationResistanceMohm = inspection.isolationResistanceMohm;
+            substituteLeakageCurrentMa = inspection.substituteLeakageCurrentMa;
             touchCurrentMa = inspection.touchCurrentMa;
             visualTestResult = inspection.visualTestResult;
             measurementTestResult = inspection.measurementTestResult;
@@ -65,7 +68,9 @@
     );
     let overallResult = $state<InspectionResult>(InspectionResult.NoResult);
     let status = $state<DeviceStatus>(DeviceStatus.Vorhanden);
+    let protectiveConductorResistanceOhm = $state(0);
     let isolationResistanceMohm = $state(0);
+    let substituteLeakageCurrentMa = $state(0);
     let touchCurrentMa = $state(0);
     let description = $state("");
     let pictures = $state<ImageReference[]>([]);
@@ -102,7 +107,13 @@
 
             if (inspection) {
                 const updatedInspection = new Inspection({
+                    protectiveConductorResistanceOhm: Number(
+                        protectiveConductorResistanceOhm,
+                    ),
                     isolationResistanceMohm: Number(isolationResistanceMohm),
+                    substituteLeakageCurrentMa: Number(
+                        substituteLeakageCurrentMa,
+                    ),
                     touchCurrentMa: Number(touchCurrentMa),
                     visualTestResult,
                     measurementTestResult,
@@ -138,7 +149,13 @@
             } else {
                 const today = new Date().toISOString().split("T")[0];
                 const newInspection = new Inspection({
+                    protectiveConductorResistanceOhm: Number(
+                        protectiveConductorResistanceOhm,
+                    ),
                     isolationResistanceMohm: Number(isolationResistanceMohm),
+                    substituteLeakageCurrentMa: Number(
+                        substituteLeakageCurrentMa,
+                    ),
                     touchCurrentMa: Number(touchCurrentMa),
                     visualTestResult,
                     measurementTestResult,
@@ -266,12 +283,32 @@
         )}
 
         <div class="field-group">
+            <label for="ie-protective-conductor">Schutzleiterwiderstand (Ω)</label>
+            <input
+                id="ie-protective-conductor"
+                type="number"
+                step="any"
+                bind:value={protectiveConductorResistanceOhm}
+                disabled={readonly}
+            />
+        </div>
+        <div class="field-group">
             <label for="ie-isolation">Isolationswiderstand (MΩ)</label>
             <input
                 id="ie-isolation"
                 type="number"
                 step="any"
                 bind:value={isolationResistanceMohm}
+                disabled={readonly}
+            />
+        </div>
+        <div class="field-group">
+            <label for="ie-substitute-leakage">Ersatzableitstrom (mA)</label>
+            <input
+                id="ie-substitute-leakage"
+                type="number"
+                step="any"
+                bind:value={substituteLeakageCurrentMa}
                 disabled={readonly}
             />
         </div>

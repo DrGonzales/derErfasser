@@ -50,7 +50,9 @@ const sampleChartSections: ReportChartSection[] = [
 
 function makeInspection(overrides: Partial<Inspection> = {}): Inspection {
 	return {
+		protectiveConductorResistanceOhm: 0.15,
 		isolationResistanceMohm: 250,
+		substituteLeakageCurrentMa: 0.2,
 		touchCurrentMa: 0.05,
 		visualTestResult: InspectionResult.Passed,
 		measurementTestResult: InspectionResult.Passed,
@@ -209,7 +211,9 @@ describe('createReportPdf', () => {
 			{},
 			true,
 			makeInspection({
+				protectiveConductorResistanceOhm: 0.0001,
 				isolationResistanceMohm: 999999.999,
+				substituteLeakageCurrentMa: 999999.999,
 				touchCurrentMa: 0.0001,
 				overallResult: InspectionResult.Failed,
 				visualTestResult: InspectionResult.NoResult
@@ -218,6 +222,26 @@ describe('createReportPdf', () => {
 		const blob = await createReportPdf(makeMeta(), [], [extremeValues]);
 		expect(blob).toBeInstanceOf(Blob);
 		expect(blob.size).toBeGreaterThan(0);
+	});
+
+	it('zeigt alle vier Messwerte (Schutzleiterwiderstand, Isolationswiderstand, Ersatzableitstrom, Berührungsstrom) in der Ergebnis-Tabelle an', async () => {
+		const withMeasurements = makeDeviceEntry(
+			{},
+			true,
+			makeInspection({
+				protectiveConductorResistanceOhm: 0.3,
+				isolationResistanceMohm: 500,
+				substituteLeakageCurrentMa: 0.7,
+				touchCurrentMa: 0.05
+			})
+		);
+		const blob = await createReportPdf(makeMeta(), [], [withMeasurements]);
+		const texts = await extractPdfTexts(blob);
+
+		expect(texts).toContain('0.3 Ohm');
+		expect(texts).toContain('500 MOhm');
+		expect(texts).toContain('0.7 mA');
+		expect(texts).toContain('0.05 mA');
 	});
 
 	it('erzeugt ein PDF-Blob mit Ergebnisliste "Nicht bestanden", wenn failedDevices übergeben werden', async () => {
