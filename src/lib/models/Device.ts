@@ -34,6 +34,34 @@ export const protectionClassInfo: Record<ProtectionClass, ProtectionClassInfo> =
     }
 };
 
+export interface ProtectionClassMeasurementLimits {
+    protectiveConductorResistance: string;
+    isolationResistance: string;
+    substituteLeakageCurrent: string;
+    touchCurrent: string;
+}
+
+export const protectionClassMeasurementLimits: Record<ProtectionClass, ProtectionClassMeasurementLimits> = {
+    [ProtectionClass.I]: {
+        protectiveConductorResistance: '≤ 0,3 Ω (bis 5 m Leitung, danach +0,1 Ω je 7,5 m, max. 1,0 Ω)',
+        isolationResistance: '≥ 1 MΩ (500 V DC)',
+        substituteLeakageCurrent: '≤ 3,5 mA',
+        touchCurrent: '≤ 0,5 mA'
+    },
+    [ProtectionClass.II]: {
+        protectiveConductorResistance: '– (nicht vorhanden)',
+        isolationResistance: '≥ 2 MΩ (500 V DC)',
+        substituteLeakageCurrent: '≤ 0,5 mA',
+        touchCurrent: '≤ 0,5 mA'
+    },
+    [ProtectionClass.III]: {
+        protectiveConductorResistance: '– (nicht vorhanden)',
+        isolationResistance: '≥ 0,25 MΩ (250 V DC)',
+        substituteLeakageCurrent: '–',
+        touchCurrent: '–'
+    }
+};
+
 export class Device {
     type = "";
     manufacturer = "";

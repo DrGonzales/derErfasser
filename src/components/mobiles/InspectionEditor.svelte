@@ -7,6 +7,7 @@
         Device as DeviceModel,
         inspectionResultLabels,
         deviceStatusLabels,
+        protectionClassMeasurementLimits,
         type ImageReference,
         type PdfReference,
     } from "../../lib/models";
@@ -75,6 +76,12 @@
     let description = $state("");
     let pictures = $state<ImageReference[]>([]);
     let pdfs = $state<PdfReference[]>([]);
+
+    const measurementLimits = $derived(
+        device.protectionClass
+            ? protectionClassMeasurementLimits[device.protectionClass]
+            : null,
+    );
 
     let saving = $state(false);
     let error = $state("");
@@ -291,6 +298,11 @@
                 bind:value={protectiveConductorResistanceOhm}
                 disabled={readonly}
             />
+            {#if measurementLimits}
+                <p class="field-hint">
+                    Grenzwert: {measurementLimits.protectiveConductorResistance}
+                </p>
+            {/if}
         </div>
         <div class="field-group">
             <label for="ie-isolation">Isolationswiderstand (MΩ)</label>
@@ -301,6 +313,11 @@
                 bind:value={isolationResistanceMohm}
                 disabled={readonly}
             />
+            {#if measurementLimits}
+                <p class="field-hint">
+                    Grenzwert: {measurementLimits.isolationResistance}
+                </p>
+            {/if}
         </div>
         <div class="field-group">
             <label for="ie-substitute-leakage">Ersatzableitstrom (mA)</label>
@@ -311,6 +328,11 @@
                 bind:value={substituteLeakageCurrentMa}
                 disabled={readonly}
             />
+            {#if measurementLimits}
+                <p class="field-hint">
+                    Grenzwert: {measurementLimits.substituteLeakageCurrent}
+                </p>
+            {/if}
         </div>
         <div class="field-group">
             <label for="ie-touch-current">Berührungsstrom (mA)</label>
@@ -321,6 +343,9 @@
                 bind:value={touchCurrentMa}
                 disabled={readonly}
             />
+            {#if measurementLimits}
+                <p class="field-hint">Grenzwert: {measurementLimits.touchCurrent}</p>
+            {/if}
         </div>
     </div>
 
@@ -548,6 +573,13 @@
     .field-group textarea:focus {
         border-color: var(--color-primary);
         outline: 3px solid var(--focus-ring);
+    }
+
+    .field-hint {
+        margin: 0;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: var(--color-muted);
     }
 
     .radio-row {

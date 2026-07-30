@@ -120,6 +120,8 @@ Der Prüfungs-Editor erfasst folgende Werte:
 - **Beschreibung** – Freitext für Auffälligkeiten oder Hinweise
 - **Bilder** und **PDFs** speziell zu dieser Prüfung
 
+Ist am geprüften Gerät eine Schutzklasse hinterlegt (siehe [Geräte verwalten](#geräte-verwalten)), zeigt die App unter jedem der vier Messwertfelder direkt den dafür zulässigen Grenzwert als Hinweis an (z. B. „Grenzwert: ≥ 1 MΩ (500 V DC)“ beim Isolationswiderstand einer Schutzklasse I). Diese Hinweise dienen nur zur Orientierung; ob ein eingetragener Messwert den Grenzwert einhält, wird nicht automatisch geprüft.
+
 ### Automatische Ausmusterung
 
 Wird der Gerätezustand auf **„Außer Betrieb“** gesetzt, markiert die App das Gerät automatisch als **ausgemustert**. Ausgemusterte Geräte:
