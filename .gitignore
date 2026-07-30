@@ -2,3 +2,6 @@ node_modules/
 dist/
 .vite/
 *.local
+
+# Generierte Beispieldaten (siehe scripts/generate-seed-backup.mjs)
+/seed-backup.zip
