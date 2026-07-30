@@ -1,4 +1,4 @@
-export { Device, ProtectionClass, protectionClassLabels, protectionClassInfo, type ProtectionClassInfo } from './Device';
+export { Device, ProtectionClass, protectionClassLabels, protectionClassInfo, type ProtectionClassInfo, protectionClassMeasurementLimits, type ProtectionClassMeasurementLimits } from './Device';
 export { Metadata } from './Metadata';
 export { Meta } from './Meta';
 export { Location } from './Location';

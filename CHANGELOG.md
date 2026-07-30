@@ -92,6 +92,10 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
   werden, neben den bereits vorhandenen Werten Isolationswiderstand und
   Berührungsstrom. Alle vier Messwerte erscheinen auch in der
   Ergebnis-Tabelle im PDF-Bericht.
+- Ist am Gerät eine Schutzklasse hinterlegt, zeigt der Prüfungs-Editor jetzt
+  direkt unter jedem der vier Messwertfelder den dafür zulässigen Grenzwert
+  an (z. B. „Grenzwert: ≥ 1 MΩ (500 V DC)“ beim Isolationswiderstand einer
+  Schutzklasse I). Ohne hinterlegte Schutzklasse erscheint kein Hinweis.
 
 ### Verbessert
 - Die App startet jetzt merklich schneller, da der Code für den PDF-Bericht
