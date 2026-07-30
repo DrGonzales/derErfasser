@@ -238,8 +238,8 @@
 
 <style>
     .picture-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+        display: flex;
+        flex-wrap: wrap;
         gap: 0.5rem;
     }
 
