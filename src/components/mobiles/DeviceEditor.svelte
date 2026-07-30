@@ -1,6 +1,11 @@
 <script lang="ts">
     import { untrack } from "svelte";
-    import { Device as DeviceModel, Location } from "../../lib/models";
+    import {
+        Device as DeviceModel,
+        Location,
+        ProtectionClass,
+        protectionClassLabels,
+    } from "../../lib/models";
     import { getRecord, updateRecord, addRecord } from "../../lib/db";
     import {
         locationSuggestions,
@@ -23,12 +28,14 @@
 
     const isNew = untrack(() => recordId == null);
 
+    const protectionClassOptions = Object.values(ProtectionClass);
+
     // Initialwerte einmalig aus den Props lesen (untrack = kein reaktives Tracking)
     let type            = $state(untrack(() => device?.type ?? ""));
     let manufacturer    = $state(untrack(() => device?.manufacturer ?? ""));
     let model           = $state(untrack(() => device?.model ?? ""));
     let serialNumber    = $state(untrack(() => device?.serialNumber ?? ""));
-    let protectionClass = $state(untrack(() => device?.protectionClass ?? ""));
+    let protectionClass = $state<ProtectionClass | "">(untrack(() => device?.protectionClass ?? ""));
     let ratedVoltage    = $state(untrack(() => device?.ratedVoltage ?? 0));
     let ratedPower      = $state(untrack(() => device?.ratedPower ?? 0));
 
@@ -113,10 +120,24 @@
                 <label for="ed-serial">Seriennummer</label>
                 <input id="ed-serial" type="text" bind:value={serialNumber} />
             </div>
-            <div class="field-group">
-                <label for="ed-protection">Schutzklasse</label>
-                <input id="ed-protection" type="text" bind:value={protectionClass} />
-            </div>
+            <fieldset class="field-group">
+                <legend>Schutzklasse</legend>
+                <div class="radio-row">
+                    {#each protectionClassOptions as opt (opt)}
+                        <label class="radio-option" class:radio-option--selected={protectionClass === opt}>
+                            <input
+                                class="radio-option__input"
+                                type="radio"
+                                name="protectionClass"
+                                value={opt}
+                                checked={protectionClass === opt}
+                                onchange={() => (protectionClass = opt)}
+                            />
+                            <span>{protectionClassLabels[opt]}</span>
+                        </label>
+                    {/each}
+                </div>
+            </fieldset>
             <div class="field-group">
                 <label for="ed-voltage">Nennspannung (V)</label>
                 <input id="ed-voltage" type="number" bind:value={ratedVoltage} />
@@ -263,12 +284,21 @@
     .field-group {
         display: grid;
         gap: 0.35rem;
+        border: none;
+        padding: 0;
+        margin: 0;
     }
 
-    .field-group label {
+    .field-group label,
+    .field-group legend {
         font-size: 0.85rem;
         font-weight: 700;
         color: var(--color-text-secondary);
+        padding: 0;
+    }
+
+    .field-group label.radio-option {
+        color: var(--color-text);
     }
 
     .field-group input {
@@ -285,6 +315,63 @@
     .field-group input:focus {
         border-color: var(--color-primary);
         outline: 3px solid var(--focus-ring);
+    }
+
+    .radio-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .radio-option {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        flex: 1 1 0;
+        min-width: 88px;
+        min-height: 40px;
+        padding: 0 0.9rem;
+        border: 1px solid var(--color-border-input);
+        border-radius: 8px;
+        background: #fff;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--color-text);
+        cursor: pointer;
+        text-align: center;
+        transition:
+            background-color 0.15s,
+            border-color 0.15s,
+            color 0.15s;
+    }
+
+    .radio-option:hover {
+        border-color: var(--color-primary);
+    }
+
+    .radio-option:focus-within {
+        outline: 3px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    .field-group label.radio-option--selected {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+        color: #fff;
+    }
+
+    .field-group label.radio-option--selected:hover {
+        border-color: var(--color-primary);
+    }
+
+    .radio-option__input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        width: 1px;
+        height: 1px;
     }
 
     .error {

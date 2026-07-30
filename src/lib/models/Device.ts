@@ -2,12 +2,24 @@ import { ImageReference } from "./ImageReference";
 import { PdfReference } from "./PdfReference";
 import { Inspection } from "./Inspection";
 
+export enum ProtectionClass {
+    I = 'I',
+    II = 'II',
+    III = 'III'
+}
+
+export const protectionClassLabels: Record<ProtectionClass, string> = {
+    [ProtectionClass.I]: 'Schutzklasse I',
+    [ProtectionClass.II]: 'Schutzklasse II',
+    [ProtectionClass.III]: 'Schutzklasse III'
+};
+
 export class Device {
     type = "";
     manufacturer = "";
     model = "";
     serialNumber = "";
-    protectionClass = "";
+    protectionClass: ProtectionClass | "" = "";
     ratedVoltage = 0;
     ratedPower = 0;
     inspection = true
