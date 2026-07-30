@@ -47,9 +47,11 @@ In der Geräteliste unten rechts auf den runden **„+“-Button** (FAB) tippen.
 - **Hersteller**
 - **Modell**
 - **Seriennummer**
-- **Schutzklasse**
+- **Schutzklasse** – Auswahl über drei Schaltflächen (Schutzklasse I, II oder III)
 - **Nennspannung (V)**
 - **Nennleistung (W)**
+
+Sobald eine Schutzklasse ausgewählt wurde, blendet die App direkt darunter einen Hinweis mit dem typischen **Kennzeichen** dieser Schutzklasse (z. B. „Schutzleiter (PE) vorhanden“) sowie den dafür **erforderlichen Prüfungen** (z. B. „Sichtprüfung, Schutzleiterwiderstand, …“) ein. Dieser Hinweis dient nur zur Orientierung bei der Geräteerfassung und hat keinen Einfluss auf die spätere Prüfung – welche Prüfwerte tatsächlich erfasst werden, wird weiterhin im Prüfungs-Editor entschieden (siehe [Eine Prüfung durchführen](#eine-prüfung-durchführen)).
 
 Sowie der **Standort** des Geräts:
 
