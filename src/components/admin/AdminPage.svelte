@@ -30,6 +30,10 @@
     let metaData = $state<Meta | undefined>(undefined);
     let editing = $state(false);
 
+    // Werden im Excel-Import-Modal benötigt, um den Datei-auswählen-Button
+    // nur zu aktivieren, wenn bereits Prüfobjekt-Daten hinterlegt sind.
+    const hasMetaData = $derived(Boolean(metaData));
+
     // form fields (used both for create and edit)
     let fPruefObjekt = $state("");
     let fNamen = $state("");
@@ -343,6 +347,7 @@
 
 {#if importOpen}
     <ImportModal
+        {hasMetaData}
         onClose={() => (importOpen = false)}
         onImported={() => onRestored()}
     />

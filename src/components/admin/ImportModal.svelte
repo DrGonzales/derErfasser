@@ -9,7 +9,7 @@
         type ImportResult,
     } from "../../lib/importService";
 
-    let { onClose, onImported }: { onClose: () => void; onImported: () => void } = $props();
+    let { hasMetaData, onClose, onImported }: { hasMetaData: boolean; onClose: () => void; onImported: () => void } = $props();
 
     type Step = "upload" | "mapping" | "preview" | "result";
 
@@ -121,7 +121,19 @@
                         Wähle eine Excel- oder CSV-Datei aus. Die erste Zeile der Datei wird als
                         Kopfzeile mit Spaltennamen interpretiert.
                     </p>
-                    <button type="button" class="btn btn--primary" onclick={openFilePicker} disabled={isParsing}>
+                    {#if !hasMetaData}
+                        <p class="warn-hint">
+                            Es sind noch keine Prüfobjekt-Daten hinterlegt. Bitte zunächst unter
+                            „Prüfobjekt“ die Angaben ausfüllen und speichern, bevor Geräte
+                            importiert werden können.
+                        </p>
+                    {/if}
+                    <button
+                        type="button"
+                        class="btn btn--primary"
+                        onclick={openFilePicker}
+                        disabled={isParsing || !hasMetaData}
+                    >
                         {isParsing ? "Datei wird gelesen…" : "Datei auswählen"}
                     </button>
                     {#if parseError}
