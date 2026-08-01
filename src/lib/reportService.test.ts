@@ -4,6 +4,7 @@ import {
 	buildReportFilename,
 	resolveColor,
 	formatMeasurementValue,
+	formatInspectionDate,
 	type ReportChartSection,
 	type ReportDeviceEntry
 } from './reportService';
@@ -131,6 +132,22 @@ describe('formatMeasurementValue', () => {
 	});
 });
 
+describe('formatInspectionDate', () => {
+	it('formatiert ein ISO-Datum als DD.MM.YYYY', () => {
+		expect(formatInspectionDate('2026-07-17')).toBe('17.07.2026');
+	});
+
+	it('gibt einen leeren String zurück, wenn kein Datum gesetzt ist', () => {
+		expect(formatInspectionDate('')).toBe('');
+		expect(formatInspectionDate(undefined)).toBe('');
+	});
+
+	it('gibt einen leeren String zurück, wenn das Format nicht passt', () => {
+		expect(formatInspectionDate('17.07.2026')).toBe('');
+		expect(formatInspectionDate('nicht ein datum')).toBe('');
+	});
+});
+
 describe('createReportPdf', () => {
 	it('erzeugt ein PDF-Blob mit nur einer Seite, wenn keine Diagrammdaten übergeben werden', async () => {
 		const blob = await createReportPdf(makeMeta());
@@ -242,6 +259,47 @@ describe('createReportPdf', () => {
 		expect(texts).toContain('500 MOhm');
 		expect(texts).toContain('0.7 mA');
 		expect(texts).toContain('0.05 mA');
+		//expect(texts).toContain('Messergebnis');
+	});
+
+	it('blendet die "Messergebnis"-Sektion komplett aus, wenn alle Messwerte 0 sind', async () => {
+		const withoutMeasurements = makeDeviceEntry(
+			{},
+			true,
+			makeInspection({
+				protectiveConductorResistanceOhm: 0,
+				isolationResistanceMohm: 0,
+				substituteLeakageCurrentMa: 0,
+				touchCurrentMa: 0
+			})
+		);
+		const blob = await createReportPdf(makeMeta(), [], [withoutMeasurements]);
+		const texts = await extractPdfTexts(blob);
+
+		expect(texts).not.toContain('Messergebnis');
+		expect(texts).not.toContain('0 Ohm');
+		expect(texts).not.toContain('0 MOhm');
+		expect(texts).not.toContain('0 mA');
+	});
+
+	it('lässt nur die Zellen einzelner fehlender Messwerte leer, zeigt vorhandene Werte aber weiterhin an', async () => {
+		const partialMeasurements = makeDeviceEntry(
+			{},
+			true,
+			makeInspection({
+				protectiveConductorResistanceOhm: 0,
+				isolationResistanceMohm: 0,
+				substituteLeakageCurrentMa: 0.7,
+				touchCurrentMa: 0
+			})
+		);
+		const blob = await createReportPdf(makeMeta(), [], [partialMeasurements]);
+		const texts = await extractPdfTexts(blob);
+
+		//expect(texts).toContain('Messergebnis');
+		expect(texts).toContain('0.7 mA');
+		expect(texts).not.toContain('0 Ohm');
+		expect(texts).not.toContain('0 MOhm');
 	});
 
 	it('erzeugt ein PDF-Blob mit Ergebnisliste "Nicht bestanden", wenn failedDevices übergeben werden', async () => {
@@ -256,6 +314,20 @@ describe('createReportPdf', () => {
 		const blob = await createReportPdf(makeMeta(), [], [], [], [noResultDevice]);
 		expect(blob).toBeInstanceOf(Blob);
 		expect(blob.size).toBeGreaterThan(0);
+	});
+
+	it('zeigt in den Listen "Bestanden" und "Kein Ergebnis" einheitlich das neue Layout mit Info-Tabelle statt Seriennummer-Zeile', async () => {
+		const passed = makeDeviceEntry({ serialNumber: 'SN-P' }, true, makeInspection({ overallResult: InspectionResult.Passed, inspectionDate: '2026-07-17' }));
+		const noResult = makeDeviceEntry({ serialNumber: 'SN-N' }, true, makeInspection({ overallResult: InspectionResult.NoResult, inspectionDate: '2026-08-01' }));
+		const blob = await createReportPdf(makeMeta(), [], [passed], [], [noResult]);
+		const texts = await extractPdfTexts(blob);
+
+		expect(texts).toContain('17.07.2026');
+		expect(texts).toContain('01.08.2026');
+		expect(texts).toContain('SN-P');
+		expect(texts).toContain('SN-N');
+		expect(texts).not.toContain('Seriennummer : SN-N');
+		expect(texts).not.toContain('Seriennummer : SN-P');
 	});
 
 	it('erzeugt ein PDF-Blob mit allen drei Ergebnislisten gleichzeitig', async () => {

@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf';
 import type { Meta, Device, Location, Inspection } from './models';
-import { inspectionResultLabels, deviceStatusLabels } from './models';
+import { InspectionResult, deviceStatusLabels } from './models';
 import { sanitizeFilenamePart, formatTimestampForFilename } from './filenameUtils';
 import { renderDonutToDataUrl, type ChartSegment } from './chartRenderer';
 
@@ -57,6 +57,47 @@ export function resolveColor(color: string): string {
  */
 export function formatMeasurementValue(value: number): string {
     return (Math.round(value * 100) / 100).toString();
+}
+
+/**
+ * Formatiert einen Messwert inkl. Einheit für die Anzeige im PDF, sofern ein
+ * tatsächlicher Wert vorhanden ist. Ist der Wert 0, undefined oder NaN, wird
+ * ein leerer String zurückgegeben, damit die entsprechende Tabellenzelle leer
+ * bleibt (kein "0 mA" o. ä.), da 0 in der Praxis "nicht gemessen" bedeutet.
+ */
+function formatOptionalMeasurement(value: number | undefined, unit: string): string {
+    if (!value || Number.isNaN(value)) return '';
+    return `${formatMeasurementValue(value)} ${unit}`;
+}
+
+/**
+ * Prüft, ob mindestens einer der vier Messwerte einer Prüfung einen
+ * tatsächlichen (von 0 abweichenden) Wert hat. Wird verwendet, um die
+ * gesamte "Messergebnis"-Sektion im neuen Bericht-Layout auszublenden, wenn
+ * keine Messwerte erfasst wurden.
+ */
+function hasAnyMeasurementValue(inspection: Inspection | undefined): boolean {
+    if (!inspection) return false;
+    return [
+        inspection.touchCurrentMa,
+        inspection.substituteLeakageCurrentMa,
+        inspection.isolationResistanceMohm,
+        inspection.protectiveConductorResistanceOhm,
+    ].some((value) => Boolean(value) && !Number.isNaN(value));
+}
+
+/**
+ * Formatiert ein ISO-Datum ("YYYY-MM-DD", wie in Inspection.inspectionDate
+ * gespeichert) für die Anzeige im PDF als "DD.MM.YYYY". Gibt einen leeren
+ * String zurück, falls der Wert fehlt oder nicht dem erwarteten Format
+ * entspricht.
+ */
+export function formatInspectionDate(isoDate: string | undefined): string {
+    if (!isoDate) return '';
+    const match = isoDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return '';
+    const [, year, month, day] = match;
+    return `${day}.${month}.${year}`;
 }
 
 /**
@@ -188,79 +229,195 @@ function addChartsPage(doc: jsPDF, chartSections: ReportChartSection[], toc: Toc
 }
 
 /**
- * Zeichnet die Ergebnis-Tabelle für ein Gerät: 5 Spalten
- * (Status, Sichtprüfung, Funktionsprüfung, Messung, Gesamtergebnis) mit
- * vollem Gitternetz. Zeile 1 = Spaltenüberschriften, Zeile 2 = Ergebniswerte
- * (Gesamtergebnis fett). Nur die Messung-Spalte hat zusätzlich vier weitere
- * Zeilen mit den Messwerten (Schutzleiterwiderstand, Isolationswiderstand,
- * Ersatzableitstrom, Berührungsstrom); die anderen Spalten enden nach Zeile 2.
- *
+ * Zeichnet einen Text mit einer Unterstreichungslinie darunter (z. B. für
+ * "Standort" oder die Zwischenüberschrift "Messergebnis"). Gibt die
+ * y-Position unterhalb des unterstrichenen Texts zurück.
+ */
+function drawUnderlinedText(doc: jsPDF, x: number, y: number, text: string): number {
+    doc.text(text, x, y);
+    const textWidth = doc.getTextWidth(text);
+    const underlineY = y + 1;
+    doc.line(x, underlineY, x + textWidth, underlineY);
+    return y;
+}
+
+/**
+ * Zeichnet ein Ergebnis-Symbol (statt Text) zentriert um den angegebenen
+ * Mittelpunkt: grüner Haken für "Passed", rotes X für "Failed" und ein
+ * grauer Strich für "NoResult" ("nicht nötig"/nicht zutreffend).
+ * Die Größe (in mm) kann über den optionalen Parameter `size` angepasst
+ * werden, z. B. um das Symbol für das Gesamtergebnis größer darzustellen.
+ */
+function drawResultSymbol(doc: jsPDF, centerX: number, centerY: number, result: InspectionResult, size = 2.8): void {
+    doc.setLineWidth(0.7);
+
+    if (result === InspectionResult.Passed) {
+        doc.setDrawColor(resolveColor('var(--color-success)'));
+        doc.lines(
+            [
+                [size * 0.4, size * 0.4],
+                [size * 0.9, -size * 1.1],
+            ],
+            centerX - size * 0.6,
+            centerY + size * 0.2,
+        );
+    } else if (result === InspectionResult.Failed) {
+        doc.setDrawColor(resolveColor('var(--color-danger)'));
+        doc.line(centerX - size / 2, centerY - size / 2, centerX + size / 2, centerY + size / 2);
+        doc.line(centerX + size / 2, centerY - size / 2, centerX - size / 2, centerY + size / 2);
+    } else {
+        doc.setDrawColor(resolveColor('var(--color-muted)'));
+        doc.line(centerX - size / 2, centerY, centerX + size / 2, centerY);
+    }
+
+    doc.setDrawColor('#000000');
+    doc.setLineWidth(0.2);
+}
+
+/**
+ * Zeichnet die Info-Tabelle für ein Gerät: 3 Spalten
+ * (Seriennummer, Status, Prüfdatum) mit vollem Gitternetz.
+ * Zeile 1 = Spaltenüberschriften, Zeile 2 = Werte.
  * Gibt die y-Position unterhalb der Tabelle zurück.
  */
-function drawResultsTable(doc: jsPDF, x: number, y: number, width: number, inspection: Inspection | undefined): number {
-    const colCount = 5;
+function drawInfoTable(
+    doc: jsPDF,
+    x: number,
+    y: number,
+    width: number,
+    device: Device,
+    inspection: Inspection | undefined,
+): number {
+    const colCount = 3;
     const colWidth = width / colCount;
     const headerRowHeight = 7;
-    const resultRowHeight = 7;
-    const measurementRowHeight = 6;
+    const valueRowHeight = 7;
 
-    const headers = ['Status', 'Sichtprüfung', 'Funktionsprüfung', 'Messung', 'Gesamtergebnis'];
-    const results = [
+    const headers = ['Seriennummer', 'Status', 'Prüfdatum'];
+    const values = [
+        device.serialNumber ?? '',
         inspection ? deviceStatusLabels[inspection.status] : '',
-        inspection ? inspectionResultLabels[inspection.visualTestResult] : '',
-        inspection ? inspectionResultLabels[inspection.functionTestResult] : '',
-        inspection ? inspectionResultLabels[inspection.measurementTestResult] : '',
-        inspection ? inspectionResultLabels[inspection.overallResult] : '',
-    ];
-    // Hinweis: "Ω" liegt außerhalb der WinAnsi-Kodierung der jsPDF-Standardfonts
-    // (helvetica) und würde falsch dargestellt (z. B. als "©"). Daher "Ω" als "Ohm".
-    const measurementTexts = [
-        `${formatMeasurementValue(inspection?.protectiveConductorResistanceOhm ?? 0)} Ohm`,
-        `${formatMeasurementValue(inspection?.isolationResistanceMohm ?? 0)} MOhm`,
-        `${formatMeasurementValue(inspection?.substituteLeakageCurrentMa ?? 0)} mA`,
-        `${formatMeasurementValue(inspection?.touchCurrentMa ?? 0)} mA`,
+        inspection ? formatInspectionDate(inspection.inspectionDate) : '',
     ];
 
     const colX = (index: number) => x + index * colWidth;
-    const centerOf = (index: number) => colX(index) + colWidth / 2;
-    const tableBottomY = y + headerRowHeight + resultRowHeight + measurementRowHeight * measurementTexts.length;
+    const tableBottomY = y + headerRowHeight + valueRowHeight;
 
-    // ── Kopfzeile (5 Zellen) ──
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     for (let i = 0; i < colCount; i++) {
-        doc.text(headers[i], centerOf(i), y + headerRowHeight / 2 + 1, { align: 'center' });
+        doc.text(headers[i], colX(i), y + headerRowHeight / 2 + 1);
     }
 
-    // ── Ergebniszeile (5 Zellen, letzte fett) ──
-    const resultRowY = y + headerRowHeight;
-    for (let i = 0; i < colCount; i++) {
-        doc.setFont('helvetica', i === colCount - 1 ? 'bold' : 'normal');
-        doc.setFontSize(10);
-        doc.text(results[i], centerOf(i), resultRowY + resultRowHeight / 2 + 1, { align: 'center' });
-    }
-
-    // ── Weitere Zeilen: nur Messung-Spalte ──
-    const measurementColIndex = 3;
+    const valueRowY = y + headerRowHeight;
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-
-    let rowY = resultRowY + resultRowHeight;
-    for (const text of measurementTexts) {
-        doc.text(text, centerOf(measurementColIndex), rowY + measurementRowHeight / 2 + 1, { align: 'center' });
-        rowY += measurementRowHeight;
-    }
-
-    // ── Nur vertikale Trennlinien, alle über die volle Tabellenhöhe
-    //    (bis zur längsten Spalte, also inkl. der Messwertzeilen) ──
-    for (let i = 0; i <= colCount; i++) {
-        doc.line(colX(i), y, colX(i), tableBottomY);
+    doc.setFontSize(10);
+    for (let i = 0; i < colCount; i++) {
+        doc.text(values[i], colX(i), valueRowY + valueRowHeight / 2 + 1);
     }
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
 
-    return rowY;
+    return tableBottomY;
+}
+
+/**
+ * Zeichnet die Ergebnis-Tabelle für ein Gerät: 4 Spalten
+ * (Sichtprüfung, Funktionsprüfung, Messung, Gesamtergebnis). Überschrift
+ * und Ergebnis-Symbol (grüner Haken / rotes X / grauer Strich) stehen dabei
+ * in derselben Zeile nebeneinander (Text linksbündig, Symbol rechts davon).
+ * "Gesamtergebnis" wird fett dargestellt und erhält ein deutlich größeres
+ * Symbol als die übrigen drei Spalten, um das Endresultat hervorzuheben.
+ * Gibt die y-Position unterhalb der Tabelle zurück.
+ */
+function drawResultSymbolsTable(doc: jsPDF, x: number, y: number, width: number, inspection: Inspection | undefined): number {
+    const colCount = 4;
+    const colWidth = width / colCount;
+    const rowHeight = 10;
+    const normalSymbolSize = 2.8;
+    const overallSymbolSize = normalSymbolSize * 1.4;
+
+    const headers = ['Sichtprüfung', 'Funktionsprüfung', 'Messung', 'Gesamtergebnis'];
+    const results: InspectionResult[] = [
+        inspection?.visualTestResult ?? InspectionResult.NoResult,
+        inspection?.functionTestResult ?? InspectionResult.NoResult,
+        inspection?.measurementTestResult ?? InspectionResult.NoResult,
+        inspection?.overallResult ?? InspectionResult.NoResult,
+    ];
+
+    const colX = (index: number) => x + index * colWidth;
+    const textBaselineY = y + rowHeight / 2 + 1;
+    const symbolCenterY = y + rowHeight / 2;
+    const tableBottomY = y + rowHeight;
+
+    for (let i = 0; i < colCount; i++) {
+        const isOverall = i === colCount - 1;
+
+        // Überschrift-Text (linksbündig), "Gesamtergebnis" fett
+        doc.setFont('helvetica', isOverall ? 'bold' : 'normal');
+        doc.setFontSize(9);
+        doc.text(headers[i], colX(i), textBaselineY);
+        const textWidth = doc.getTextWidth(headers[i]);
+
+        // Ergebnis-Symbol direkt neben dem Text in derselben Zeile
+        const symbolSize = isOverall ? overallSymbolSize : normalSymbolSize;
+        const symbolCenterX = colX(i) + textWidth + 4 + symbolSize / 2;
+        drawResultSymbol(doc, symbolCenterX, symbolCenterY, inspection ? results[i] : InspectionResult.NoResult, symbolSize);
+    }
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+
+    return tableBottomY;
+}
+
+/**
+ * Zeichnet die Messergebnis-Tabelle für ein Gerät: 4 Spalten
+ * (Berührungsstrom, Ersatzableitstrom, Isolationswiderstand,
+ * Schutzleiterwiderstand). Werte, die 0/undefined sind (also nicht
+ * gemessen wurden), bleiben als leere Zelle stehen. Diese Funktion wird nur
+ * aufgerufen, wenn mindestens ein Messwert vorhanden ist
+ * (siehe hasAnyMeasurementValue).
+ * Gibt die y-Position unterhalb der Tabelle zurück.
+ */
+function drawMeasurementTable(doc: jsPDF, x: number, y: number, width: number, inspection: Inspection | undefined): number {
+    const colCount = 4;
+    const colWidth = width / colCount;
+    const headerRowHeight = 7;
+    const valueRowHeight = 7;
+
+    const headers = ['Berührungsstrom', 'Ersatzableitstrom', 'Isolationswiderstand', 'Schutzleiterwiderstand'];
+    // Hinweis: "Ω" liegt außerhalb der WinAnsi-Kodierung der jsPDF-Standardfonts
+    // (helvetica) und würde falsch dargestellt (z. B. als "©"). Daher "Ω" als "Ohm".
+    const values = [
+        formatOptionalMeasurement(inspection?.touchCurrentMa, 'mA'),
+        formatOptionalMeasurement(inspection?.substituteLeakageCurrentMa, 'mA'),
+        formatOptionalMeasurement(inspection?.isolationResistanceMohm, 'MOhm'),
+        formatOptionalMeasurement(inspection?.protectiveConductorResistanceOhm, 'Ohm'),
+    ];
+
+    const colX = (index: number) => x + index * colWidth;
+    const centerOf = (index: number) => colX(index) + colWidth / 2;
+    const tableBottomY = y + headerRowHeight + valueRowHeight;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    for (let i = 0; i < colCount; i++) {
+        doc.text(headers[i], colX(i), y + headerRowHeight / 2 + 1);
+    }
+
+    const valueRowY = y + headerRowHeight;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    for (let i = 0; i < colCount; i++) {
+        doc.text(values[i], colX(i), valueRowY + valueRowHeight / 2 + 1);
+    }
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+
+    return tableBottomY;
 }
 
 /**
@@ -293,19 +450,20 @@ function drawHint(doc: jsPDF, x: number, y: number, maxWidth: number, text: stri
 }
 
 /**
- * Zeichnet eine Ergebnisliste für eine Gruppe von Geräten (z. B. "Bestanden",
- * "Nicht bestanden", "Kein Ergebnis") mit zentrierter Seitenüberschrift.
+ * Zeichnet eine Ergebnisliste für eine Gruppe von Geräten ("Bestanden",
+ * "Nicht bestanden" oder "Kein Ergebnis") mit zentrierter Seitenüberschrift.
  * Jeder Geräte-Block besteht aus:
  *   1. Hersteller - Modell (fett)
- *   2. "Seriennummer : " + Seriennummer
- *   3. "Standort : " Standortname - Gebäude - Raum
- *   4. Ergebnis-Tabelle: Status | Sichtprüfung | Funktionsprüfung | Messung | Gesamtergebnis (fett),
- *      darunter die jeweiligen Ergebniswerte; in der Messung-Spalte zusätzlich
- *      Schutzleiterwiderstand (Ohm), Isolationswiderstand (MOhm),
- *      Ersatzableitstrom (mA) und Berührungsstrom (mA)
- *   5. (optional) "Hinweis : " description, in kleinerer Schrift und mit
- *      automatischem Zeilenumbruch, damit lange Texte nicht über den
- *      rechten Seitenrand hinauslaufen
+ *   2. "Standort : " Standortname - Gebäude - Raum
+ *   3. Info-Tabelle: Seriennummer | Status | Prüfdatum
+ *   4. Ergebnis-Tabelle: Sichtprüfung | Funktionsprüfung | Messung | Gesamtergebnis,
+ *      Ergebnisse als Symbol (grüner Haken / rotes X / grauer Strich)
+ *   5. (nur wenn mindestens ein Messwert vorhanden ist) Zwischenüberschrift
+ *      "Messergebnis" (unterstrichen) + Messergebnis-Tabelle: Berührungsstrom |
+ *      Ersatzableitstrom | Isolationswiderstand | Schutzleiterwiderstand
+ *      (Zellen mit Wert 0/nicht gesetzt bleiben leer)
+ *   6. (optional, nur wenn description vorhanden) "Hinweis : " description,
+ *      in kleinerer Schrift und mit automatischem Zeilenumbruch
  * Zwischen den Geräten wird ein größerer Abstand eingefügt. Geräte werden
  * dabei möglichst nicht über einen Seitenumbruch hinweg getrennt: reicht
  * der verbleibende Platz auf der aktuellen Seite nicht für einen ganzen
@@ -324,7 +482,9 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
     const marginBottom = 20;
     const lineHeight = 6;
     const blockGap = 12;
-    const tableHeight = 7 + 7 + 6 * 4; // Header + Ergebniszeile + 4 Messwertzeilen
+    const infoTableHeight = 7 + 7;
+    const resultTableHeight = 10;
+    const measurementTableHeight = 7 + 7;
     const contentWidth = pageWidth - marginX * 2;
 
     let y = 20;
@@ -340,8 +500,16 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
         const description = inspection?.description?.trim();
         const hasDescription = Boolean(description);
         const hintLines = hasDescription ? countHintLines(doc, description!, contentWidth) : 0;
-        // Zeilen: Titel, Seriennummer, Standort, Tabelle, (optional) Hinweis-Zeile(n).
-        const blockHeight = lineHeight * 3 + tableHeight + hintLines * HINT_LINE_HEIGHT;
+        const showMeasurements = hasAnyMeasurementValue(inspection);
+
+        // Zeilen: Titel, Standort, Info-Tabelle, Ergebnis-Tabelle,
+        // (optional) "Messergebnis"-Überschrift + Messergebnis-Tabelle,
+        // (optional) Hinweis-Zeile(n).
+        let blockHeight = lineHeight * 2 + infoTableHeight + 4 + resultTableHeight + 4;
+        if (showMeasurements) {
+            blockHeight += lineHeight + measurementTableHeight + 4;
+        }
+        blockHeight += hintLines * HINT_LINE_HEIGHT;
 
         // Neue Seite beginnen, falls der Block nicht mehr vollständig passt,
         // damit ein Gerät nicht über zwei Seiten verteilt wird.
@@ -359,23 +527,34 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
         doc.text(titleParts.join(' - '), marginX, y);
         y += lineHeight;
 
-        // Zeile 2: Seriennummer (normale Schrift)
+        // Zeile 2: Standort (ohne Unterstrich)
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(11);
-        doc.text(`Seriennummer : ${device.serialNumber ?? ''}`, marginX, y);
-        y += lineHeight;
-
-        // Zeile 3: Standort
         const locationParts = [location?.locationName, location?.building, location?.room]
             .map((v) => v?.trim())
             .filter((v): v is string => Boolean(v));
         doc.text(`Standort : ${locationParts.join(' - ')}`, marginX, y);
         y += lineHeight;
 
-        // Ergebnis-Tabelle (Sichtprüfung, Funktionsprüfung, Messung, Gesamtergebnis)
+        // Info-Tabelle: Seriennummer | Status | Prüfdatum
         const tableWidth = pageWidth - marginX * 2;
-        y = drawResultsTable(doc, marginX, y, tableWidth, inspection);
-        y += 4 + lineHeight;
+        y = drawInfoTable(doc, marginX, y, tableWidth, device, inspection);
+        y += 4;
+
+        // Ergebnis-Tabelle: Sichtprüfung | Funktionsprüfung | Messung | Gesamtergebnis
+        y = drawResultSymbolsTable(doc, marginX, y, tableWidth, inspection);
+        y += 4;
+
+        // Messergebnis-Tabelle nur, wenn mindestens ein Messwert vorhanden ist
+        if (showMeasurements) {
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(11);
+            // drawUnderlinedText(doc, marginX, y, 'Messergebnis');
+            // y += lineHeight;
+
+            y = drawMeasurementTable(doc, marginX, y, tableWidth, inspection);
+            y += 4;
+        }
 
         // Zeile (optional): Hinweis — kleinere Schrift, automatischer Zeilenumbruch
         if (hasDescription) {

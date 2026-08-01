@@ -22,7 +22,7 @@ export const inspectionResultLabels: Record<InspectionResult, string> = {
 };
 
 export const deviceStatusLabels: Record<DeviceStatus, string> = {
-    [DeviceStatus.Vorhanden]: 'Vorhanden',
+    [DeviceStatus.Vorhanden]: 'In Betrieb',
     [DeviceStatus.Defekt]: 'Defekt',
     [DeviceStatus.AusserBetrieb]: 'Außer Betrieb',
     [DeviceStatus.NichtAuffindbar]: 'Nicht auffindbar'
