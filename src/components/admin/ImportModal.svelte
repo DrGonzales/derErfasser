@@ -22,8 +22,12 @@
     let rows = $state<unknown[][]>([]);
 
     // Schritt "mapping"
-    let mapping = $state<ColumnMapping>(
-        Object.fromEntries(IMPORT_TARGET_FIELDS.map((f) => [f.key, null]))
+    // Der <select> wird per bind:value gesteuert, das für <select>-Elemente
+    // ausschließlich Strings liefert. Daher wird das Mapping hier als
+    // Record<string, string> gehalten ("" = nicht zugeordnet) und erst beim
+    // Übergang zur Vorschau in ein ColumnMapping (number | null) umgewandelt.
+    let mappingSelection = $state<Record<string, string>>(
+        Object.fromEntries(IMPORT_TARGET_FIELDS.map((f) => [f.key, ""]))
     );
 
     // Schritt "preview"
@@ -34,7 +38,7 @@
     let importResult = $state<ImportResult | null>(null);
 
     const mappedFields = $derived(
-        IMPORT_TARGET_FIELDS.filter((field) => mapping[field.key] != null)
+        IMPORT_TARGET_FIELDS.filter((field) => mappingSelection[field.key] !== "")
     );
     const previewRows = $derived(mappedRows.slice(0, 10));
     const warningsCount = $derived(mappedRows.filter((r) => r.warnings.length > 0).length);
@@ -69,6 +73,12 @@
     }
 
     function goToPreview() {
+        const mapping: ColumnMapping = Object.fromEntries(
+            IMPORT_TARGET_FIELDS.map((f) => [
+                f.key,
+                mappingSelection[f.key] === "" ? null : Number(mappingSelection[f.key]),
+            ]),
+        );
         mappedRows = mapRowsToDevices(rows, mapping);
         step = "preview";
     }
@@ -127,11 +137,7 @@
                                 <span class="mapping-label">{field.label}</span>
                                 <select
                                     class="mapping-select"
-                                    value={mapping[field.key] == null ? "" : String(mapping[field.key])}
-                                    onchange={(e) => {
-                                        const val = e.currentTarget.value;
-                                        mapping[field.key] = val === "" ? null : Number(val);
-                                    }}
+                                    bind:value={mappingSelection[field.key]}
                                 >
                                     <option value="">– nicht zuordnen –</option>
                                     {#each headers as header, index (index)}
