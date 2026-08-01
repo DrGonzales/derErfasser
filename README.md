@@ -1,10 +1,11 @@
 # derErfasser
 
 Eine kleine Svelte-PWA zum lokalen Erfassen von Daten und Bildern. Alle Eintraege werden offline in IndexedDB gespeichert.
+[https://drgonzales.github.io/derErfasser/] 
 
 ## Über die App
 
-**derErfasser** (intern „Prüftool“) erfasst und verwaltet elektrische Sicherheitsprüfungen von Geräten – vollständig offline, alle Daten bleiben lokal im Browser (IndexedDB).
+**derErfasser** / „Prüftool“  erfasst und verwaltet elektrische Sicherheitsprüfungen von Geräten – vollständig offline, alle Daten bleiben lokal im Browser (IndexedDB).
 
 - **Geräte verwalten**: Anlegen mit Stammdaten (Typ, Hersteller, Modell, Seriennummer, Schutzklasse, Nennwerte) und Standort, inklusive Bildern und PDFs.
 - **Prüfungen durchführen**: Sichtprüfung, Funktionsprüfung, Messung (Schutzleiterwiderstand, Isolationswiderstand, Ersatzableitstrom, Berührungsstrom) und Gesamtergebnis erfassen, jeweils mit Gerätezustand. Geräte mit Zustand „Außer Betrieb“ werden automatisch ausgemustert.
