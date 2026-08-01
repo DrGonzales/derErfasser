@@ -10,6 +10,7 @@
     import RestoreButton from "./RestoreButton.svelte";
     import ChangelogModal from "./ChangelogModal.svelte";
     import HelpModal from "./HelpModal.svelte";
+    import ImportModal from "./ImportModal.svelte";
     import BackButton from "../shared/BackButton.svelte";
 
     let {
@@ -49,6 +50,9 @@
 
     // Anleitung-Anzeige
     let helpOpen = $state(false);
+
+    // Excel-Import-Anzeige
+    let importOpen = $state(false);
 
     onMount(async () => {
         metaData = await getMeta();
@@ -272,7 +276,25 @@
             <RestoreButton onRestored={onRestored} />
         </section>
 
-        <!-- ── Kachel 3: Daten löschen ──────────────── -->
+        <!-- ── Kachel 3: Geräte aus Excel importieren ── -->
+        <section class="tile panel-card">
+            <h3>Geräte aus Excel importieren</h3>
+            <p>
+                Excel- oder CSV-Datei hochladen und Spalten den Gerätefeldern
+                zuordnen, um mehrere Geräte auf einmal anzulegen.
+            </p>
+            <div class="tile-actions">
+                <button
+                    type="button"
+                    class="btn btn--secondary"
+                    onclick={() => (importOpen = true)}
+                >
+                    Excel-Datei importieren
+                </button>
+            </div>
+        </section>
+
+        <!-- ── Kachel 4: Daten löschen ──────────────── -->
         <section class="tile panel-card tile--danger">
             <h3>Daten löschen</h3>
             <p class="warn-hint">
@@ -317,6 +339,13 @@
 
 {#if changelogOpen}
     <ChangelogModal onClose={() => (changelogOpen = false)} />
+{/if}
+
+{#if importOpen}
+    <ImportModal
+        onClose={() => (importOpen = false)}
+        onImported={() => onRestored()}
+    />
 {/if}
 
 {#if confirmDeleteOpen}
