@@ -14,6 +14,7 @@ Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs
 - [Dashboard](#dashboard)
 - [PDF-Bericht erzeugen](#pdf-bericht-erzeugen)
 - [Backup und Wiederherstellung](#backup-und-wiederherstellung)
+- [Geräte aus Excel importieren](#geräte-aus-excel-importieren)
 - [Daten löschen](#daten-löschen)
 - [Changelog](#changelog)
 - [Häufige Fragen](#häufige-fragen)
@@ -184,6 +185,25 @@ In der Geräteliste steht oben rechts der Button **„Backup herunterladen“** 
 Im Administrationsbereich lässt sich unter „Backup wiederherstellen“ eine zuvor erstellte ZIP-Datei laden.
 
 > **Achtung:** Beim Wiederherstellen werden alle vorhandenen Daten (Geräte, Bilder, PDFs, Prüfobjekt-Informationen) vollständig überschrieben.
+
+## Geräte aus Excel importieren
+
+Im Administrationsbereich steht unter der Kachel **„Geräte aus Excel importieren“** ein Assistent zur Verfügung, mit dem sich viele Geräte auf einmal aus einer Excel- oder CSV-Datei anlegen lassen, statt jedes Gerät einzeln über den „+“-Button einzutragen.
+
+> **Hinweis:** Der Import steht erst zur Verfügung, sobald unter „Prüfobjekt“ Daten hinterlegt wurden (siehe [Erste Schritte](#erste-schritte)). Solange das nicht der Fall ist, ist der Button „Datei auswählen“ deaktiviert und ein entsprechender Hinweistext wird angezeigt.
+
+Der Import läuft in vier Schritten ab:
+
+1. **Datei auswählen** – Eine Excel- (`.xlsx`, `.xls`) oder CSV-Datei hochladen. Die App erwartet, dass die **erste Zeile** der Datei die Spaltenüberschriften enthält; ab der zweiten Zeile folgen die eigentlichen Gerätedaten.
+2. **Spalten zuordnen** – Für jedes Gerätefeld (z. B. Hersteller, Modell, Seriennummer, Schutzklasse, Nennspannung, Nennleistung, Standortname, Gebäude, Raum) lässt sich per Dropdown auswählen, welche Spalte der Excel-Datei diesem Feld entspricht. Felder, für die es keine passende Spalte gibt, können auf „– nicht zuordnen –“ stehen bleiben und werden dann leer angelegt.
+3. **Vorschau** – Vor dem eigentlichen Import zeigt die App eine Vorschau der ersten Zeilen mit den zugeordneten Werten sowie die Gesamtanzahl der Zeilen, die importiert werden. Enthalten einzelne Zeilen ungültige Werte (z. B. Text in einem Zahlenfeld oder eine Schutzklasse, die nicht „I“, „II“ oder „III“ ist), wird dies bereits hier als Warnung angezeigt; der betroffene Wert wird beim Import leer bzw. auf 0 gesetzt, die Zeile wird aber trotzdem angelegt.
+4. **Ergebnis** – Nach dem Import zeigt die App an, wie viele Geräte erfolgreich angelegt wurden. Traten bei einzelnen Zeilen Probleme auf, werden diese in einer Liste mit der jeweiligen Zeilennummer aufgeführt.
+
+**Wichtig:**
+
+- Für jede importierte Zeile wird ein **neues** Gerät angelegt – auch wenn Hersteller, Modell oder Seriennummer mit einem bereits vorhandenen Gerät übereinstimmen. Es findet keine automatische Zusammenführung mit bestehenden Geräten statt.
+- Schlägt der Import einzelner Zeilen fehl, werden die übrigen, fehlerfreien Zeilen trotzdem angelegt (kein Abbruch des gesamten Imports).
+- Neu importierte Standorte stehen anschließend sofort als Vorschlag zur Verfügung, wenn ein Gerät manuell angelegt oder bearbeitet wird (siehe [Geräte verwalten](#geräte-verwalten)).
 
 ## Daten löschen
 
