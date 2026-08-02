@@ -11,6 +11,7 @@
     import ChangelogModal from "./ChangelogModal.svelte";
     import HelpModal from "./HelpModal.svelte";
     import ImportModal from "./ImportModal.svelte";
+    import ExportButton from "./ExportButton.svelte";
     import BackButton from "../shared/BackButton.svelte";
 
     let {
@@ -280,7 +281,7 @@
             <RestoreButton onRestored={onRestored} />
         </section>
 
-        <!-- ── Kachel 3: Geräte aus Excel importieren ── -->
+        <!-- ── Kachel 3: Geräte aus Excel importieren/exportieren ── -->
         <section class="tile panel-card">
             <h3>Geräte aus Excel importieren</h3>
             <p>
@@ -295,7 +296,13 @@
                 >
                     Excel-Datei importieren
                 </button>
+                <ExportButton />
             </div>
+            <p class="tile-hint">
+                Der Export enthält alle Geräte sowie – sofern vorhanden – die
+                Werte der aktuellen Prüfung „{metaData?.aktuellePruefung || "—"}“.
+                Bilder und PDFs werden nicht exportiert.
+            </p>
         </section>
 
         <!-- ── Kachel 4: Daten löschen ──────────────── -->
@@ -524,6 +531,12 @@
         gap: 0.6rem;
         flex-wrap: wrap;
         margin-top: 0.25rem;
+    }
+
+    .tile-hint {
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--color-text-muted, #666);
     }
 
     /* Buttons */

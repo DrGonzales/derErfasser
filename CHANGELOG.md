@@ -96,6 +96,17 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
   direkt unter jedem der vier Messwertfelder den dafür zulässigen Grenzwert
   an (z. B. „Grenzwert: ≥ 1 MΩ (500 V DC)“ beim Isolationswiderstand einer
   Schutzklasse I). Ohne hinterlegte Schutzklasse erscheint kein Hinweis.
+- Geräte können jetzt aus einer Excel-/CSV-Datei importiert werden: Im
+  Admin-Bereich lässt sich über einen Spalten-Mapping-Assistenten eine Datei
+  hochladen, Spalten den Gerätefeldern zuordnen und nach einer Vorschau alle
+  Zeilen als neue Geräte anlegen. Fehlerhafte Zeilen werden übersprungen,
+  ohne den restlichen Import abzubrechen.
+- Neu: In derselben Kachel gibt es jetzt auch einen **Excel-Export**. Damit
+  lässt sich der gesamte Gerätebestand als Excel-Datei herunterladen – mit
+  allen Gerätefeldern sowie, sofern vorhanden, den Werten der aktuellen
+  Prüfung (Prüfdatum, Status, Sichtprüfung, Funktionsprüfung, Messung,
+  Messwerte, Gesamtergebnis, Hinweis). Bilder und PDFs werden dabei nicht
+  berücksichtigt, das Prüfdatum wird als echtes Excel-Datum exportiert.
 
 ### Verbessert
 - Die App startet jetzt merklich schneller, da der Code für den PDF-Bericht

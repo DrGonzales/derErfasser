@@ -15,6 +15,7 @@ Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs
 - [PDF-Bericht erzeugen](#pdf-bericht-erzeugen)
 - [Backup und Wiederherstellung](#backup-und-wiederherstellung)
 - [Geräte aus Excel importieren](#geräte-aus-excel-importieren)
+- [Geräte als Excel exportieren](#geräte-als-excel-exportieren)
 - [Daten löschen](#daten-löschen)
 - [Changelog](#changelog)
 - [Häufige Fragen](#häufige-fragen)
@@ -204,6 +205,24 @@ Der Import läuft in vier Schritten ab:
 - Für jede importierte Zeile wird ein **neues** Gerät angelegt – auch wenn Hersteller, Modell oder Seriennummer mit einem bereits vorhandenen Gerät übereinstimmen. Es findet keine automatische Zusammenführung mit bestehenden Geräten statt.
 - Schlägt der Import einzelner Zeilen fehl, werden die übrigen, fehlerfreien Zeilen trotzdem angelegt (kein Abbruch des gesamten Imports).
 - Neu importierte Standorte stehen anschließend sofort als Vorschlag zur Verfügung, wenn ein Gerät manuell angelegt oder bearbeitet wird (siehe [Geräte verwalten](#geräte-verwalten)).
+
+## Geräte als Excel exportieren
+
+In derselben Kachel **„Geräte aus Excel importieren“** im Administrationsbereich steht auch der Button **„Excel-Datei exportieren“** zur Verfügung. Damit lässt sich der gesamte Gerätebestand als Excel-Datei (`.xlsx`) herunterladen.
+
+Die exportierte Datei enthält:
+
+- eine **Kopfzeile** mit den Feldnamen (bei Messwerten inklusive Maßeinheit, z. B. „Bemessungsspannung (V)“),
+- für **jedes** Gerät eine eigene Zeile mit allen Gerätefeldern (Typ, Hersteller, Modell, Seriennummer, Schutzklasse, Bemessungsspannung, Bemessungsleistung, Standortname, Gebäude, Raum, Prüfpflichtig, Ausgemustert) – unabhängig davon, ob die Felder befüllt sind,
+- daran anschließend die Werte der **aktuellen Prüfung** (Prüfungsname, Prüfdatum, Status, Sichtprüfung, Funktionsprüfung, Messung, Schutzleiterwiderstand, Isolationswiderstand, Ersatzableitstrom, Berührungsstrom, Gesamtergebnis, Hinweis) – und zwar nur für die Prüfung, deren Name der aktuell unter „Prüfobjekt“ eingestellten Prüfung entspricht.
+
+**Wichtig:**
+
+- Besitzt ein Gerät keine Prüfung mit dem Namen der aktuellen Prüfung, bleiben die Prüfungs-Spalten für dieses Gerät leer – das Gerät wird aber trotzdem mit exportiert.
+- Ältere Prüfungen (aus früheren Prüfrunden) werden nicht exportiert, nur die aktuelle Prüfung.
+- Bilder und PDFs werden beim Export **nicht** berücksichtigt.
+- Das Prüfdatum wird als echtes Excel-Datum exportiert, sodass es sich in Excel direkt weiterverarbeiten (z. B. sortieren, filtern) lässt.
+- Der Dateiname enthält den Namen des Prüfobjekts sowie Datum und Uhrzeit der Erstellung, analog zum PDF-Bericht und zum Backup.
 
 ## Daten löschen
 
