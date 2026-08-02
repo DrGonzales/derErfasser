@@ -19,6 +19,13 @@
   --focus-ring: rgb(35 83 71 / 20%);
   --card-shadow: 0 4px 16px rgb(35 83 71 / 7%);
   --card-shadow-hover: 0 8px 28px rgb(35 83 71 / 14%);
+  --color-danger-hover: #b91c1c;
+  --color-border-subtle: #e4ece4;
+  --modal-backdrop-bg: rgb(0 0 0 / 45%);
+  --modal-panel-shadow: 0 20px 60px rgb(0 0 0 / 25%);
+  --z-editor: 200;
+  --z-modal: 300;
+  --z-confirm: 400;
 
   color: var(--color-text);
   background: #f6f7f4;

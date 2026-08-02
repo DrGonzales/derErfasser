@@ -17,6 +17,8 @@
     import PdfUpload from "../images/PdfUpload.svelte";
     import PdfList from "../images/PdfList.svelte";
     import { ResultIcon, StatusIcon } from "../icons";
+    import Modal from "../shared/Modal.svelte";
+    import Button from "../shared/Button.svelte";
 
     let {
         device,
@@ -394,131 +396,48 @@
     {/if}
 {/snippet}
 
-<div
-    class="editor-backdrop"
-    role="dialog"
-    aria-modal="true"
-    aria-label={readonly
+<Modal
+    title={readonly
         ? "Inspektion Übersicht"
         : inspection
           ? "Inspektion bearbeiten"
           : "Neue Inspektion"}
+    onClose={onCancel}
+    variant="editor"
+    maxWidth="560px"
 >
-    <div class="editor-panel">
-        <div class="editor-header">
-            <h2>
-                {readonly
-                    ? "Inspektion Übersicht"
-                    : inspection
-                      ? "Inspektion bearbeiten"
-                      : "Neue Inspektion"}
-            </h2>
-            <button
-                type="button"
-                class="close-btn"
-                aria-label="Schließen"
-                onclick={onCancel}
-            >
-                ×
-            </button>
-        </div>
+    {#if readonly}
+        <div class="editor-form">
+            {@render formFields()}
 
-        {#if readonly}
-            <div class="editor-form">
-                {@render formFields()}
-
-                <div class="editor-actions">
-                    <button type="button" class="btn-cancel" onclick={onCancel}>
-                        Schließen
-                    </button>
-                </div>
+            <div class="editor-actions">
+                <Button variant="secondary" onclick={onCancel}>
+                    Schließen
+                </Button>
             </div>
-        {:else}
-            <form class="editor-form" onsubmit={handleSubmit}>
-                {@render formFields()}
+        </div>
+    {:else}
+        <form class="editor-form" onsubmit={handleSubmit}>
+            {@render formFields()}
 
-                <div class="editor-actions">
-                    <button
-                        type="button"
-                        class="btn-cancel"
-                        onclick={onCancel}
-                        disabled={saving}
-                    >
-                        Abbrechen
-                    </button>
-                    <button type="submit" class="btn-save" disabled={saving}>
-                        {saving ? "Speichern…" : "Speichern"}
-                    </button>
-                </div>
-            </form>
-        {/if}
-    </div>
-</div>
+            <div class="editor-actions">
+                <Button
+                    variant="secondary"
+                    onclick={onCancel}
+                    disabled={saving}
+                >
+                    Abbrechen
+                </Button>
+                <Button variant="primary" type="submit" disabled={saving}>
+                    {saving ? "Speichern…" : "Speichern"}
+                </Button>
+            </div>
+        </form>
+    {/if}
+</Modal>
 
 <style>
-    .editor-backdrop {
-        position: fixed;
-        inset: 0;
-        z-index: 200;
-        background: rgb(0 0 0 / 45%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-
-    .editor-panel {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 20px 60px rgb(0 0 0 / 25%);
-        width: 100%;
-        max-width: 560px;
-        max-height: 90dvh;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .editor-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid #e4ece4;
-        flex-shrink: 0;
-    }
-
-    .editor-header h2 {
-        margin: 0;
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: var(--color-text);
-    }
-
-    .close-btn {
-        width: 36px;
-        height: 36px;
-        border: 0;
-        border-radius: 6px;
-        background: transparent;
-        color: var(--color-muted);
-        font-size: 1.6rem;
-        line-height: 1;
-        cursor: pointer;
-        display: grid;
-        place-items: center;
-    }
-
-    .close-btn:hover,
-    .close-btn:focus-visible {
-        background: var(--color-surface-muted);
-        color: var(--color-primary);
-        outline: none;
-    }
-
     .editor-form {
-        padding: 1.25rem;
-        overflow-y: auto;
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -666,46 +585,5 @@
         gap: 0.75rem;
         justify-content: flex-end;
         padding-top: 0.5rem;
-    }
-
-    .btn-cancel,
-    .btn-save {
-        min-height: 40px;
-        padding: 0 1.25rem;
-        border-radius: 6px;
-        font: inherit;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .btn-cancel {
-        border: 1px solid var(--color-border-input);
-        background: #fff;
-        color: var(--color-text-strong);
-    }
-
-    .btn-cancel:hover:not(:disabled),
-    .btn-cancel:focus-visible:not(:disabled) {
-        background: var(--color-surface-muted);
-        outline: none;
-    }
-
-    .btn-save {
-        border: 0;
-        background: var(--color-primary);
-        color: #fff;
-    }
-
-    .btn-save:hover:not(:disabled),
-    .btn-save:focus-visible:not(:disabled) {
-        background: var(--color-primary-hover);
-        outline: 2px solid rgb(35 83 71 / 40%);
-        outline-offset: 2px;
-    }
-
-    .btn-cancel:disabled,
-    .btn-save:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
     }
 </style>

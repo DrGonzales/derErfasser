@@ -8,6 +8,8 @@
         type MappedDeviceRow,
         type ImportResult,
     } from "../../lib/importService";
+    import Modal from "../shared/Modal.svelte";
+    import Button from "../shared/Button.svelte";
 
     let { hasMetaData, onClose, onImported }: { hasMetaData: boolean; onClose: () => void; onImported: () => void } = $props();
 
@@ -105,17 +107,8 @@
     }
 </script>
 
-<div class="editor-backdrop" role="dialog" aria-modal="true" aria-label="Geräte aus Excel importieren">
-    <div class="editor-panel">
-        <div class="editor-header">
-            <h2>Geräte aus Excel importieren</h2>
-            <button type="button" class="close-btn" aria-label="Schließen" onclick={onClose}>
-                ×
-            </button>
-        </div>
-
-        <div class="editor-content">
-            {#if step === "upload"}
+<Modal title="Geräte aus Excel importieren" {onClose} variant="editor" maxWidth="640px">
+    {#if step === "upload"}
                 <div class="step-body">
                     <p class="hint">
                         Wähle eine Excel- oder CSV-Datei aus. Die erste Zeile der Datei wird als
@@ -128,14 +121,13 @@
                             importiert werden können.
                         </p>
                     {/if}
-                    <button
-                        type="button"
-                        class="btn btn--primary"
+                    <Button
+                        variant="primary"
                         onclick={openFilePicker}
                         disabled={isParsing || !hasMetaData}
                     >
                         {isParsing ? "Datei wird gelesen…" : "Datei auswählen"}
-                    </button>
+                    </Button>
                     {#if parseError}
                         <p class="error" role="alert">{parseError}</p>
                     {/if}
@@ -160,12 +152,12 @@
                         {/each}
                     </div>
                     <div class="editor-actions">
-                        <button type="button" class="btn btn--secondary" onclick={() => (step = "upload")}>
+                        <Button variant="secondary" onclick={() => (step = "upload")}>
                             Zurück
-                        </button>
-                        <button type="button" class="btn btn--primary" onclick={goToPreview}>
+                        </Button>
+                        <Button variant="primary" onclick={goToPreview}>
                             Weiter
-                        </button>
+                        </Button>
                     </div>
                 </div>
             {:else if step === "preview"}
@@ -202,12 +194,12 @@
                         </p>
                     {/if}
                     <div class="editor-actions">
-                        <button type="button" class="btn btn--secondary" onclick={() => (step = "mapping")} disabled={isImporting}>
+                        <Button variant="secondary" onclick={() => (step = "mapping")} disabled={isImporting}>
                             Zurück
-                        </button>
-                        <button type="button" class="btn btn--primary" onclick={handleImport} disabled={isImporting}>
+                        </Button>
+                        <Button variant="primary" onclick={handleImport} disabled={isImporting}>
                             {isImporting ? "Import läuft…" : "Import starten"}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             {:else if step === "result" && importResult}
@@ -226,82 +218,15 @@
                         </ul>
                     {/if}
                     <div class="editor-actions">
-                        <button type="button" class="btn btn--primary" onclick={finish}>
+                        <Button variant="primary" onclick={finish}>
                             Fertig
-                        </button>
+                        </Button>
                     </div>
                 </div>
             {/if}
-        </div>
-    </div>
-</div>
+</Modal>
 
 <style>
-    .editor-backdrop {
-        position: fixed;
-        inset: 0;
-        z-index: 200;
-        background: rgb(0 0 0 / 45%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-
-    .editor-panel {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 20px 60px rgb(0 0 0 / 25%);
-        width: 100%;
-        max-width: 640px;
-        max-height: 90dvh;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .editor-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid #e4ece4;
-        flex-shrink: 0;
-    }
-
-    .editor-header h2 {
-        margin: 0;
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: var(--color-text);
-    }
-
-    .close-btn {
-        width: 36px;
-        height: 36px;
-        border: 0;
-        border-radius: 6px;
-        background: transparent;
-        color: var(--color-muted);
-        font-size: 1.6rem;
-        line-height: 1;
-        cursor: pointer;
-        display: grid;
-        place-items: center;
-    }
-
-    .close-btn:hover,
-    .close-btn:focus-visible {
-        background: var(--color-surface-muted);
-        color: var(--color-primary);
-        outline: none;
-    }
-
-    .editor-content {
-        padding: 1.25rem;
-        overflow-y: auto;
-    }
-
     .step-body {
         display: flex;
         flex-direction: column;
@@ -371,7 +296,7 @@
     td {
         padding: 0.5rem 0.75rem;
         text-align: left;
-        border-bottom: 1px solid #e4ece4;
+        border-bottom: 1px solid var(--color-border-subtle);
         white-space: nowrap;
     }
 
@@ -422,44 +347,5 @@
         gap: 0.75rem;
         justify-content: flex-end;
         padding-top: 0.5rem;
-    }
-
-    .btn {
-        min-height: 40px;
-        padding: 0 1.25rem;
-        border-radius: 6px;
-        font: inherit;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .btn--secondary {
-        border: 1px solid var(--color-border-input);
-        background: #fff;
-        color: var(--color-text-strong);
-    }
-
-    .btn--secondary:hover:not(:disabled),
-    .btn--secondary:focus-visible:not(:disabled) {
-        background: var(--color-surface-muted);
-        outline: none;
-    }
-
-    .btn--primary {
-        border: 0;
-        background: var(--color-primary);
-        color: #fff;
-    }
-
-    .btn--primary:hover:not(:disabled),
-    .btn--primary:focus-visible:not(:disabled) {
-        background: var(--color-primary-hover);
-        outline: 2px solid rgb(35 83 71 / 40%);
-        outline-offset: 2px;
-    }
-
-    .btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
     }
 </style>

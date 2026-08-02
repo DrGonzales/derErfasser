@@ -12,6 +12,8 @@
         locationSuggestions,
         rememberLocation,
     } from "../../lib/stores/locationSuggestions.svelte";
+    import Modal from "../shared/Modal.svelte";
+    import Button from "../shared/Button.svelte";
 
     let {
         device = null,
@@ -90,21 +92,8 @@
     }
 </script>
 
-<div class="editor-backdrop" role="dialog" aria-modal="true" aria-label={isNew ? "Neues Gerät" : "Gerät bearbeiten"}>
-    <div class="editor-panel">
-        <div class="editor-header">
-            <h2>{isNew ? "Neues Gerät" : "Gerät bearbeiten"}</h2>
-            <button
-                type="button"
-                class="close-btn"
-                aria-label="Schließen"
-                onclick={onCancel}
-            >
-                ×
-            </button>
-        </div>
-
-        <form class="editor-form" onsubmit={handleSubmit}>
+<Modal title={isNew ? "Neues Gerät" : "Gerät bearbeiten"} onClose={onCancel} variant="editor" maxWidth="480px">
+    <form class="editor-form" onsubmit={handleSubmit}>
             <div class="field-group">
                 <label for="ed-type">Typ</label>
                 <input id="ed-type" type="text" bind:value={type} />
@@ -216,81 +205,18 @@
             {/if}
 
             <div class="editor-actions">
-                <button type="button" class="btn-cancel" onclick={onCancel} disabled={saving}>
+                <Button variant="secondary" onclick={onCancel} disabled={saving}>
                     Abbrechen
-                </button>
-                <button type="submit" class="btn-save" disabled={saving}>
+                </Button>
+                <Button variant="primary" type="submit" disabled={saving}>
                     {saving ? "Speichern…" : "Speichern"}
-                </button>
+                </Button>
             </div>
-        </form>
-    </div>
-</div>
+    </form>
+</Modal>
 
 <style>
-    .editor-backdrop {
-        position: fixed;
-        inset: 0;
-        z-index: 200;
-        background: rgb(0 0 0 / 45%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-
-    .editor-panel {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 20px 60px rgb(0 0 0 / 25%);
-        width: 100%;
-        max-width: 480px;
-        max-height: 90dvh;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .editor-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid #e4ece4;
-        flex-shrink: 0;
-    }
-
-    .editor-header h2 {
-        margin: 0;
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: var(--color-text);
-    }
-
-    .close-btn {
-        width: 36px;
-        height: 36px;
-        border: 0;
-        border-radius: 6px;
-        background: transparent;
-        color: var(--color-muted);
-        font-size: 1.6rem;
-        line-height: 1;
-        cursor: pointer;
-        display: grid;
-        place-items: center;
-    }
-
-    .close-btn:hover,
-    .close-btn:focus-visible {
-        background: var(--color-surface-muted);
-        color: var(--color-primary);
-        outline: none;
-    }
-
     .editor-form {
-        padding: 1.25rem;
-        overflow-y: auto;
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -433,7 +359,7 @@
 
     .section-divider {
         border: none;
-        border-top: 1px solid #e4ece4;
+        border-top: 1px solid var(--color-border-subtle);
         margin: 0.25rem 0;
     }
 
@@ -451,46 +377,5 @@
         gap: 0.75rem;
         justify-content: flex-end;
         padding-top: 0.5rem;
-    }
-
-    .btn-cancel,
-    .btn-save {
-        min-height: 40px;
-        padding: 0 1.25rem;
-        border-radius: 6px;
-        font: inherit;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    .btn-cancel {
-        border: 1px solid var(--color-border-input);
-        background: #fff;
-        color: var(--color-text-strong);
-    }
-
-    .btn-cancel:hover:not(:disabled),
-    .btn-cancel:focus-visible:not(:disabled) {
-        background: var(--color-surface-muted);
-        outline: none;
-    }
-
-    .btn-save {
-        border: 0;
-        background: var(--color-primary);
-        color: #fff;
-    }
-
-    .btn-save:hover:not(:disabled),
-    .btn-save:focus-visible:not(:disabled) {
-        background: var(--color-primary-hover);
-        outline: 2px solid rgb(35 83 71 / 40%);
-        outline-offset: 2px;
-    }
-
-    .btn-cancel:disabled,
-    .btn-save:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
     }
 </style>

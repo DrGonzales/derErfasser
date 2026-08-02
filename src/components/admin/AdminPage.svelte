@@ -13,6 +13,8 @@
     import ImportModal from "./ImportModal.svelte";
     import ExportButton from "./ExportButton.svelte";
     import BackButton from "../shared/BackButton.svelte";
+    import ConfirmDialog from "../shared/ConfirmDialog.svelte";
+    import Button from "../shared/Button.svelte";
 
     let {
         hasData,
@@ -204,11 +206,11 @@
                     </div>
                 </dl>
                 <div class="tile-actions">
-                    <button type="button" class="btn btn--secondary" onclick={startEdit}>Bearbeiten</button>
+                    <Button variant="secondary" onclick={startEdit}>Bearbeiten</Button>
                     {#if !hasData && metaData.aktuellePruefung && onMetaReady}
-                        <button type="button" class="btn btn--primary" onclick={onMetaReady}>
+                        <Button variant="primary" onclick={onMetaReady}>
                             Weiter zu den Einträgen
-                        </button>
+                        </Button>
                     {/if}
                 </div>
 
@@ -255,11 +257,11 @@
                         <p class="save-error">{saveError}</p>
                     {/if}
                     <div class="tile-actions">
-                        <button type="submit" class="btn btn--primary" disabled={saving}>
+                        <Button variant="primary" type="submit" disabled={saving}>
                             {saving ? "Speichert..." : "Speichern"}
-                        </button>
+                        </Button>
                         {#if metaData}
-                            <button type="button" class="btn btn--secondary" onclick={cancelEdit} disabled={saving}>Abbrechen</button>
+                            <Button variant="secondary" onclick={cancelEdit} disabled={saving}>Abbrechen</Button>
                         {/if}
                     </div>
                 </form>
@@ -267,7 +269,7 @@
             {:else}
                 <!-- NO DATA yet -->
                 <p class="no-meta-hint">Noch keine Prüfobjekt-Daten vorhanden.</p>
-                <button type="button" class="btn btn--primary" onclick={startEdit}>Daten eintragen</button>
+                <Button variant="primary" onclick={startEdit}>Daten eintragen</Button>
             {/if}
         </section>
 
@@ -289,13 +291,12 @@
                 zuordnen, um mehrere Geräte auf einmal anzulegen.
             </p>
             <div class="tile-actions">
-                <button
-                    type="button"
-                    class="btn btn--secondary"
+                <Button
+                    variant="secondary"
                     onclick={() => (importOpen = true)}
                 >
                     Excel-Datei importieren
-                </button>
+                </Button>
                 <ExportButton />
             </div>
             <p class="tile-hint">
@@ -312,14 +313,13 @@
                 Achtung: Hiermit werden alle Geräte, Bilder und Prüfobjekt-Informationen unwiderruflich aus dieser App entfernt.
                 Vor dem Löschen wird automatisch ein Backup heruntergeladen.
             </p>
-            <button
-                type="button"
-                class="btn btn--danger"
+            <Button
+                variant="danger"
                 onclick={openDeleteConfirm}
                 disabled={isDeleting}
             >
                 {isDeleting ? "Wird gelöscht..." : "Daten löschen"}
-            </button>
+            </Button>
             {#if deleteError}
                 <p class="save-error">{deleteError}</p>
             {/if}
@@ -361,42 +361,19 @@
 {/if}
 
 {#if confirmDeleteOpen}
-    <div class="confirm-backdrop" role="dialog" aria-modal="true" aria-label="Daten löschen bestätigen">
-        <div class="confirm-panel">
-            <svg
-                class="confirm-icon"
-                viewBox="0 0 24 24"
-                width="40"
-                height="40"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-            >
-                <path d="M12 3 21 19 3 19Z" />
-                <line x1="12" y1="9.5" x2="12" y2="13.5" />
-                <line x1="12" y1="16.3" x2="12" y2="16.4" />
-            </svg>
-            <h3>Alle Daten wirklich löschen?</h3>
-            <p>
-                Es wird zunächst automatisch ein Backup heruntergeladen. Anschließend werden alle Geräte, Bilder und
-                Prüfobjekt-Informationen unwiderruflich gelöscht.
-            </p>
-            {#if deleteError}
-                <p class="save-error">{deleteError}</p>
-            {/if}
-            <div class="confirm-actions">
-                <button type="button" class="btn btn--secondary" onclick={cancelDelete} disabled={isDeleting}>
-                    Nein
-                </button>
-                <button type="button" class="btn btn--danger" onclick={confirmDelete} disabled={isDeleting}>
-                    {isDeleting ? "Wird gelöscht..." : "Ja, Backup erstellen und löschen"}
-                </button>
-            </div>
-        </div>
-    </div>
+    <ConfirmDialog
+        open={confirmDeleteOpen}
+        title="Alle Daten wirklich löschen?"
+        message="Es wird zunächst automatisch ein Backup heruntergeladen. Anschließend werden alle Geräte, Bilder und Prüfobjekt-Informationen unwiderruflich gelöscht."
+        confirmLabel={isDeleting ? "Wird gelöscht..." : "Ja, Backup erstellen und löschen"}
+        cancelLabel="Nein"
+        busy={isDeleting}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+    />
+    {#if deleteError}
+        <p class="save-error">{deleteError}</p>
+    {/if}
 {/if}
 
 <style>
@@ -536,64 +513,7 @@
     .tile-hint {
         margin-top: 0.5rem;
         font-size: 0.85rem;
-        color: var(--color-text-muted, #666);
-    }
-
-    /* Buttons */
-    .btn {
-        padding: 0.45rem 1rem;
-        border-radius: 6px;
-        font: inherit;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.15s, color 0.15s;
-    }
-
-    .btn--primary {
-        border: 1px solid var(--color-primary);
-        background: var(--color-primary);
-        color: #fff;
-    }
-
-    .btn--primary:hover:not(:disabled),
-    .btn--primary:focus-visible:not(:disabled) {
-        background: var(--color-primary-hover);
-        outline: none;
-    }
-
-    .btn--primary:disabled {
-        opacity: 0.65;
-        cursor: not-allowed;
-    }
-
-    .btn--secondary {
-        border: 1px solid var(--color-primary);
-        background: transparent;
-        color: var(--color-primary);
-    }
-
-    .btn--secondary:hover:not(:disabled),
-    .btn--secondary:focus-visible:not(:disabled) {
-        background: #e4efe6;
-        outline: none;
-    }
-
-    .btn--danger {
-        align-self: flex-start;
-        border: 1px solid var(--color-danger);
-        background: var(--color-danger);
-        color: #fff;
-    }
-
-    .btn--danger:hover:not(:disabled),
-    .btn--danger:focus-visible:not(:disabled) {
-        background: #b91c1c;
-        outline: none;
-    }
-
-    .btn--danger:disabled {
-        opacity: 0.65;
-        cursor: not-allowed;
+        color: var(--color-muted);
     }
 
     /* Hints */
@@ -639,54 +559,5 @@
         color: var(--color-danger-text);
         font-size: 0.9rem;
         margin: 0;
-    }
-
-    /* ── Bestätigungs-Dialog ──────────────────────── */
-    .confirm-backdrop {
-        position: fixed;
-        inset: 0;
-        z-index: 300;
-        background: rgb(0 0 0 / 45%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-    }
-
-    .confirm-panel {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 20px 60px rgb(0 0 0 / 25%);
-        width: 100%;
-        max-width: 420px;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.75rem;
-        text-align: center;
-    }
-
-    .confirm-icon {
-        color: var(--color-danger);
-    }
-
-    .confirm-panel h3 {
-        margin: 0;
-        color: var(--color-danger-text);
-    }
-
-    .confirm-panel p {
-        margin: 0;
-        color: var(--color-text-secondary);
-        font-size: 0.9rem;
-    }
-
-    .confirm-actions {
-        display: flex;
-        gap: 0.75rem;
-        margin-top: 0.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
     }
 </style>

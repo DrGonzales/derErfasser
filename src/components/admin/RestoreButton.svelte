@@ -1,5 +1,6 @@
 <script lang="ts">
     import { restoreDatabaseFromBackup } from "../../lib/db";
+    import Button from "../shared/Button.svelte";
 
     let { onRestored }: { onRestored?: () => void } = $props();
 
@@ -41,9 +42,9 @@
 </script>
 
 <div class="restore-button">
-    <button type="button" onclick={openFilePicker} disabled={isRestoring}>
+    <Button variant="primary" onclick={openFilePicker} disabled={isRestoring}>
         {isRestoring ? "Restore läuft..." : "Backup wiederherstellen"}
-    </button>
+    </Button>
     {#if error}
         <p class="error">{error}</p>
     {/if}
@@ -52,20 +53,6 @@
 <style>
     .restore-button {
         margin-top: 1rem;
-    }
-
-    button {
-        padding: 0.55rem 1rem;
-        border: 1px solid #005b9e;
-        background: #005b9e;
-        color: #fff;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
-    button:disabled {
-        opacity: 0.65;
-        cursor: not-allowed;
     }
 
     .error {

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { downloadBlob } from "../../lib/download";
     import { getRecords, getMeta } from "../../lib/db";
+    import Button from "../shared/Button.svelte";
 
     let isExporting = $state(false);
     let error = $state("");
@@ -27,9 +28,9 @@
 </script>
 
 <div class="export-button">
-    <button type="button" class="btn btn--secondary" onclick={handleExport} disabled={isExporting}>
+    <Button variant="secondary" onclick={handleExport} disabled={isExporting}>
         {isExporting ? "Export wird erstellt..." : "Excel-Datei exportieren"}
-    </button>
+    </Button>
     {#if error}
         <p class="error">{error}</p>
     {/if}

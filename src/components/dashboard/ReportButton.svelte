@@ -5,6 +5,7 @@
         ReportDeviceEntry,
     } from "../../lib/reportService";
     import { downloadBlob } from "../../lib/download";
+    import Button from "../shared/Button.svelte";
 
     let {
         chartSections = [],
@@ -55,9 +56,9 @@
 </script>
 
 <div class="report-button">
-    <button type="button" onclick={handleGenerateReport} disabled={isCreating}>
+    <Button variant="primary" onclick={handleGenerateReport} disabled={isCreating}>
         {isCreating ? "Bericht wird erstellt..." : "Bericht erzeugen"}
-    </button>
+    </Button>
     {#if error}
         <p class="error">{error}</p>
     {/if}
@@ -66,30 +67,6 @@
 <style>
     .report-button {
         display: contents;
-    }
-
-    button {
-        padding: 0.4rem 0.9rem;
-        border: 1px solid var(--color-primary);
-        background: var(--color-primary);
-        color: #fff;
-        border-radius: 6px;
-        font: inherit;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.15s;
-        white-space: nowrap;
-    }
-
-    button:hover,
-    button:focus-visible {
-        background: var(--color-primary-hover);
-        outline: none;
-    }
-
-    button:disabled {
-        opacity: 0.65;
-        cursor: not-allowed;
     }
 
     .error {
