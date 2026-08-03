@@ -2,6 +2,8 @@
 
 Diese Anleitung erklärt die Bedienung des **Prüftools** – einer App zur Erfassung, Verwaltung und Archivierung von Messdaten für elektrische Sicherheitsprüfungen.
 
+Die App richtet sich insbesondere an **kleine Handwerksbetriebe, Hausmeisterservices, Dienstleister und Werkstätten**, die Prüfungen an ortsveränderlichen elektrischen Geräten (z. B. Bohrmaschinen, Verlängerungsleitungen, Netzteile, Ladegeräte, Kaffeemaschinen oder Computer) einfach und nachvollziehbar dokumentieren möchten. Grundlage hierfür sind unter anderem die Anforderungen der **DGUV Vorschrift 3** sowie die **DIN VDE 0701-0702**, welche die Prüfung nach Instandsetzung und die Wiederholungsprüfung elektrischer Geräte beschreibt.
+
 Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs, Prüfobjekt-Informationen) werden ausschließlich lokal auf diesem Gerät gespeichert. Es findet keine Übertragung ins Internet statt.
 
 ## Inhalt
@@ -48,7 +50,7 @@ In der Geräteliste unten rechts auf den runden **„+“-Button** (FAB) tippen.
 - **Typ**
 - **Hersteller**
 - **Modell**
-- **Seriennummer**
+- **Seriennummer** – Ist eine Kamera am Gerät vorhanden, erscheint neben diesem Feld zusätzlich ein **Barcode-Symbol**. Ein Tipp darauf öffnet einen Kamera-Dialog; der erkannte Barcode oder QR-Code wird automatisch als Seriennummer übernommen, ohne dass er von Hand abgetippt werden muss.
 - **Schutzklasse** – Auswahl über drei Schaltflächen (Schutzklasse I, II oder III)
 - **Nennspannung (V)**
 - **Nennleistung (W)**
@@ -90,7 +92,7 @@ Beim Überfahren eines Bildes bzw. eines PDF-Einträgs mit der Maus erscheint ei
 
 Die Geräteliste bietet folgende Werkzeuge:
 
-- **Filter** – Freitextfeld, das Hersteller, Modell, Seriennummer, Standort, Gebäude und Raum durchsucht.
+- **Filter** – Freitextfeld, das Hersteller, Modell, Seriennummer, Standort, Gebäude und Raum durchsucht. Erkennt die App eine nutzbare Kamera, erscheint rechts neben dem Filterfeld zusätzlich ein **Barcode-Symbol**: Ein Tipp darauf öffnet einen Kamera-Dialog, in dem sich Barcodes und QR-Codes scannen lassen. Sobald ein Code erkannt wurde, wird er automatisch als Filtertext übernommen und der Dialog schließt sich selbstständig. Ohne erkannte Kamera bleibt das Symbol ausgeblendet und der Filter wird ausschließlich per Tastatur bedient.
 - **Status-Chips**:
   - **Offen** – Geräte ohne Prüfung in der aktuellen Prüfrunde
   - **Abgearbeitet** – Geräte, die in der aktuellen Prüfrunde bereits geprüft wurden
@@ -179,6 +181,14 @@ Geräte ohne aktuelle Prüfung oder mit abweichendem Gerätezustand tauchen in d
 
 In der Geräteliste steht oben rechts der Button **„Backup herunterladen“** zur Verfügung. Er erstellt eine ZIP-Datei mit sämtlichen Geräten, Bildern, PDFs und Prüfobjekt-Informationen und lädt sie herunter. Das Datum des letzten Backups wird direkt daneben angezeigt.
 
+Das Backup ist ein vollständiger, in sich geschlossener Datenstand und enthält:
+
+- alle Geräte und deren gesamte **Prüfhistorie** (alle Prüfrunden, nicht nur die aktuelle),
+- alle zu den Geräten und Prüfungen hochgeladenen **Bilder und PDF-Dokumente**,
+- die **Prüfobjekt-Angaben** (Name, Namen, Anschrift, Ort, aktuelle Prüfung).
+
+Der Dateiname des Backups enthält bereits den Namen des Prüfobjekts sowie Datum und Uhrzeit der Erstellung, analog zum PDF-Bericht und zum Excel-Export.
+
 > **Empfehlung:** Regelmäßig ein Backup erstellen, insbesondere vor größeren Änderungen oder dem Wechsel auf ein anderes Gerät.
 
 ### Backup wiederherstellen
@@ -186,6 +196,16 @@ In der Geräteliste steht oben rechts der Button **„Backup herunterladen“** 
 Im Administrationsbereich lässt sich unter „Backup wiederherstellen“ eine zuvor erstellte ZIP-Datei laden.
 
 > **Achtung:** Beim Wiederherstellen werden alle vorhandenen Daten (Geräte, Bilder, PDFs, Prüfobjekt-Informationen) vollständig überschrieben.
+
+### Mehrere Klienten oder Standorte verwalten
+
+Da jedes Backup einen vollständigen, eigenständigen Datenstand (ein Prüfobjekt mit allen zugehörigen Geräten) enthält, lässt sich die App auch für **mehrere unabhängige Kunden, Prüfobjekte oder Standorte** einsetzen, ohne dass sich die Daten gegenseitig überschneiden:
+
+1. Vor dem Wechsel zu einem anderen Klienten den aktuellen Stand über „Backup herunterladen“ sichern.
+2. Anschließend im Administrationsbereich das Backup des gewünschten anderen Klienten über „Backup wiederherstellen“ laden.
+3. Die App zeigt danach ausschließlich die Geräte und Prüfobjekt-Angaben des geladenen Backups an.
+
+> **Achtung:** Die App verwaltet immer nur **einen** Datenstand gleichzeitig. Vor jedem Wechsel unbedingt zuerst ein Backup des aktuellen Klienten erstellen, da das Laden eines anderen Backups die aktuell angezeigten Daten vollständig überschreibt. Es empfiehlt sich, die Backup-Dateien sprechend zu benennen und pro Klient an einem festen Ort (z. B. einem eigenen Ordner) zu archivieren.
 
 ## Geräte aus Excel importieren
 
