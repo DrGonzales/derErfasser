@@ -14,6 +14,9 @@
     } from "../../lib/stores/locationSuggestions.svelte";
     import Modal from "../shared/Modal.svelte";
     import Button from "../shared/Button.svelte";
+    import { cameraSupport } from "../../lib/stores/cameraSupport.svelte";
+    import { BarcodeIcon } from "../icons";
+    import BarcodeScannerModal from "../shared/BarcodeScannerModal.svelte";
 
     let {
         device = null,
@@ -49,6 +52,7 @@
 
     let saving = $state(false);
     let error  = $state("");
+    let showBarcodeScanner = $state(false);
 
     async function handleSubmit(e: SubmitEvent) {
         e.preventDefault();
@@ -90,6 +94,10 @@
             saving = false;
         }
     }
+
+    function handleBarcodeDetected(code: string) {
+        serialNumber = code;
+    }
 </script>
 
 <Modal title={isNew ? "Neues Gerät" : "Gerät bearbeiten"} onClose={onCancel} variant="editor" maxWidth="480px">
@@ -108,7 +116,19 @@
             </div>
             <div class="field-group">
                 <label for="ed-serial">Seriennummer</label>
-                <input id="ed-serial" type="text" bind:value={serialNumber} />
+                <div class="input-with-scan">
+                    <input id="ed-serial" type="text" bind:value={serialNumber} />
+                    {#if cameraSupport.hasCamera}
+                        <button
+                            type="button"
+                            class="barcode-scan-btn"
+                            aria-label="Barcode scannen"
+                            onclick={() => (showBarcodeScanner = true)}
+                        >
+                            <BarcodeIcon size={20} />
+                        </button>
+                    {/if}
+                </div>
             </div>
             <fieldset class="field-group">
                 <legend>Schutzklasse</legend>
@@ -215,6 +235,13 @@
     </form>
 </Modal>
 
+{#if showBarcodeScanner}
+    <BarcodeScannerModal
+        onDetected={handleBarcodeDetected}
+        onClose={() => (showBarcodeScanner = false)}
+    />
+{/if}
+
 <style>
     .editor-form {
         display: flex;
@@ -256,6 +283,36 @@
     .field-group input:focus {
         border-color: var(--color-primary);
         outline: 3px solid var(--focus-ring);
+    }
+
+    .input-with-scan {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .input-with-scan input {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .barcode-scan-btn {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--color-border-input);
+        border-radius: 6px;
+        background: #fbfcfa;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+    }
+
+    .barcode-scan-btn:hover,
+    .barcode-scan-btn:focus-visible {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+        outline: none;
     }
 
     .radio-row {
