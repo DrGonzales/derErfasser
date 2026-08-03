@@ -10,6 +10,7 @@
     } from "../../lib/importService";
     import Modal from "../shared/Modal.svelte";
     import Button from "../shared/Button.svelte";
+    import ProgressBar from "../shared/ProgressBar.svelte";
 
     let { hasMetaData, onClose, onImported }: { hasMetaData: boolean; onClose: () => void; onImported: () => void } = $props();
 
@@ -38,6 +39,7 @@
     // Schritt "result"
     let isImporting = $state(false);
     let importResult = $state<ImportResult | null>(null);
+    let importProgress = $state({ current: 0, total: 0 });
 
     const mappedFields = $derived(
         IMPORT_TARGET_FIELDS.filter((field) => mappingSelection[field.key] !== "")
@@ -87,8 +89,11 @@
 
     async function handleImport() {
         isImporting = true;
+        importProgress = { current: 0, total: mappedRows.length };
         try {
-            importResult = await importRows(mappedRows);
+            importResult = await importRows(mappedRows, (current, total) => {
+                importProgress = { current, total };
+            });
             step = "result";
         } finally {
             isImporting = false;
@@ -192,6 +197,13 @@
                         <p class="warn-hint">
                             ⚠ {warningsCount} Zeile{warningsCount === 1 ? "" : "n"} mit Warnungen (z. B. ungültige Werte).
                         </p>
+                    {/if}
+                    {#if isImporting}
+                        <ProgressBar
+                            current={importProgress.current}
+                            total={importProgress.total}
+                            label={"Importiere Zeile " + importProgress.current + " von " + importProgress.total}
+                        />
                     {/if}
                     <div class="editor-actions">
                         <Button variant="secondary" onclick={() => (step = "mapping")} disabled={isImporting}>

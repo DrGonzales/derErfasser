@@ -9,6 +9,7 @@
         initInspectionNameSuggestions,
         resetInspectionNameSuggestions,
     } from "./lib/stores/inspectionNameSuggestions.svelte";
+    import { initCameraSupport } from "./lib/stores/cameraSupport.svelte";
     import AdminPage from "./components/admin/AdminPage.svelte";
     import Dashboard from "./components/dashboard/Dashboard.svelte";
     import EntriesList from "./components/mobiles/EntriesList.svelte";
@@ -54,6 +55,10 @@
         // Prüfungsnamen-Vorschläge ("Aktuelle Prüfung") ebenfalls einmalig
         // beim Start aggregieren.
         initInspectionNameSuggestions();
+        // Prüft einmalig, ob eine Kamera vorhanden ist, damit z.B. in der
+        // Einträge-Liste das Barcode-Scan-Icon nur bei geeigneten Geräten
+        // angezeigt wird.
+        initCameraSupport();
     });
 
     function openDevice(record: {

@@ -1,14 +1,19 @@
 <script lang="ts">
     import { restoreDatabaseFromBackup } from "../../lib/db";
     import Button from "../shared/Button.svelte";
+    import ProgressBar from "../shared/ProgressBar.svelte";
 
     let { onRestored }: { onRestored?: () => void } = $props();
 
-    let isRestoring = $state(false);
+    type RestorePhase = "idle" | "extracting" | "saving";
+
+    let restorePhase = $state<RestorePhase>("idle");
+    let extractProgress = $state({ current: 0, total: 0 });
     let error = $state("");
 
     async function handleRestoreFile(file: File) {
-        isRestoring = true;
+        restorePhase = "extracting";
+        extractProgress = { current: 0, total: 0 };
         error = "";
 
         try {
@@ -17,13 +22,19 @@
             const { loadIndexedDBBackupZip } = await import(
                 "../../lib/zipService"
             );
-            const backup = await loadIndexedDBBackupZip(file);
+            const backup = await loadIndexedDBBackupZip(file, (current, total) => {
+                extractProgress = { current, total };
+            });
+
+            // Phase 2: Die eigentliche DB-Schreibung ist eine einzelne atomare
+            // IndexedDB-Transaktion und lässt sich daher nicht granular anzeigen.
+            restorePhase = "saving";
             await restoreDatabaseFromBackup(backup.records, backup.images, backup.meta);
             onRestored?.();
         } catch (err) {
             error = `Restore fehlgeschlagen: ${err instanceof Error ? err.message : String(err)}`;
         } finally {
-            isRestoring = false;
+            restorePhase = "idle";
         }
     }
 
@@ -42,9 +53,31 @@
 </script>
 
 <div class="restore-button">
-    <Button variant="primary" onclick={openFilePicker} disabled={isRestoring}>
-        {isRestoring ? "Restore läuft..." : "Backup wiederherstellen"}
+    <Button
+        variant="primary"
+        onclick={openFilePicker}
+        disabled={restorePhase !== "idle"}
+    >
+        {restorePhase !== "idle" ? "Restore läuft..." : "Backup wiederherstellen"}
     </Button>
+
+    {#if restorePhase === "extracting"}
+        {#if extractProgress.total > 0}
+            <ProgressBar
+                current={extractProgress.current}
+                total={extractProgress.total}
+                label={"Entpacke Bild " +
+                    extractProgress.current +
+                    " von " +
+                    extractProgress.total}
+            />
+        {:else}
+            <ProgressBar indeterminate label="Backup wird entpackt…" />
+        {/if}
+    {:else if restorePhase === "saving"}
+        <ProgressBar indeterminate label="Datenbank wird geschrieben…" />
+    {/if}
+
     {#if error}
         <p class="error">{error}</p>
     {/if}

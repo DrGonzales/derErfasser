@@ -27,7 +27,26 @@ export async function createIndexedDBBackupZip(): Promise<{ blob: Blob; meta?: M
     return { blob, meta };
 }
 
-export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: StoredRecord[]; images: StoredImage[]; meta?: Meta }> {
+/** Anzahl der Bild-Einträge, nach denen der Hauptthread kurz freigegeben wird. */
+const YIELD_EVERY_N_IMAGES = 10;
+
+/** Gibt den Hauptthread kurz frei, damit z. B. eine Fortschrittsanzeige neu rendern kann. */
+function yieldToMainThread(): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+/**
+ * Lädt ein Backup-ZIP und liefert Records, Bilder und optionale Meta-Daten.
+ *
+ * Über `onProgress` kann der Fortschritt beim Entpacken der Bild-Anhänge
+ * (aktuelles Bild / Gesamtanzahl) verfolgt werden. Der Hauptthread wird dabei
+ * regelmäßig kurz freigegeben, damit eine gebundene Fortschrittsanzeige
+ * tatsächlich neu rendern kann.
+ */
+export async function loadIndexedDBBackupZip(
+    file: Blob,
+    onProgress?: (current: number, total: number) => void
+): Promise<{ records: StoredRecord[]; images: StoredImage[]; meta?: Meta }> {
     const zip = await JSZip.loadAsync(file);
     const recordsFile = zip.file('records.json');
 
@@ -54,7 +73,9 @@ export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: Sto
             }
         });
 
-        for (const entry of fileEntries) {
+        const totalImages = fileEntries.length;
+        for (let i = 0; i < fileEntries.length; i++) {
+            const entry = fileEntries[i];
             const blob = await entry.async('blob');
             const filename = entry.name.split('/').pop() ?? entry.name;
             const dotIndex = filename.lastIndexOf('.');
@@ -68,6 +89,12 @@ export async function loadIndexedDBBackupZip(file: Blob): Promise<{ records: Sto
                 size: blob.size,
                 createdAt: Date.now()
             });
+
+            onProgress?.(i + 1, totalImages);
+
+            if ((i + 1) % YIELD_EVERY_N_IMAGES === 0) {
+                await yieldToMainThread();
+            }
         }
     }
 

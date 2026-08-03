@@ -11,6 +11,9 @@
     import DeviceEditor from "./DeviceEditor.svelte";
     import InspectionEditor from "./InspectionEditor.svelte";
     import BackupButton from "../admin/BackupButton.svelte";
+    import { cameraSupport } from "../../lib/stores/cameraSupport.svelte";
+    import { BarcodeIcon } from "../icons";
+    import BarcodeScannerModal from "../shared/BarcodeScannerModal.svelte";
 
     type Location = {
         locationName?: string;
@@ -40,6 +43,7 @@
     let lastBackup = $state<number | undefined>(undefined);
     let aktuellePruefung = $state("");
     let inspectionTarget = $state<EntryRow | null>(null);
+    let showBarcodeScanner = $state(false);
 
     const sortChips: SortChip[] = [
         { key: "manufacturer", label: "Hersteller" },
@@ -118,6 +122,10 @@
 
     function closeInspectionShortcut() {
         inspectionTarget = null;
+    }
+
+    function handleBarcodeDetected(code: string) {
+        entriesFilter.set(code);
     }
 
     function getSortValue(entry: EntryRow, key: EntriesSortKey) {
@@ -222,15 +230,27 @@
 <div class="wrap">
     <!-- Toolbar -->
     <div class="toolbar">
-        <label class="filter-field" for="entries-filter">
-            <span>Filter</span>
-            <input
-                id="entries-filter"
-                type="search"
-                placeholder="z.B. Siemens, Typ 123, SN-456, New Clara"
-                bind:value={$entriesFilter}
-            />
-        </label>
+        <div class="filter-field-wrap">
+            <label class="filter-field" for="entries-filter">
+                <span>Filter</span>
+                <input
+                    id="entries-filter"
+                    type="search"
+                    placeholder="z.B. Siemens, Typ 123, SN-456, New Clara"
+                    bind:value={$entriesFilter}
+                />
+            </label>
+            {#if cameraSupport.hasCamera}
+                <button
+                    type="button"
+                    class="barcode-scan-btn"
+                    aria-label="Barcode scannen"
+                    onclick={() => (showBarcodeScanner = true)}
+                >
+                    <BarcodeIcon size={22} />
+                </button>
+            {/if}
+        </div>
 
         <div class="status-chips" role="group" aria-label="Status-Filter">
             <button
@@ -457,6 +477,14 @@
     />
 {/if}
 
+{#if showBarcodeScanner}
+    <BarcodeScannerModal
+        onDetected={handleBarcodeDetected}
+        onClose={() => (showBarcodeScanner = false)}
+    />
+{/if}
+
+
 <style>
     /* ── Wrapper ─────────────────────────────────────────── */
     .wrap {
@@ -480,6 +508,39 @@
         gap: 0.35rem;
         color: var(--color-text-secondary);
         font-weight: 700;
+    }
+
+    .filter-field-wrap {
+        flex: 1;
+        min-width: 14rem;
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+    }
+
+    .filter-field-wrap .filter-field {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .barcode-scan-btn {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--color-border-input);
+        border-radius: 6px;
+        background: #fbfcfa;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+    }
+
+    .barcode-scan-btn:hover,
+    .barcode-scan-btn:focus-visible {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+        outline: none;
     }
 
     .filter-field input {
@@ -872,6 +933,10 @@
         }
 
         .filter-field {
+            min-width: 0;
+        }
+
+        .filter-field-wrap {
             min-width: 0;
         }
 

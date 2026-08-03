@@ -152,6 +152,14 @@ export type ImportResult = {
 	errors: string[];
 };
 
+/** Anzahl der Zeilen, nach denen der Hauptthread kurz freigegeben wird (siehe importRows). */
+const YIELD_EVERY_N_ROWS = 20;
+
+/** Gibt den Hauptthread kurz frei, damit z. B. eine Fortschrittsanzeige neu rendern kann. */
+function yieldToMainThread(): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 /**
  * Importiert alle gemappten Zeilen als neue Geräte-Datensätze. Jede Zeile
  * wird unabhängig verarbeitet (Teilimport): schlägt eine Zeile fehl, wird sie
@@ -159,12 +167,22 @@ export type ImportResult = {
  * Erfolgreich importierte Standorte werden sofort den Standort-Vorschlägen
  * hinzugefügt, damit sie danach z. B. im Geräte-Editor als Autocomplete
  * verfügbar sind.
+ *
+ * Über `onProgress` kann der Fortschritt (aktuelle Zeile / Gesamtanzahl)
+ * verfolgt werden. Damit eine gebundene Fortschrittsanzeige tatsächlich neu
+ * rendern kann, wird der Hauptthread alle `YIELD_EVERY_N_ROWS` Zeilen kurz
+ * freigegeben.
  */
-export async function importRows(mappedRows: MappedDeviceRow[]): Promise<ImportResult> {
+export async function importRows(
+	mappedRows: MappedDeviceRow[],
+	onProgress?: (current: number, total: number) => void
+): Promise<ImportResult> {
 	let successCount = 0;
 	const errors: string[] = [];
+	const total = mappedRows.length;
 
-	for (const mappedRow of mappedRows) {
+	for (let i = 0; i < mappedRows.length; i++) {
+		const mappedRow = mappedRows[i];
 		const rowLabel = `Zeile ${mappedRow.rowIndex + 2}`; // +2: 1-basiert + Kopfzeile
 
 		try {
@@ -179,6 +197,12 @@ export async function importRows(mappedRows: MappedDeviceRow[]): Promise<ImportR
 			}
 		} catch (err) {
 			errors.push(`${rowLabel}: ${err instanceof Error ? err.message : String(err)}`);
+		}
+
+		onProgress?.(i + 1, total);
+
+		if ((i + 1) % YIELD_EVERY_N_ROWS === 0) {
+			await yieldToMainThread();
 		}
 	}
 
