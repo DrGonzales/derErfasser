@@ -36,8 +36,10 @@
     let {
         onSelectDevice,
         uploadVersion = 0,
-    }: { onSelectDevice?: (item: EntryRow) => void; uploadVersion?: number } =
-        $props();
+    }: {
+        onSelectDevice?: (item: EntryRow, opts?: { fromScan?: boolean }) => void;
+        uploadVersion?: number;
+    } = $props();
 
     let creating = $state(false);
     let lastBackup = $state<number | undefined>(undefined);
@@ -126,6 +128,30 @@
 
     function handleBarcodeDetected(code: string) {
         entriesFilter.set(code);
+
+        const q = code.trim().toLowerCase();
+        if (!q) return;
+
+        // Nur Geräte berücksichtigen, die auch nach dem aktuellen Status-Filter
+        // sichtbar wären (ausgemustert / offen / abgearbeitet / alle).
+        const statusScoped = entries.filter((e) => {
+            const isDeactivated = e.device?.deactivated === true;
+            if ($entriesStatusFilter === "deactivated") return isDeactivated;
+            if (isDeactivated) return false;
+            if ($entriesStatusFilter === "current") return e.isCurrent;
+            if ($entriesStatusFilter === "outdated") return !e.isCurrent;
+            return true;
+        });
+
+        // Exakte Übereinstimmung der Seriennummer: wird eindeutig genau ein
+        // Gerät gefunden, direkt die Geräteansicht öffnen.
+        const matches = statusScoped.filter(
+            (e) => (e.device?.serialNumber ?? "").trim().toLowerCase() === q,
+        );
+
+        if (matches.length === 1) {
+            onSelectDevice?.(matches[0], { fromScan: true });
+        }
     }
 
     function getSortValue(entry: EntryRow, key: EntriesSortKey) {

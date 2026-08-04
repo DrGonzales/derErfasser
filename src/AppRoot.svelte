@@ -10,6 +10,7 @@
         resetInspectionNameSuggestions,
     } from "./lib/stores/inspectionNameSuggestions.svelte";
     import { initCameraSupport } from "./lib/stores/cameraSupport.svelte";
+    import { entriesFilter } from "./lib/stores/uiStore";
     import AdminPage from "./components/admin/AdminPage.svelte";
     import Dashboard from "./components/dashboard/Dashboard.svelte";
     import EntriesList from "./components/mobiles/EntriesList.svelte";
@@ -24,6 +25,10 @@
         location?: any;
         recordId: number;
     } | null = $state(null);
+    // true, wenn die aktuell offene Geräteansicht durch einen eindeutigen
+    // Barcode-Scan-Treffer automatisch geöffnet wurde. Steuert, ob beim
+    // Zurück-Navigieren der Einträge-Filter zurückgesetzt werden soll.
+    let clearFilterOnBack = $state(false);
     let hasData = $state<boolean | null>(null);
     let showAdmin = $state(false);
     let showDashboard = $state(false);
@@ -61,16 +66,20 @@
         initCameraSupport();
     });
 
-    function openDevice(record: {
-        device: any;
-        location?: any;
-        recordId: number;
-    }) {
+    function openDevice(
+        record: {
+            device: any;
+            location?: any;
+            recordId: number;
+        },
+        opts?: { fromScan?: boolean },
+    ) {
         selectedRecord = {
             device: record.device,
             location: record.location,
             recordId: record.recordId,
         };
+        clearFilterOnBack = !!opts?.fromScan;
     }
 
     function handleDeviceUpdated() {
@@ -79,6 +88,10 @@
 
     function closeDevice() {
         selectedRecord = null;
+        if (clearFilterOnBack) {
+            entriesFilter.set("");
+            clearFilterOnBack = false;
+        }
     }
 
     async function handleRestored() {

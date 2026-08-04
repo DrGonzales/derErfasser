@@ -5,6 +5,12 @@ Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 ## Unreleased
 
 ### Neu
+- Wird beim Scannen eines Barcodes in der Geräteliste genau ein Gerät über
+  eine exakt übereinstimmende Seriennummer gefunden (unter Berücksichtigung
+  des aktuell gewählten Status-Filters), öffnet sich automatisch dessen
+  Geräteansicht, ohne dass die Liste erst manuell durchsucht werden muss.
+  Beim Zurückgehen aus dieser automatisch geöffneten Ansicht wird der Filter
+  wieder geleert.
 - Geräte können jetzt als „ausgemustert“ markiert werden. In der Geräteliste
   gibt es dafür einen eigenen Filter-Chip „Ausgemustert“. Ausgemusterte
   Geräte werden in allen anderen Ansichten (Offen/Abgearbeitet/Alle) nicht
