@@ -88,6 +88,12 @@ Neben Bildern können auch **PDF-Dateien** (z. B. Datenblätter oder Prüfprotok
 
 Beim Überfahren eines Bildes bzw. eines PDF-Einträgs mit der Maus erscheint ein roter Papierkorb (bei Bildern oben rechts auf der Vorschau, bei PDFs rechts neben dem Dateinamen). Vor dem endgültigen Löschen erscheint eine Sicherheitsabfrage.
 
+### Gerät löschen
+
+Beim Bearbeiten eines Geräts (siehe [Gerät bearbeiten](#gerät-bearbeiten)) erscheint unten links im Formular ein Button **„Löschen“**, sofern das Gerät noch **keine Prüfung, keine Bilder und keine PDFs** besitzt. Nach Bestätigung einer Sicherheitsabfrage wird das Gerät **unwiderruflich** entfernt und die Geräteliste erscheint wieder.
+
+> **Hinweis:** Sobald einem Gerät bereits eine Prüfung, ein Bild oder ein PDF hinzugefügt wurde, steht der Button „Löschen“ nicht mehr zur Verfügung, um ein versehentliches Entfernen bereits dokumentierter Geräte zu verhindern. In diesem Fall bleibt nur die Ausmusterung über den Gerätezustand „Außer Betrieb“ (siehe [Automatische Ausmusterung](#automatische-ausmusterung)).
+
 ## Geräteliste – Filtern und Sortieren
 
 Die Geräteliste bietet folgende Werkzeuge:
