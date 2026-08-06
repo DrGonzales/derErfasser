@@ -54,6 +54,12 @@
         editing = false;
         onDeviceUpdated?.();
     }
+
+    function handleDelete() {
+        editing = false;
+        onDeviceUpdated?.();
+        onBack?.();
+    }
 </script>
 
 {#if device}
@@ -108,6 +114,7 @@
             {recordId}
             onSave={handleSave}
             onCancel={() => (editing = false)}
+            onDelete={handleDelete}
         />
     {/if}
 {:else}

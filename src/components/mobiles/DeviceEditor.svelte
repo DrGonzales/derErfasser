@@ -7,13 +7,14 @@
         protectionClassLabels,
         protectionClassInfo,
     } from "../../lib/models";
-    import { getRecord, updateRecord, addRecord } from "../../lib/db";
+    import { getRecord, updateRecord, addRecord, deleteRecord } from "../../lib/db";
     import {
         locationSuggestions,
         rememberLocation,
     } from "../../lib/stores/locationSuggestions.svelte";
     import Modal from "../shared/Modal.svelte";
     import Button from "../shared/Button.svelte";
+    import ConfirmDialog from "../shared/ConfirmDialog.svelte";
     import { cameraSupport } from "../../lib/stores/cameraSupport.svelte";
     import { BarcodeIcon } from "../icons";
     import BarcodeScannerModal from "../shared/BarcodeScannerModal.svelte";
@@ -24,15 +25,27 @@
         recordId = null,
         onSave,
         onCancel,
+        onDelete = undefined,
     }: {
         device?: DeviceModel | null;
         location?: Location | null;
         recordId?: number | null;
         onSave: (updated: DeviceModel) => void;
         onCancel: () => void;
+        onDelete?: (() => void) | undefined;
     } = $props();
 
     const isNew = untrack(() => recordId == null);
+
+    // Löschen ist nur für bereits gespeicherte Geräte möglich, die weder
+    // Prüfungen noch Bilder noch PDFs besitzen (sonst würden diese
+    // verwaisten Daten unwiderruflich zurückbleiben bzw. verloren gehen).
+    const canDelete = $derived(
+        !isNew &&
+            (device?.inspections?.length ?? 0) === 0 &&
+            (device?.pictures?.length ?? 0) === 0 &&
+            (device?.pdfs?.length ?? 0) === 0,
+    );
 
     const protectionClassOptions = Object.values(ProtectionClass);
 
@@ -53,6 +66,8 @@
     let saving = $state(false);
     let error  = $state("");
     let showBarcodeScanner = $state(false);
+    let confirmDeleteOpen = $state(false);
+    let deleting = $state(false);
 
     async function handleSubmit(e: SubmitEvent) {
         e.preventDefault();
@@ -97,6 +112,30 @@
 
     function handleBarcodeDetected(code: string) {
         serialNumber = code;
+    }
+
+    function requestDelete() {
+        confirmDeleteOpen = true;
+    }
+
+    function cancelDelete() {
+        confirmDeleteOpen = false;
+    }
+
+    async function confirmDelete() {
+        if (recordId == null) return;
+        deleting = true;
+        error = "";
+
+        try {
+            await deleteRecord(recordId);
+            confirmDeleteOpen = false;
+            onDelete?.();
+        } catch (err) {
+            error = err instanceof Error ? err.message : String(err);
+        } finally {
+            deleting = false;
+        }
     }
 </script>
 
@@ -225,12 +264,19 @@
             {/if}
 
             <div class="editor-actions">
-                <Button variant="secondary" onclick={onCancel} disabled={saving}>
-                    Abbrechen
-                </Button>
-                <Button variant="primary" type="submit" disabled={saving}>
-                    {saving ? "Speichern…" : "Speichern"}
-                </Button>
+                {#if canDelete}
+                    <Button variant="danger" onclick={requestDelete} disabled={saving}>
+                        Löschen
+                    </Button>
+                {/if}
+                <div class="editor-actions-right">
+                    <Button variant="secondary" onclick={onCancel} disabled={saving}>
+                        Abbrechen
+                    </Button>
+                    <Button variant="primary" type="submit" disabled={saving}>
+                        {saving ? "Speichern…" : "Speichern"}
+                    </Button>
+                </div>
             </div>
     </form>
 </Modal>
@@ -241,6 +287,15 @@
         onClose={() => (showBarcodeScanner = false)}
     />
 {/if}
+
+<ConfirmDialog
+    open={confirmDeleteOpen}
+    title="Gerät löschen?"
+    message="Dieses Gerät wird unwiderruflich gelöscht."
+    busy={deleting}
+    onConfirm={confirmDelete}
+    onCancel={cancelDelete}
+/>
 
 <style>
     .editor-form {
@@ -432,7 +487,13 @@
     .editor-actions {
         display: flex;
         gap: 0.75rem;
-        justify-content: flex-end;
+        justify-content: space-between;
         padding-top: 0.5rem;
+    }
+
+    .editor-actions-right {
+        display: flex;
+        gap: 0.75rem;
+        margin-left: auto;
     }
 </style>
