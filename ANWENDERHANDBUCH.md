@@ -9,6 +9,7 @@ Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs
 ## Inhalt
 
 - [Erste Schritte](#erste-schritte)
+- [App installieren und Offline-Nutzung](#app-installieren-und-offline-nutzung)
 - [Geräte verwalten](#geräte-verwalten)
 - [Geräteliste – Filtern und Sortieren](#geräteliste--filtern-und-sortieren)
 - [Eine Prüfung durchführen](#eine-prüfung-durchführen)
@@ -40,6 +41,29 @@ Dort gibt es zwei Möglichkeiten, um zu starten:
 2. **Backup wiederherstellen** – Wurde die App schon einmal genutzt und es existiert eine Backup-ZIP-Datei, kann diese unter der Kachel „Backup wiederherstellen“ geladen werden. Alle Geräte, Bilder und Prüfobjekt-Informationen aus dem Backup werden dabei übernommen (siehe [Backup und Wiederherstellung](#backup-und-wiederherstellung)).
 
 Sobald mindestens ein Gerät vorhanden ist, startet die App direkt in der **Geräteliste**. Der Administrationsbereich ist dann jederzeit über das Zahnrad-/Haus-Symbol oben rechts im Kopfbereich erreichbar.
+
+## App installieren und Offline-Nutzung
+
+Diese App ist als **Progressive Web App (PWA)** umgesetzt. Das bedeutet, sie kann wie eine gewöhnliche App auf dem Gerät installiert werden – mit eigenem Symbol auf dem Startbildschirm und ohne die Adressleiste des Browsers. Die Installation ist jedoch **rein optional**: Die App funktioniert unabhängig davon, ob sie installiert wurde oder weiterhin als normaler Browser-Tab genutzt wird, vollständig gleich – siehe [Verhalten im Offline-Betrieb](#verhalten-im-offline-betrieb).
+
+Im Administrationsbereich zeigt die Kachel **„App installieren“** je nach verwendetem Browser und Installationsstatus einen passenden Button oder eine kurze Anleitung an.
+
+### Installation je Browser
+
+- **Chrome / Edge:** In der Kachel „App installieren“ erscheint ein Button **„App installieren“**. Ein Klick darauf öffnet den Installationsdialog des Browsers; nach Bestätigung wird die App installiert und erscheint anschließend mit eigenem Symbol auf dem Startbildschirm bzw. im Anwendungsmenü. Erscheint der Button (noch) nicht, wurde die Installation entweder bereits einmal abgelehnt oder der Browser hat die Installierbarkeit noch nicht erkannt – die App funktioniert in diesem Fall unverändert im Browser-Tab weiter.
+- **Safari (iPhone/iPad):** Safari bietet keinen Installations-Button an. Stattdessen zeigt die Kachel eine kurze Anleitung: Auf das **Teilen-Symbol** tippen und anschließend **„Zum Home-Bildschirm“** wählen.
+- **Firefox (Android):** Ebenfalls kein Installations-Button; die Kachel zeigt hier den Hinweis, das **Menü (⋮)** zu öffnen und **„Installieren“** bzw. **„Zum Startbildschirm hinzufügen“** auszuwählen.
+- **Firefox (Desktop) und andere Browser:** Eine Installation ist hier nicht vorgesehen bzw. wird vom Browser nicht unterstützt. Die Kachel „App installieren“ wird in diesem Fall ausgeblendet – die App bleibt aber ganz normal im Browser-Tab nutzbar.
+
+Wurde die App bereits installiert, zeigt die Kachel stattdessen nur noch den Hinweis **„App ist installiert“** an; ein Button ist dann nicht mehr nötig.
+
+### Verhalten im Online-Betrieb
+
+Sobald eine Internetverbindung besteht, prüft die App im Hintergrund automatisch, ob eine neue Version verfügbar ist, und aktualisiert sich in diesem Fall selbstständig. Ein manuelles Update oder ein erneutes Herunterladen aus einem App-Store ist nicht nötig.
+
+### Verhalten im Offline-Betrieb
+
+Nach dem ersten Laden funktioniert die App **vollständig ohne Internetverbindung** – unabhängig davon, ob sie installiert wurde oder weiterhin im Browser-Tab läuft. Alle Daten (Geräte, Bilder, PDFs, Prüfobjekt-Informationen) werden ausschließlich lokal auf diesem Gerät in der Datenbank des Browsers (IndexedDB) gespeichert; es findet zu keinem Zeitpunkt eine Übertragung ins Internet statt. Die Installation ändert an diesem Verhalten nichts – sie ist lediglich ein Komfortmerkmal (eigenes App-Symbol, kein Browser-Rahmen, schnellerer Start), keine Voraussetzung für die Offline-Nutzung.
 
 ## Geräte verwalten
 

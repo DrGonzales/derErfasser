@@ -58,6 +58,15 @@
     let ratedVoltage    = $state(untrack(() => device?.ratedVoltage ?? 0));
     let ratedPower      = $state(untrack(() => device?.ratedPower ?? 0));
 
+    // Nachschlagen des Info-Objekts statt nur auf protectionClass (truthy)
+    // zu prüfen: So schützt der {#if}-Guard im Template auch gegen alte,
+    // ungültige protectionClass-Werte (siehe Device.ts-Konstruktor), bei
+    // denen protectionClassInfo[...] sonst undefined liefern und der Zugriff
+    // auf .kennzeichen crashen würde.
+    const currentProtectionClassInfo = $derived(
+        protectionClass ? protectionClassInfo[protectionClass] : undefined,
+    );
+
     // Location
     let locationName = $state(untrack(() => location?.locationName ?? ""));
     let building     = $state(untrack(() => location?.building ?? ""));
@@ -186,16 +195,16 @@
                         </label>
                     {/each}
                 </div>
-                {#if protectionClass}
+                {#if currentProtectionClassInfo}
                     <div class="protection-hint">
                         <dl>
                             <div>
                                 <dt>Kennzeichen</dt>
-                                <dd>{protectionClassInfo[protectionClass].kennzeichen}</dd>
+                                <dd>{currentProtectionClassInfo.kennzeichen}</dd>
                             </div>
                             <div>
                                 <dt>Erforderliche Prüfungen</dt>
-                                <dd>{protectionClassInfo[protectionClass].erforderlichePruefungen}</dd>
+                                <dd>{currentProtectionClassInfo.erforderlichePruefungen}</dd>
                             </div>
                         </dl>
                     </div>

@@ -33,7 +33,7 @@
             </div>
             <div>
                 <dt>Schutzklasse</dt>
-                <dd>{device.protectionClass ? protectionClassLabels[device.protectionClass] : "–"}</dd>
+                <dd>{device.protectionClass && protectionClassLabels[device.protectionClass] ? protectionClassLabels[device.protectionClass] : "–"}</dd>
             </div>
             <div>
                 <dt>Nennspannung</dt>

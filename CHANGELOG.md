@@ -2,126 +2,73 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
-## Unreleased
+## 07.08.2026 - App installierbar, Anleitung zur Offline-Nutzung, Fehlerbehebung
 
-### Neu
-- Wird beim Scannen eines Barcodes in der Geräteliste genau ein Gerät über
-  eine exakt übereinstimmende Seriennummer gefunden (unter Berücksichtigung
-  des aktuell gewählten Status-Filters), öffnet sich automatisch dessen
-  Geräteansicht, ohne dass die Liste erst manuell durchsucht werden muss.
-  Beim Zurückgehen aus dieser automatisch geöffneten Ansicht wird der Filter
-  wieder geleert.
-- Geräte können jetzt als „ausgemustert“ markiert werden. In der Geräteliste
-  gibt es dafür einen eigenen Filter-Chip „Ausgemustert“. Ausgemusterte
-  Geräte werden in allen anderen Ansichten (Offen/Abgearbeitet/Alle) nicht
-  mehr angezeigt und tauchen nur noch unter „Ausgemustert“ auf – unabhängig
-  davon, ob eine aktuelle Prüfung für das Gerät vorliegt. Das Prüf-Symbol
-  solcher Geräte wird zur besseren Erkennbarkeit rot dargestellt.
-- Wird bei einer Prüfung der Gerätezustand auf „Außer Betrieb“ gesetzt, wird
-  das Gerät automatisch als „ausgemustert“ markiert und erscheint danach nur
-  noch im „Ausgemustert“-Filter der Geräteliste. Wird bei einer späteren
-  Prüfung ein anderer Gerätezustand gewählt, wird die Markierung als
-  „ausgemustert“ wieder aufgehoben.
-- Neues Logo (Messleitungen-Symbol) für App-Icon, Startbildschirm und
-  Splash-Screen eingesetzt. Der Titel der App wurde von „Der Erfasser!“ in
-  „Prüftool“ geändert und wird zusammen mit dem neuen Logo im Kopfbereich
-  der App sowie beim Start (Splash-Screen) angezeigt.
-- Beim Anlegen/Bearbeiten eines Geräts werden für die Felder **Standortname**,
-  **Gebäude** und **Raum** jetzt Vorschläge aus bereits vorhandenen Geräten
-  angezeigt. Man kann also entweder einen bekannten Wert per Dropdown
-  auswählen oder wie bisher frei Text eingeben.
-- Beim Bearbeiten des Prüfobjekts wird für das Feld **Aktuelle Prüfung**
-  ebenfalls ein Dropdown mit bereits verwendeten Prüfungsnamen angeboten,
-  auch hier weiterhin mit freier Eingabe möglich.
-- Diese Vorschlagslisten werden einmalig beim Start der App aus dem
-  gesamten vorhandenen Datenbestand zusammengestellt (damit die App dadurch
-  nicht langsamer wird) und laufend ergänzt, sobald neue Werte eingegeben
-  werden – ganz ohne Neuladen der App.
-- Nach dem Wiederherstellen eines Backups oder dem Löschen aller Daten
-  werden diese Vorschlagslisten automatisch neu aufgebaut, damit sie immer
-  zum aktuellen Datenbestand passen.
-- Im Admin-Bereich gibt es jetzt unten einen Link „Changelog“. Darüber lässt
-  sich diese Liste der Änderungen direkt in der App als Fenster (Modal)
-  anzeigen, ganz ohne Internetverbindung.
-- Neu: ein **Dashboard** mit Übersicht über die aktuelle Prüfung, erreichbar
-  über einen eigenen Button im Kopfbereich der App. Es zeigt auf einen Blick:
-  - die Gesamtzahl der Geräte sowie die Anzahl aktiver und ausgemusterter
-    Geräte,
-  - den Prüfstatus (aktuell geprüft / offen / ausgemustert) als Diagramm,
-  - das Prüfergebnis (bestanden / nicht bestanden / kein Ergebnis) als
-    Diagramm,
-  - den Gerätezustand (vorhanden / defekt / außer Betrieb / nicht
-    auffindbar) als Diagramm.
-  Alle Zahlen und Diagramme beziehen sich auf die aktuell eingestellte
-  Prüfung.
-- Im Dashboard gibt es jetzt einen Button „Bericht erzeugen“, mit dem sich
-  ein PDF-Bericht zur aktuellen Prüfung herunterladen lässt. Der Bericht
-  enthält:
-  - ein Deckblatt mit den Angaben zum Prüfobjekt, Namen, Anschrift, Ort und
-    der aktuellen Prüfung,
-  - eine Übersichtsseite mit den Diagrammen zu Prüfstatus, Prüfergebnis und
-    Gerätezustand,
-  - Listen aller geprüften Geräte, getrennt nach den Ergebnissen „Bestanden“,
-    „Nicht bestanden“ und „Kein Ergebnis“, jeweils mit Standort, Seriennummer,
-    den einzelnen Prüfwerten (Sichtprüfung, Funktionsprüfung, Messung,
-    Gesamtergebnis) als Tabelle sowie einem eventuell hinterlegten Hinweis,
-  - eigene Listen für Geräte mit dem Zustand „Nicht auffindbar“ und
-    „Außer Betrieb“,
-  - eine Seitenzahl am Ende jeder Seite.
-  Geräte ohne aktuelle Prüfung oder mit einem anderen Gerätezustand tauchen
-  in diesen Listen nicht auf.
-- In der Geräteliste gibt es jetzt am rechten Rand jeder Karte einen
-  zusätzlichen Schnellzugriff auf die Prüfung: Ist noch keine aktuelle
-  Prüfung vorhanden, erscheint ein grünes „+“-Feld zum Anlegen einer neuen
-  Prüfung; ist bereits eine aktuelle Prüfung vorhanden, erscheint ein gelbes
-  Stift-Feld zum Bearbeiten. Beide öffnen direkt den Prüfungs-Editor, ohne
-  den Umweg über die Geräteansicht.
-- Neben Bildern können bei einem Gerät und bei einer Prüfung jetzt auch
-  **PDF-Dateien** (z. B. Datenblätter oder Prüfprotokolle) hochgeladen
-  werden, per Klick oder Drag & Drop, bis zu 20 MB je Datei. PDFs werden in
-  einer eigenen Liste getrennt von den Bildern angezeigt, mit einem
-  PDF-Symbol und dem Dateinamen. Ein Klick öffnet die Datei in einem neuen
-  Tab.
-- Hochgeladene Bilder und PDFs lassen sich jetzt auch wieder löschen: Beim
-  Überfahren mit der Maus erscheint ein roter Papierkorb (bei Bildern oben
-  rechts auf der Vorschau, bei PDFs rechts neben dem Dateinamen). Vor dem
-  endgültigen Löschen erscheint eine Sicherheitsabfrage.
-- Im Admin-Bereich gibt es jetzt zusätzlich einen Link „Anleitung“. Darüber
-  öffnet sich eine ausführliche Bedienungsanleitung der App direkt als
-  Fenster, ganz ohne Internetverbindung.
-- Beim Anlegen/Bearbeiten eines Geräts kann jetzt die **Schutzklasse**
-  (Schutzklasse I, II oder III) über Auswahlflächen festgelegt werden. Nach
-  Auswahl zeigt die App direkt einen Hinweis mit dem typischen Kennzeichen
-  und den dafür erforderlichen Prüfungen dieser Schutzklasse an.
-- Im Prüfungs-Editor können bei der Messung jetzt zusätzlich der
-  **Schutzleiterwiderstand (Ω)** und der **Ersatzableitstrom (mA)** erfasst
-  werden, neben den bereits vorhandenen Werten Isolationswiderstand und
-  Berührungsstrom. Alle vier Messwerte erscheinen auch in der
-  Ergebnis-Tabelle im PDF-Bericht.
-- Ist am Gerät eine Schutzklasse hinterlegt, zeigt der Prüfungs-Editor jetzt
-  direkt unter jedem der vier Messwertfelder den dafür zulässigen Grenzwert
-  an (z. B. „Grenzwert: ≥ 1 MΩ (500 V DC)“ beim Isolationswiderstand einer
-  Schutzklasse I). Ohne hinterlegte Schutzklasse erscheint kein Hinweis.
-- Geräte können jetzt aus einer Excel-/CSV-Datei importiert werden: Im
-  Admin-Bereich lässt sich über einen Spalten-Mapping-Assistenten eine Datei
-  hochladen, Spalten den Gerätefeldern zuordnen und nach einer Vorschau alle
-  Zeilen als neue Geräte anlegen. Fehlerhafte Zeilen werden übersprungen,
-  ohne den restlichen Import abzubrechen.
-- Neu: In derselben Kachel gibt es jetzt auch einen **Excel-Export**. Damit
-  lässt sich der gesamte Gerätebestand als Excel-Datei herunterladen – mit
-  allen Gerätefeldern sowie, sofern vorhanden, den Werten der aktuellen
-  Prüfung (Prüfdatum, Status, Sichtprüfung, Funktionsprüfung, Messung,
-  Messwerte, Gesamtergebnis, Hinweis). Bilder und PDFs werden dabei nicht
-  berücksichtigt, das Prüfdatum wird als echtes Excel-Datum exportiert.
+Im Admin-Bereich gibt es jetzt eine Kachel „App installieren“: Je nach
+verwendetem Browser erscheint dort ein Installations-Button oder eine kurze
+Anleitung, wie die App zum Startbildschirm hinzugefügt wird; ist die App
+bereits installiert, wird das entsprechend angezeigt. Im Anwenderhandbuch
+gibt es dazu ein neues Kapitel, das die Installation je Browser sowie das
+Online- und Offline-Verhalten der App erklärt. Außerdem wurde ein Fehler
+behoben, durch den sich die Geräte-Bearbeitung bei manchen älteren Geräten
+mit einer Fehlermeldung nicht mehr öffnen ließ.
 
-### Verbessert
-- Die App startet jetzt merklich schneller, da der Code für den PDF-Bericht
-  und für Backup/Wiederherstellung erst bei tatsächlicher Nutzung geladen
-  wird, statt beim App-Start immer mitgeladen zu werden.
-- Der Kopfbereich der App mit Logo, Titel und den Buttons für Dashboard und
-  Administration wird jetzt einheitlich in allen Bereichen angezeigt (bisher
-  nur in der Geräteliste). Von Dashboard und Administration kann dadurch
-  direkt zum jeweils anderen Bereich gewechselt werden, ohne zuerst zur
-  Geräteliste zurückzukehren.
-- Alle „Zurück“-Schaltflächen (in der Geräte-Detailansicht, im Dashboard und
-  in der Administration) sehen jetzt einheitlich aus.
+## 04.08.2026 - Barcode-Scan öffnet Geräteansicht direkt
+
+Wird beim Scannen eines Barcodes in der Geräteliste genau ein Gerät mit exakt
+übereinstimmender Seriennummer gefunden, öffnet sich dessen Geräteansicht
+jetzt automatisch, ohne dass die Liste erst manuell durchsucht werden muss.
+Beim Zurückgehen aus dieser automatisch geöffneten Ansicht wird der Filter
+wieder geleert.
+
+## 02.08.2026 - Excel-Import und -Export für Geräte
+
+Geräte können jetzt über einen Spalten-Mapping-Assistenten aus einer Excel-
+oder CSV-Datei importiert werden, inklusive Vorschau vor dem eigentlichen
+Import. Fehlerhafte Zeilen werden dabei übersprungen, ohne den restlichen
+Import abzubrechen. Ebenfalls neu ist der Excel-Export, mit dem sich der
+gesamte Gerätebestand samt den Werten der aktuellen Prüfung als Excel-Datei
+herunterladen lässt.
+
+## 30.07.2026 - Schutzklasse mit Kennzeichen, Grenzwerten und neuen Messwerten
+
+Beim Anlegen oder Bearbeiten eines Geräts kann jetzt die Schutzklasse
+(I, II oder III) ausgewählt werden. Die App zeigt dazu direkt das typische
+Kennzeichen und die erforderlichen Prüfungen an. Im Prüfungs-Editor können
+zusätzlich der Schutzleiterwiderstand und der Ersatzableitstrom erfasst
+werden, und zu jedem Messwert wird passend zur hinterlegten Schutzklasse der
+zulässige Grenzwert eingeblendet.
+
+## 22.07.2026 - Anleitung im Admin-Bereich und einheitlicher Kopfbereich
+
+Im Admin-Bereich steht jetzt eine ausführliche Bedienungsanleitung direkt in
+der App zur Verfügung, auch ohne Internetverbindung. Der Kopfbereich mit
+Logo, Titel und den Buttons für Dashboard und Administration wird nun in
+allen Bereichen der App einheitlich angezeigt, und alle „Zurück“-Schaltflächen
+sehen jetzt gleich aus.
+
+## 20.07.2026 - PDF-Upload, Löschen von Dateien und Prüfungs-Schnellzugriff
+
+Neben Bildern können bei einem Gerät und bei einer Prüfung jetzt auch
+PDF-Dateien hochgeladen werden, per Klick oder per Drag & Drop. Hochgeladene
+Bilder und PDFs lassen sich außerdem wieder löschen, jeweils mit vorheriger
+Sicherheitsabfrage. In der Geräteliste gibt es zudem einen Schnellzugriff auf
+die Prüfung direkt von jeder Gerätekarte aus.
+
+## 17.07.2026 - Dashboard und PDF-Bericht
+
+Ein neues Dashboard zeigt eine Übersicht zur aktuellen Prüfung mit Diagrammen
+zu Prüfstatus, Prüfergebnis und Gerätezustand. Darüber lässt sich außerdem ein
+PDF-Bericht mit Deckblatt, Übersichtsseite und Gerätelisten nach Prüfergebnis
+erzeugen und herunterladen. Zusätzlich startet die App jetzt merklich
+schneller.
+
+## 13.07.2026 - Ausmusterung, neues Logo, Changelog und Eingabe-Vorschläge
+
+Geräte können jetzt als „ausgemustert“ markiert werden und erscheinen dann
+nur noch unter einem eigenen Filter in der Geräteliste; das passiert auch
+automatisch, wenn der Gerätezustand auf „Außer Betrieb“ gesetzt wird. Die App
+trägt außerdem ein neues Logo und heißt jetzt „Prüftool“. Im Admin-Bereich
+lässt sich diese Änderungsliste direkt in der App anzeigen, und bei Standort-
+und Prüfungsfeldern werden jetzt Vorschläge aus bereits vorhandenen Werten
+angeboten.

@@ -204,21 +204,32 @@ Beim Arbeiten an diesem Projekt gilt:
 
 Im Projektroot existiert eine `CHANGELOG.md`.
 
-Agenten müssen bei **jeder** fachlichen Änderung am Code (neue Funktionen,
-Bugfixes, sichtbare Verhaltensänderungen) automatisch einen Eintrag in der
-`CHANGELOG.md` ergänzen — ohne dass der Nutzer extra danach fragen muss.
+Die Pflege der Changelog erfolgt über den spezialisierten Subagenten
+**`changelog-writer`** (`.opencode/agent/changelog-writer.md`), der über den
+Befehl **`/changelog`** (`.opencode/command/changelog.md`) oder direkt per
+Task-Aufruf ausgelöst wird — nicht mehr automatisch bei jeder Änderung.
+
+Format eines Eintrags (neuester Eintrag immer **oben**, direkt nach der
+Einleitung der Datei):
+
+```
+## DD.MM.YYYY - Kurze Zusammenfassung
+
+Ein bis wenige Fließtext-Sätze, keine Bulletpoints.
+```
+
+Beispiel: `## 20.01.2022 - Anpassung des Farbschema.`
 
 Dabei gilt:
 
-* Neue Einträge kommen unter die Überschrift `## Unreleased` (ggf. neu
-  anlegen, falls die Datei noch nicht existiert oder die Sektion fehlt).
 * Einträge werden in **einfacher, umgangssprachlicher deutscher Sprache**
   formuliert — verständlich für Nutzer ohne technischen Hintergrund, keine
-  Code- oder Dateireferenzen.
+  Code- oder Dateireferenzen, keine Bulletpoints.
 * Rein interne/technische Änderungen ohne erkennbare Auswirkung für den
-  Nutzer (z.B. reines Refactoring, Formatierung, Kommentare) müssen nicht
-  im Changelog erwähnt werden.
-* Bestehende Einträge nicht überschreiben, sondern neue Punkte ergänzen.
+  Nutzer (z. B. reines Refactoring, Formatierung, Kommentare) werden nicht
+  im Changelog erwähnt.
+* Bestehende Einträge werden nie überschrieben oder verändert, nur ein neuer
+  Eintrag oben ergänzt.
 * Die Datei bleibt Teil des normalen Commits der jeweiligen Änderung.
 
 ---

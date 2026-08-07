@@ -85,6 +85,21 @@ export class Device {
         const { inspections, ...rest } = data as Partial<Device>;
         Object.assign(this, rest);
 
+        // Vor der Einführung des ProtectionClass-Enums (siehe Commit
+        // "Schutzklasse als Enum mit Radio-Buttons") war protectionClass ein
+        // freies Textfeld. Ältere, bereits gespeicherte Geräte können daher
+        // noch einen ungültigen Wert enthalten (z. B. leeren/abweichenden
+        // Text), der nicht zu einem der drei Enum-Werte passt. Solche Werte
+        // werden hier auf "" zurückgesetzt, damit z. B.
+        // protectionClassInfo[protectionClass] an keiner Stelle der App auf
+        // einen fehlenden Eintrag trifft (siehe DeviceEditor.svelte).
+        if (
+            this.protectionClass &&
+            !Object.values(ProtectionClass).includes(this.protectionClass as ProtectionClass)
+        ) {
+            this.protectionClass = "";
+        }
+
         if (inspections) {
             this.inspections = inspections.map((entry) => new Inspection(entry as Partial<Inspection>));
         }

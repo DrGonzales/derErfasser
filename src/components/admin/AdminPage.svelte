@@ -12,6 +12,7 @@
     import HelpModal from "./HelpModal.svelte";
     import ImportModal from "./ImportModal.svelte";
     import ExportButton from "./ExportButton.svelte";
+    import InstallAppTile from "./InstallAppTile.svelte";
     import BackButton from "../shared/BackButton.svelte";
     import ConfirmDialog from "../shared/ConfirmDialog.svelte";
     import Button from "../shared/Button.svelte";
@@ -306,7 +307,10 @@
             </p>
         </section>
 
-        <!-- ── Kachel 4: Daten löschen ──────────────── -->
+        <!-- ── Kachel 4: App installieren ────────────── -->
+        <InstallAppTile />
+
+        <!-- ── Kachel 5: Daten löschen ──────────────── -->
         <section class="tile panel-card tile--danger">
             <h3>Daten löschen</h3>
             <p class="warn-hint">
