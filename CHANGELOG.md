@@ -2,6 +2,16 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 08.08.2026 - Neue Navigation und übersichtlicherer PDF-Bericht
+
+In der Kopfzeile gibt es jetzt einen eigenen „Prüfen“-Button, mit dem sich
+von Dashboard oder Administration direkt wieder zur Geräteprüfung wechseln
+lässt; die bisherigen Zurück-Buttons in diesen Bereichen wurden dadurch
+überflüssig und entfernt. Außerdem wurde das Layout der PDF-Berichte
+überarbeitet: Die Tabellen sind kompakter gestaltet, Geräte-Informationen
+und Prüfergebnisse sind klarer voneinander abgegrenzt und die Schriftgrößen
+wurden vereinheitlicht.
+
 ## 07.08.2026 - App installierbar, Anleitung zur Offline-Nutzung, Fehlerbehebung
 
 Im Admin-Bereich gibt es jetzt eine Kachel „App installieren“: Je nach

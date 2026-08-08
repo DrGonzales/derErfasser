@@ -4,4 +4,5 @@ export { default as TableCalcIcon } from './TableCalcIcon.svelte';
 export { default as PdfIcon } from './PdfIcon.svelte';
 export { default as TrashIcon } from './TrashIcon.svelte';
 export { default as HouseIcon } from './HouseIcon.svelte';
+export { default as InspectIcon } from './InspectIcon.svelte';
 export { default as BarcodeIcon } from './BarcodeIcon.svelte';

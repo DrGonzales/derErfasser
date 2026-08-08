@@ -118,6 +118,12 @@
         selectedRecord = null;
     }
 
+    function handleHomeNav() {
+        showDashboard = false;
+        showAdmin = false;
+        selectedRecord = null;
+    }
+
     function handleMetaReady() {
         // Meta-Daten (mit aktuellePruefung) wurden gespeichert, obwohl noch
         // keine Geräte existieren. Navigation in die Einträge-Liste freigeben,
@@ -148,26 +154,26 @@
             <p class="loading">Lädt...</p>
         {:else}
             <AppHeader
+                onHome={canNavigate ? handleHomeNav : undefined}
                 onDashboard={canNavigate ? handleDashboardNav : undefined}
                 onAdmin={canNavigate ? handleAdminNav : undefined}
                 activeNav={showDashboard
                     ? "dashboard"
                     : showAdminView
                       ? "admin"
-                      : null}
+                      : canNavigate
+                        ? "home"
+                        : null}
             />
 
             {#if showDashboard}
-                <Dashboard onBack={() => (showDashboard = false)} />
+                <Dashboard />
             {:else if showAdminView}
                 <AdminPage
                     hasData={hasData ?? false}
                     onRestored={handleRestored}
                     onMetaReady={handleMetaReady}
                     onDataCleared={handleDataCleared}
-                    onBack={hasData || metaConfirmed
-                        ? () => (showAdmin = false)
-                        : undefined}
                 />
             {:else}
                 <div hidden={!!selectedRecord}>

@@ -13,20 +13,17 @@
     import ImportModal from "./ImportModal.svelte";
     import ExportButton from "./ExportButton.svelte";
     import InstallAppTile from "./InstallAppTile.svelte";
-    import BackButton from "../shared/BackButton.svelte";
     import ConfirmDialog from "../shared/ConfirmDialog.svelte";
     import Button from "../shared/Button.svelte";
 
     let {
         hasData,
         onRestored,
-        onBack,
         onMetaReady,
         onDataCleared,
     }: {
         hasData: boolean;
         onRestored: () => void;
-        onBack?: () => void;
         onMetaReady?: () => void;
         onDataCleared?: () => void;
     } = $props();
@@ -160,12 +157,6 @@
 </script>
 
 <div class="admin-page">
-    {#if onBack}
-        <div class="back-row">
-            <BackButton onClick={onBack} />
-        </div>
-    {/if}
-
     <h2>Administration</h2>
 
     {#if !hasData}
@@ -385,10 +376,6 @@
         max-width: 600px;
         margin: 2rem auto;
         padding: 0 1rem;
-    }
-
-    .back-row {
-        margin-bottom: 0.75rem;
     }
 
     .changelog-link {

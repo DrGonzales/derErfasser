@@ -25,7 +25,7 @@ type TocEntry = {
 // werden daher kleiner als der übrige Fließtext (11pt) dargestellt sowie
 // automatisch umgebrochen, damit sie nicht über den rechten Seitenrand
 // hinauslaufen.
-const HINT_FONT_SIZE = 9;
+const HINT_FONT_SIZE = 8;
 const HINT_LINE_HEIGHT = 4.5;
 
 /**
@@ -281,7 +281,7 @@ type TableCell = {
  */
 function wrapCellText(doc: jsPDF, cell: TableCell, colWidth: number): string[] {
     doc.setFont('helvetica', cell.bold ? 'bold' : 'normal');
-    doc.setFontSize(cell.fontSize ?? 9);
+    doc.setFontSize(cell.fontSize ?? 8);
     if (!cell.wrap) return [cell.text];
     const maxWidth = colWidth - TABLE_CELL_PADDING * 2;
     return doc.splitTextToSize(cell.text, maxWidth);
@@ -343,7 +343,7 @@ function drawTableRow(
         const cell = cells[i];
         const lines = wrapCellText(doc, cell, colWidths[i]);
         doc.setFont('helvetica', cell.bold ? 'bold' : 'normal');
-        doc.setFontSize(cell.fontSize ?? 9);
+        doc.setFontSize(cell.fontSize ?? 8);
         doc.setTextColor(cell.color ?? '#000000');
 
         // Text oben ausgerichtet: erste Zeile knapp unter dem oberen
@@ -402,7 +402,7 @@ function drawDeviceInfoTable(
     inspection: Inspection | undefined,
 ): number {
     const colWidths = [width * 0.4, width * 0.35, width * 0.25];
-    const rowHeight = 8;
+    const rowHeight = 6;
 
     const locationParts = [location?.locationName, location?.building, location?.room]
         .map((v) => v?.trim())
@@ -425,9 +425,9 @@ function drawDeviceInfoTable(
     );
 
     currentY = drawTableRow(doc, x, currentY, colWidths, rowHeight, [
-        { text: formatDeviceLabel(device), fontSize: 10, wrap: true },
-        { text: locationParts.join(' - '), fontSize: 10, wrap: true },
-        { text: inspection ? deviceStatusLabels[inspection.status] : '', fontSize: 10 },
+        { text: formatDeviceLabel(device), fontSize: 8, wrap: true },
+        { text: locationParts.join(' - '), fontSize: 8, wrap: true },
+        { text: inspection ? deviceStatusLabels[inspection.status] : '', fontSize: 8 },
     ]);
 
     currentY = drawTableRow(
@@ -445,9 +445,9 @@ function drawDeviceInfoTable(
     );
 
     currentY = drawTableRow(doc, x, currentY, colWidths, rowHeight, [
-        { text: device.serialNumber ?? '', fontSize: 10 },
-        { text: protectionClassLabel, fontSize: 10 },
-        { text: inspection ? formatInspectionDate(inspection.inspectionDate) : '', fontSize: 10 },
+        { text: device.serialNumber ?? '', fontSize: 8 },
+        { text: protectionClassLabel, fontSize: 8 },
+        { text: inspection ? formatInspectionDate(inspection.inspectionDate) : '', fontSize: 8 },
     ]);
 
     return currentY;
@@ -476,8 +476,12 @@ function drawInspectionResultsTable(
     showMeasurements: boolean,
     description?: string,
 ): number {
-    const colWidths = [width * 0.7, width * 0.3];
-    const rowHeight = 8;
+    // Spaltenbreiten an die Kopf-Tabelle angeglichen: die "Ergebnis"-Spalte
+    // beginnt an derselben x-Position wie die "Status"-Spalte der
+    // Geräte-Info-Tabelle (Gerät 40% + Standort 35% = 75%), damit beide
+    // Spalten optisch untereinander ausgerichtet sind.
+    const colWidths = [width * 0.75, width * 0.25];
+    const rowHeight = 6;
 
     const rows: { label: string; result: InspectionResult; isOverall?: boolean; isMeasurement?: boolean }[] = [
         { label: 'Sichtprüfung', result: inspection?.visualTestResult ?? InspectionResult.NoResult },
@@ -505,8 +509,8 @@ function drawInspectionResultsTable(
             colWidths,
             rowHeight,
             [
-                { text: row.label, bold: row.isOverall, fontSize: 10 },
-                { text: inspection ? resultLabel : '-', bold: true, color: resultTextColor(row.result), fontSize: 10 },
+                { text: row.label, bold: row.isOverall, fontSize: 8 },
+                { text: inspection ? resultLabel : '-', bold: true, color: resultTextColor(row.result), fontSize: 8 },
             ],
             index % 2 === 1 ? TABLE_ALT_ROW_BG : undefined,
         );
@@ -526,8 +530,8 @@ function drawInspectionResultsTable(
         const hintLabelWidth = width * 0.2;
         const hintColWidths = [hintLabelWidth, width - hintLabelWidth];
         currentY = drawTableRow(doc, x, currentY, hintColWidths, rowHeight, [
-            { text: 'Hinweis', bold: true, fontSize: 10 },
-            { text: description.trim(), fontSize: 9, wrap: true },
+            { text: 'Hinweis', bold: true, fontSize: 8 },
+            { text: description.trim(), fontSize: 8, wrap: true },
         ]);
     }
 
@@ -546,7 +550,7 @@ function drawInspectionResultsTable(
 function drawMeasurementTable(doc: jsPDF, x: number, y: number, width: number, inspection: Inspection | undefined): number {
     const colCount = 4;
     const colWidths = Array(colCount).fill(width / colCount);
-    const rowHeight = 8;
+    const rowHeight = 6;
 
     const headers = ['Berührungsstrom', 'Ersatzableitstrom', 'Isolationswiderstand', 'Schutzleiterwiderstand'];
     // Hinweis: "Ω" liegt außerhalb der WinAnsi-Kodierung der jsPDF-Standardfonts
@@ -574,7 +578,7 @@ function drawMeasurementTable(doc: jsPDF, x: number, y: number, width: number, i
         currentY,
         colWidths,
         rowHeight,
-        values.map((v) => ({ text: v, fontSize: 9 })),
+        values.map((v) => ({ text: v, fontSize: 8 })),
     );
 
     return currentY;
@@ -636,8 +640,8 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
     const pageHeight = doc.internal.pageSize.getHeight();
     const marginX = 20;
     const marginBottom = 20;
-    const blockGap = 12;
-    const baseRowHeight = 8;
+    const blockGap = 6;
+    const baseRowHeight = 6;
     const headTableRowCount = 4;
     const resultTableRowCount = 5; // Kopfzeile + 4 Prüftyp-Zeilen
     const measurementTableHeight = baseRowHeight + baseRowHeight;
@@ -645,11 +649,13 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
 
     let y = 20;
 
-    // Seitenüberschrift
+    // Seitenüberschrift: linksbündig, an der Tabellenkante ausgerichtet
+    // (statt zentriert), damit sie optisch mit dem linken Tabellenrand
+    // abschließt.
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.text(title, pageWidth / 2, y, { align: 'center' });
-    y += 14;
+    doc.setFontSize(10);
+    doc.text(title, marginX, y);
+    y += 6;
 
     for (const entry of devices) {
         const { device, location, inspection } = entry;
@@ -664,9 +670,9 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
             .map((v) => v?.trim())
             .filter((v): v is string => Boolean(v));
         const headValueRowHeight = calculateRowHeight(doc, headColWidths, [
-            { text: formatDeviceLabel(device), fontSize: 10, wrap: true },
-            { text: locationParts.join(' - '), fontSize: 10, wrap: true },
-            { text: '', fontSize: 10 },
+            { text: formatDeviceLabel(device), fontSize: 8, wrap: true },
+            { text: locationParts.join(' - '), fontSize: 8, wrap: true },
+            { text: '', fontSize: 8 },
         ], baseRowHeight);
         const headTableHeight = baseRowHeight * (headTableRowCount - 1) + headValueRowHeight;
 
@@ -678,8 +684,8 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
                 doc,
                 [hintLabelWidth, tableWidth - hintLabelWidth],
                 [
-                    { text: 'Hinweis', bold: true, fontSize: 10 },
-                    { text: description!, fontSize: 9, wrap: true },
+                    { text: 'Hinweis', bold: true, fontSize: 8 },
+                    { text: description!, fontSize: 8, wrap: true },
                 ],
                 baseRowHeight,
             );
@@ -687,7 +693,7 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
 
         // Zeilen: Kopf-Tabelle, Ergebnis-Tabelle, (optional) Messwerte-Tabelle,
         // (optional) Hinweis-Zeile.
-        let blockHeight = headTableHeight + 4 + baseRowHeight * resultTableRowCount + 4;
+        let blockHeight = headTableHeight + baseRowHeight * resultTableRowCount;
         if (showMeasurements) {
             blockHeight += measurementTableHeight;
         }
@@ -702,14 +708,23 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
 
         // Kopf-Tabelle: Gerät | Standort | Status, darunter Seriennummer | Schutzklasse | Prüfdatum
         y = drawDeviceInfoTable(doc, marginX, y, tableWidth, device, location, inspection);
-        y += 4;
+
+        // Trennlinie zwischen Kopf-Tabelle und Prüfergebnis-Tabelle, damit
+        // beide Abschnitte trotz nahtloser Aneinanderreihung (kein
+        // Zwischenraum) optisch klar voneinander abgegrenzt sind.
+        doc.setDrawColor(TABLE_BORDER_COLOR);
+        doc.setLineWidth(0.6);
+        doc.line(marginX, y, marginX + tableWidth, y);
+        doc.setDrawColor('#000000');
+        doc.setLineWidth(0.2);
 
         // Prüfergebnis-Tabelle: Prüftyp | Ergebnis (inkl. eingebetteter
-        // Messwerte-Tabelle sowie optionaler Hinweis-Zeile)
+        // Messwerte-Tabelle sowie optionaler Hinweis-Zeile), nahtlos direkt
+        // unter der Kopf-Tabelle angefügt (keine Lücke), damit beide optisch
+        // als eine durchgehende Tabelle erscheinen.
         y = drawInspectionResultsTable(doc, marginX, y, tableWidth, inspection, showMeasurements, description);
-        y += 4;
 
-        // Größerer Abstand zwischen den Geräten
+        // Abstand zwischen den Geräten
         y += blockGap;
     }
 }
@@ -746,7 +761,7 @@ function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry
 
     // Seitenüberschrift
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
+    doc.setFontSize(10);
     doc.text(title, pageWidth / 2, y, { align: 'center' });
     y += 14;
 
@@ -767,7 +782,7 @@ function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry
 
         // Zeile 1: Hersteller - Modell (fett)
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(12);
+        doc.setFontSize(8);
         const titleParts = [device.manufacturer, device.model]
             .map((v) => v?.trim())
             .filter((v): v is string => Boolean(v));
@@ -776,7 +791,7 @@ function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry
 
         // Zeile 2: Seriennummer (normale Schrift)
         doc.setFont('helvetica', 'normal');
-        doc.setFontSize(11);
+        doc.setFontSize(8);
         doc.text(`Seriennummer : ${device.serialNumber ?? ''}`, marginX, y);
         y += lineHeight;
 

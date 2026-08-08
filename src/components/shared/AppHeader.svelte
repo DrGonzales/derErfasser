@@ -1,15 +1,17 @@
 <script lang="ts">
-    import { TableCalcIcon, HouseIcon } from "../icons";
+    import { TableCalcIcon, HouseIcon, InspectIcon } from "../icons";
     import duspolLogo from "../../assets/duspol.svg";
 
     let {
+        onHome,
         onDashboard,
         onAdmin,
         activeNav = null,
     }: {
+        onHome?: () => void;
         onDashboard?: () => void;
         onAdmin?: () => void;
-        activeNav?: "dashboard" | "admin" | null;
+        activeNav?: "home" | "dashboard" | "admin" | null;
     } = $props();
 </script>
 
@@ -19,6 +21,18 @@
         <h1>Prüftool</h1>
     </div>
     <div class="header-actions">
+        {#if onHome}
+            <button
+                type="button"
+                class="nav-btn"
+                class:nav-btn--active={activeNav === "home"}
+                aria-label="Prüfen"
+                title="Prüfen"
+                onclick={onHome}
+            >
+                <InspectIcon size={22} />
+            </button>
+        {/if}
         {#if onDashboard}
             <button
                 type="button"

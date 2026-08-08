@@ -11,10 +11,7 @@
     import { ResultIcon, StatusIcon } from "../icons";
     import DonutChart from "../charts/DonutChart.svelte";
     import ReportButton from "./ReportButton.svelte";
-    import BackButton from "../shared/BackButton.svelte";
     import type { ReportDeviceEntry } from "../../lib/reportService";
-
-    let { onBack }: { onBack?: () => void } = $props();
 
     type StatusCounts = Record<DeviceStatus, number>;
 
@@ -266,12 +263,6 @@
 </script>
 
 <div class="dashboard-page">
-    {#if onBack}
-        <div class="back-row">
-            <BackButton onClick={onBack} />
-        </div>
-    {/if}
-
     <div class="dashboard-header">
         <h2>Dashboard</h2>
         <ReportButton
@@ -465,10 +456,6 @@
         max-width: 600px;
         margin: 2rem auto;
         padding: 0 1rem;
-    }
-
-    .back-row {
-        margin-bottom: 0.75rem;
     }
 
     h2 {
