@@ -126,6 +126,37 @@ Beim Bearbeiten eines Geräts (siehe [Gerät bearbeiten](#gerät-bearbeiten)) er
 
 > **Hinweis:** Sobald einem Gerät bereits eine Prüfung, ein Bild oder ein PDF hinzugefügt wurde, steht der Button „Löschen“ nicht mehr zur Verfügung, um ein versehentliches Entfernen bereits dokumentierter Geräte zu verhindern. In diesem Fall bleibt nur die Ausmusterung über den Gerätezustand „Außer Betrieb“ (siehe [Automatische Ausmusterung](#automatische-ausmusterung)).
 
+### Gerät klonen
+
+Beim Bearbeiten eines bereits gespeicherten Geräts erscheint in der Fußzeile des Bearbeitungsformulars ein blauer Button **„Klonen"** (mit Klon-/Kopier-Symbol). Mit Klonen lässt sich schnell ein neues Gerät basierend auf den Daten eines bestehenden Geräts anlegen, ohne alle Felder von Hand neu eintragen zu müssen.
+
+**Verfügbarkeit:**
+Der Klonen-Button ist nur verfügbar, wenn:
+- das Gerät bereits mindestens einmal gespeichert wurde (nicht bei der Neuanlage eines Geräts),
+- und keine ungespeicherten Änderungen im Formular vorhanden sind.
+
+Sobald ein Feld verändert wird, deaktiviert sich der Button automatisch (mit dem Tooltip-Hinweis „Klonen ist erst nach dem Speichern der Änderungen möglich"). Nach dem Speichern oder Verwerfen der Änderungen ist der Button wieder einsatzbereit.
+
+**Was wird geklont:**
+Beim Klick auf „Klonen" wird sofort ein neues Gerät als Kopie angelegt und erhält folgende Daten vom Original:
+- Typ, Hersteller, Modell
+- Schutzklasse, Nennspannung, Nennleistung
+- Standortname, Gebäude, Raum
+
+**Was wird NICHT geklont:**
+- **Seriennummer** – bleibt leer, da jedes Gerät eine eigene Seriennummer benötigt,
+- **Ausmusterungs-Status** – der Klon startet als aktives Gerät,
+- **Bilder und PDFs** – werden nicht übernommen,
+- **Prüfhistorie** – der Klon hat keine früheren Prüfungen; Prüfungen werden von Anfang an dokumentiert.
+
+**Nach dem Klonen:**
+Der Nutzer bleibt im Bearbeitungsformular des **Original-Geräts**; es öffnet sich kein neuer Editor für den Klon. Stattdessen zeigt ein Bestätigungsdialog die Meldung „<Hersteller> – <Modell> wurden geklont." mit einem „Ok"-Button an.
+
+**Klone in der Geräteliste finden:**
+Geklonte Geräte, die noch nicht bearbeitet oder gespeichert wurden, lassen sich in der Geräteliste über einen neuen Filter-Chip **„Klone"** (blau, mit Klon-Symbol) gezielt finden und sortieren. Der Nutzer kann dort alle frisch geklonten Geräte auf einen Blick sehen, um ihnen beispielsweise eine Seriennummer zuzuweisen.
+
+Sobald ein geklontes Gerät einmal bearbeitet und gespeichert wurde (z. B. nach dem Eintragen einer Seriennummer), verschwindet es automatisch aus dieser Klon-Filteransicht – es gilt dann als reguläres, vollständig erfasstes Gerät.
+
 ## Geräteliste – Filtern und Sortieren
 
 Die Geräteliste bietet folgende Werkzeuge:
@@ -136,6 +167,7 @@ Die Geräteliste bietet folgende Werkzeuge:
   - **Abgearbeitet** – Geräte, die in der aktuellen Prüfrunde bereits geprüft wurden
   - **Alle** – alle aktiven (nicht ausgemusterten) Geräte
   - **Ausgemustert** – nur ausgemusterte Geräte (siehe [Eine Prüfung durchführen](#eine-prüfung-durchführen))
+  - **Klone** – geklonte Geräte, die noch nicht bearbeitet oder gespeichert wurden (siehe [Gerät klonen](#gerät-klonen))
 - **Sortier-Chips** – Sortierung nach Hersteller, Modell, Seriennummer, Standort, Gebäude oder Raum. Ein erneuter Klick auf denselben Chip dreht die Sortierrichtung um.
 - **Ergebnis-Zähler** – zeigt an, wie viele Geräte nach Anwendung der Filter sichtbar sind (im Verhältnis zur Gesamtzahl).
 

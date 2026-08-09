@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 09.08.2026 - Neue Funktion "Gerät klonen"
+
+Im Geräte-Editor gibt es einen neuen „Klonen"-Button, der bei bereits gespeicherten Geräten ohne ungespeicherte Änderungen angezeigt wird. Beim Klicken wird sofort eine Kopie des Geräts angelegt, die Typ, Hersteller, Modell, Schutzklasse, Nennspannung, Nennleistung und Standort übernimmt. Die Seriennummer bleibt leer und muss neu vergeben werden; Ausmusterungsstatus, Bilder, PDFs und Prüfhistorie werden bewusst nicht übernommen. Nach dem Klonen bleibt der Nutzer im Editor und erhält eine Bestätigungsmeldung. In der Geräteübersicht gibt es zudem einen neuen Filter-Chip „Klone", über den frisch geklonte, noch nicht bearbeitete Geräte gefunden werden können.
+
 ## 09.08.2026 - Auditor-Daten in Verwaltung und PDF-Bericht
 
 In der Verwaltung unter „Prüfobjekt" können jetzt Angaben zum Auditor erfasst und bearbeitet werden: Name oder Firmenname, Anschrift, Ort und Name des Prüfers. Diese Daten werden auf dem Deckblatt des PDF-Berichts unterhalb der Prüfung angezeigt. Am Ende des Berichts gibt es zudem ein Unterschriftenfeld mit dem Namen des Prüfers, dem aktuellen Datum und einer Unterschriftslinie zum Unterzeichnen.
