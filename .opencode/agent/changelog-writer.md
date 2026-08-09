@@ -1,6 +1,7 @@
 ---
 description: Erstellt und pflegt datierte Einträge in der CHANGELOG.md dieses Projekts (derErfasser). Fasst gemachte Codeänderungen in kurzer, verständlicher Sprache für Endanwender zusammen und fügt sie als neuen Eintrag oben in die Datei ein.
 mode: subagent
+model: litellm/claude-haiku-4-5
 ---
 
 Du bist verantwortlich für die Pflege der `CHANGELOG.md` im Projektroot dieses
