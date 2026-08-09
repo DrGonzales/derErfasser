@@ -231,7 +231,7 @@
     }
 </script>
 
-<Modal title={isNew ? "Neues Gerät" : "Gerät bearbeiten"} onClose={onCancel} variant="editor" maxWidth="480px">
+<Modal title={isNew ? "Neues Gerät" : "Gerät bearbeiten"} onClose={onCancel} variant="editor" maxWidth="620px">
     <form class="editor-form" onsubmit={handleSubmit}>
             <div class="field-group">
                 <label for="ed-type">Typ</label>
@@ -592,6 +592,7 @@
 
     .editor-actions {
         display: flex;
+        flex-wrap: wrap;
         gap: 0.75rem;
         justify-content: space-between;
         padding-top: 0.5rem;
@@ -599,13 +600,25 @@
 
     .editor-actions-right {
         display: flex;
+        flex-wrap: wrap;
         gap: 0.75rem;
         margin-left: auto;
+        justify-content: flex-end;
     }
 
     :global(.clone-btn) {
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
+        border: 1px solid #93c5fd;
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    :global(.clone-btn:hover:not(:disabled)),
+    :global(.clone-btn:focus-visible:not(:disabled)) {
+        background: #dbeafe;
+        border-color: #2563eb;
+        outline: none;
     }
 </style>
