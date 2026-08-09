@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 09.08.2026 - Auditor-Daten in Verwaltung und PDF-Bericht
+
+In der Verwaltung unter „Prüfobjekt" können jetzt Angaben zum Auditor erfasst und bearbeitet werden: Name oder Firmenname, Anschrift, Ort und Name des Prüfers. Diese Daten werden auf dem Deckblatt des PDF-Berichts unterhalb der Prüfung angezeigt. Am Ende des Berichts gibt es zudem ein Unterschriftenfeld mit dem Namen des Prüfers, dem aktuellen Datum und einer Unterschriftslinie zum Unterzeichnen.
+
 ## 08.08.2026 - Neue Navigation und übersichtlicherer PDF-Bericht
 
 In der Kopfzeile gibt es jetzt einen eigenen „Prüfen“-Button, mit dem sich

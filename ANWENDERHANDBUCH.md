@@ -36,6 +36,14 @@ Dort gibt es zwei Möglichkeiten, um zu starten:
    - **Ort**
    - **Aktuelle Prüfung** – Name der aktuellen Prüfrunde (z. B. „2026-Q1“). Solange noch keine Geräte angelegt sind, muss dieses Feld ausgefüllt werden, um fortfahren zu können.
 
+   Darunter befindet sich ein eigener Bereich **„Auditor“** mit weiteren, optionalen Feldern zur prüfenden Person bzw. Firma:
+   - **Name** – Name oder Firmenname des Auditors
+   - **Anschrift**
+   - **Ort**
+   - **Prüfer** – Name der Person, die die Prüfung tatsächlich durchführt und später den Bericht unterschreibt
+
+   Diese Auditor-Angaben erscheinen später auf dem Deckblatt des PDF-Berichts sowie im Unterschriftenfeld am Ende des Berichts (siehe [PDF-Bericht erzeugen](#pdf-bericht-erzeugen)).
+
    Nach dem Speichern gelangt man über den Button „Weiter zu den Einträgen“ direkt zur Geräteliste, um neue Geräte anzulegen.
 
 2. **Backup wiederherstellen** – Wurde die App schon einmal genutzt und es existiert eine Backup-ZIP-Datei, kann diese unter der Kachel „Backup wiederherstellen“ geladen werden. Alle Geräte, Bilder und Prüfobjekt-Informationen aus dem Backup werden dabei übernommen (siehe [Backup und Wiederherstellung](#backup-und-wiederherstellung)).
@@ -197,10 +205,11 @@ Alle Zahlen und Diagramme beziehen sich ausschließlich auf die aktuell im Prüf
 
 Im Dashboard steht der Button **„Bericht erzeugen“** zur Verfügung. Er erstellt einen PDF-Bericht zur aktuellen Prüfung mit folgendem Inhalt:
 
-- ein **Deckblatt** mit den Angaben zum Prüfobjekt (Namen, Anschrift, Ort, aktuelle Prüfung),
+- ein **Deckblatt** mit den Angaben zum Prüfobjekt (Namen, Anschrift, Ort, aktuelle Prüfung) sowie – sofern hinterlegt – den Auditor-Angaben (Name, Anschrift, Ort und Prüfer),
 - eine **Übersichtsseite** mit den drei Diagrammen aus dem Dashboard,
 - Listen aller geprüften Geräte, getrennt nach den Ergebnissen **Bestanden**, **Nicht bestanden** und **Kein Ergebnis** – jeweils mit Standort, Seriennummer und den einzelnen Prüfwerten (Sichtprüfung, Funktionsprüfung, Messung inkl. Schutzleiterwiderstand, Isolationswiderstand, Ersatzableitstrom und Berührungsstrom, Gesamtergebnis) sowie einem eventuell hinterlegten Hinweis,
 - eigene Listen für Geräte mit dem Zustand **„Nicht auffindbar“** und **„Außer Betrieb“**,
+- ein **Unterschriftenfeld** am Ende des Berichts mit dem Namen des Prüfers und dem aktuellen Datum, gefolgt von einer Linie zum Unterschreiben. Wurde kein Prüfer hinterlegt, erscheint stattdessen ein Platzhalter-Strich mit dem Datum,
 - eine Seitenzahl am Ende jeder Seite.
 
 Geräte ohne aktuelle Prüfung oder mit abweichendem Gerätezustand tauchen in diesen Listen nicht auf. Der Bericht wird als PDF-Datei herunterladen.
@@ -215,7 +224,7 @@ Das Backup ist ein vollständiger, in sich geschlossener Datenstand und enthält
 
 - alle Geräte und deren gesamte **Prüfhistorie** (alle Prüfrunden, nicht nur die aktuelle),
 - alle zu den Geräten und Prüfungen hochgeladenen **Bilder und PDF-Dokumente**,
-- die **Prüfobjekt-Angaben** (Name, Namen, Anschrift, Ort, aktuelle Prüfung).
+- die **Prüfobjekt-Angaben** (Name, Namen, Anschrift, Ort, aktuelle Prüfung, sowie die Auditor-Angaben).
 
 Der Dateiname des Backups enthält bereits den Namen des Prüfobjekts sowie Datum und Uhrzeit der Erstellung, analog zum PDF-Bericht und zum Excel-Export.
 
