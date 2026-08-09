@@ -387,7 +387,10 @@
                         type="button"
                         class="inspect-btn"
                         class:inspect-btn--outdated={!item.isCurrent &&
-                            !item.device?.deactivated}
+                            !item.device?.deactivated &&
+                            item.device?.cloned !== true}
+                        class:inspect-btn--cloned={item.device?.cloned ===
+                            true && !item.device?.deactivated}
                         class:inspect-btn--deactivated={item.device
                             ?.deactivated}
                         aria-label="Gerät prüfen / öffnen"
@@ -900,6 +903,20 @@
     .inspect-btn--deactivated:hover,
     .inspect-btn--deactivated:focus-visible {
         background: var(--color-danger);
+        color: #fff;
+        outline: none;
+    }
+
+    /* Geklont → blau (nach Muster .chip--cloned) */
+    .inspect-btn--cloned {
+        background: #eff6ff;
+        border-right-color: #93c5fd;
+        color: #1d4ed8;
+    }
+
+    .inspect-btn--cloned:hover,
+    .inspect-btn--cloned:focus-visible {
+        background: #2563eb;
         color: #fff;
         outline: none;
     }
