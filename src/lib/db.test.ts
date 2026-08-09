@@ -308,7 +308,11 @@ describe('getMeta / saveMeta', () => {
 	});
 
 	it('speichert und liest Meta als Meta-Instanz', async () => {
-		const meta = new Meta({ pruefObjekt: 'Objekt', namen: 'Max Mustermann' });
+		const meta = new Meta({
+			pruefObjekt: 'Objekt',
+			namen: 'Max Mustermann',
+			auditor: { name: 'Prüf-Firma', anschrift: 'Prüfstr. 1', ort: '99999 Prüfstadt', auditorname: 'Erika Prüferin' },
+		});
 
 		await saveMeta(meta);
 		const loaded = await getMeta();
@@ -316,6 +320,21 @@ describe('getMeta / saveMeta', () => {
 		expect(loaded).toBeInstanceOf(Meta);
 		expect(loaded?.pruefObjekt).toBe('Objekt');
 		expect(loaded?.namen).toBe('Max Mustermann');
+		expect(loaded?.auditor).toEqual({
+			name: 'Prüf-Firma',
+			anschrift: 'Prüfstr. 1',
+			ort: '99999 Prüfstadt',
+			auditorname: 'Erika Prüferin',
+		});
+	});
+
+	it('ergänzt fehlendes auditor-Objekt bei Legacy-Meta-Datensätzen mit Defaults', async () => {
+		await saveMeta(new Meta({ pruefObjekt: 'Legacy' }));
+
+		// Simuliert einen älteren, direkt in die DB geschriebenen Datensatz
+		// ohne `auditor`-Property (z. B. aus einem alten Backup-Restore).
+		const raw = await getMeta();
+		expect(raw?.auditor).toEqual({ name: '', anschrift: '', ort: '', auditorname: '' });
 	});
 
 	it('überschreibt vorhandene Meta beim erneuten Speichern', async () => {

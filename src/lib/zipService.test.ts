@@ -44,7 +44,8 @@ const sampleMeta: Meta = {
 	namen: 'Max Mustermann',
 	anschrift: '',
 	ort: '',
-	aktuellePruefung: ''
+	aktuellePruefung: '',
+	auditor: { name: 'Prüf-Firma', anschrift: 'Prüfstr. 1', ort: '99999 Prüfstadt', auditorname: 'Erika Prüferin' }
 } as Meta;
 
 beforeEach(() => {
@@ -192,6 +193,28 @@ describe('loadIndexedDBBackupZip', () => {
 		const result = await loadIndexedDBBackupZip(blob);
 
 		expect(result.meta).toBeUndefined();
+	});
+
+	it('lädt eine Legacy-meta.json ohne auditor-Objekt ohne Fehler und ergänzt Defaults', async () => {
+		const legacyMeta = {
+			id: 'singleton',
+			pruefObjekt: 'Altes Objekt',
+			namen: '',
+			anschrift: '',
+			ort: '',
+			aktuellePruefung: ''
+		};
+		const blob = await buildZipBlob((zip) => {
+			zip.file('records.json', JSON.stringify({ records: [] }));
+			zip.file('meta.json', JSON.stringify(legacyMeta));
+		});
+
+		const result = await loadIndexedDBBackupZip(blob);
+
+		expect(result.meta?.pruefObjekt).toBe('Altes Objekt');
+		// loadIndexedDBBackupZip konstruiert intern ein Meta-Objekt, das
+		// fehlende auditor-Felder automatisch mit Defaults auffüllt.
+		expect(result.meta?.auditor).toEqual({ name: '', anschrift: '', ort: '', auditorname: '' });
 	});
 
 	it('liefert ein leeres images-Array, wenn kein images-Ordner vorhanden ist', async () => {

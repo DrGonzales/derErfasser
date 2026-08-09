@@ -1,6 +1,6 @@
 export { Device, ProtectionClass, protectionClassLabels, protectionClassInfo, type ProtectionClassInfo, protectionClassMeasurementLimits, type ProtectionClassMeasurementLimits } from './Device';
 export { Metadata } from './Metadata';
-export { Meta } from './Meta';
+export { Meta, type Auditor } from './Meta';
 export { Location } from './Location';
 export { ImageReference } from './ImageReference';
 export { PdfReference } from './PdfReference';

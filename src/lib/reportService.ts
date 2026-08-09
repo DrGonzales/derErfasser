@@ -151,6 +151,38 @@ function addCoverPage(doc: jsPDF, meta: Meta | undefined): void {
     doc.setFontSize(16);
     const pruefungLabel = `Prüfung: ${meta?.aktuellePruefung?.trim() ?? ''}`.trim();
     doc.text(pruefungLabel, centerX, y, { align: 'center' });
+
+    // Auditor-Block: Firma/Anschrift/Ort des Auditors sowie der Prüfer
+    // (Person). Wird komplett ausgelassen, wenn keiner der vier Werte
+    // gesetzt ist (z. B. bei älteren Datensätzen ohne Auditor-Angaben).
+    const auditorName = meta?.auditor?.name?.trim();
+    const auditorAnschrift = meta?.auditor?.anschrift?.trim();
+    const auditorOrt = meta?.auditor?.ort?.trim();
+    const auditorname = meta?.auditor?.auditorname?.trim();
+    const hasAuditorData = Boolean(auditorName || auditorAnschrift || auditorOrt || auditorname);
+
+    if (hasAuditorData) {
+        y += 14;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.text('Auditor', centerX, y, { align: 'center' });
+        y += 8;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(12);
+        const auditorLines = [
+            auditorName,
+            auditorAnschrift,
+            auditorOrt,
+            auditorname ? `Prüfer: ${auditorname}` : undefined,
+        ].filter((v): v is string => Boolean(v));
+
+        for (const line of auditorLines) {
+            doc.text(line, centerX, y, { align: 'center' });
+            y += 7;
+        }
+    }
 }
 
 /**
@@ -630,8 +662,8 @@ function drawHint(doc: jsPDF, x: number, y: number, maxWidth: number, text: stri
  * Block, wird vorher eine neue Seite begonnen. Bleibt devices leer, wird
  * kein zusätzlicher Abschnitt erzeugt.
  */
-function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[], toc: TocEntry[]): void {
-    if (devices.length === 0) return;
+function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[], toc: TocEntry[]): number | undefined {
+    if (devices.length === 0) return undefined;
 
     doc.addPage();
     toc.push({ title, page: doc.getNumberOfPages() });
@@ -727,6 +759,8 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
         // Abstand zwischen den Geräten
         y += blockGap;
     }
+
+    return y;
 }
 
 /**
@@ -743,8 +777,8 @@ function addResultsListPage(doc: jsPDF, title: string, devices: ReportDeviceEntr
  * dabei möglichst nicht über einen Seitenumbruch hinweg getrennt. Bleibt
  * devices leer, wird kein zusätzlicher Abschnitt erzeugt.
  */
-function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[], toc: TocEntry[]): void {
-    if (devices.length === 0) return;
+function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry[], toc: TocEntry[]): number | undefined {
+    if (devices.length === 0) return undefined;
 
     doc.addPage();
     toc.push({ title, page: doc.getNumberOfPages() });
@@ -810,6 +844,73 @@ function addDeviceListPage(doc: jsPDF, title: string, devices: ReportDeviceEntry
         // Größerer Abstand zwischen den Geräten
         y += blockGap;
     }
+
+    return y;
+}
+
+/**
+ * Formatiert ein Datum als "DD.MM.YYYY" (deutsches Format), z. B. für die
+ * Unterschriftenzeile auf der letzten Seite des Berichts.
+ */
+function formatDateGerman(d: Date): string {
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    return `${dd}.${mm}.${d.getFullYear()}`;
+}
+
+// Geschätzte Gesamthöhe (mm) des Unterschriften-Blocks (Textzeile + Linie +
+// Beschriftung + Sicherheitsabstand), genutzt um zu entscheiden, ob er noch
+// auf die aktuell letzte Seite passt oder eine neue Seite benötigt.
+const SIGNATURE_BLOCK_HEIGHT = 22;
+// Unterer Rand, der für die Seitenzahl-Fußzeile freigehalten wird.
+const BOTTOM_MARGIN_FOR_PAGE_NUMBER = 18;
+
+/**
+ * Fügt am Ende des Berichts eine Unterschriftenzeile für den Auditor ein:
+ * "<Prüfer>, DD.MM.YYYY" (oder "-, DD.MM.YYYY" ohne erfassten Prüfer),
+ * darunter eine ca. 50 mm lange Linie als Unterschriftenfeld sowie die
+ * Beschriftung "Unterschrift Auditor".
+ *
+ * Passt der Block noch auf die aktuell letzte Seite (basierend auf
+ * `lastContentY`, der y-Position nach dem letzten gezeichneten Abschnitt),
+ * wird er dort unten platziert. Andernfalls wird eine neue Seite begonnen.
+ */
+function addSignatureBlock(doc: jsPDF, meta: Meta | undefined, lastContentY: number): void {
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const marginX = 20;
+
+    const signatureFitsThreshold = pageHeight - BOTTOM_MARGIN_FOR_PAGE_NUMBER - SIGNATURE_BLOCK_HEIGHT;
+
+    let signatureY: number;
+    if (lastContentY > signatureFitsThreshold) {
+        doc.addPage();
+        signatureY = 40;
+    } else {
+        signatureY = pageHeight - BOTTOM_MARGIN_FOR_PAGE_NUMBER - SIGNATURE_BLOCK_HEIGHT + 6;
+    }
+
+    const auditorname = meta?.auditor?.auditorname?.trim();
+    const dateLabel = formatDateGerman(new Date());
+    // Hinweis: "—" (Em-Dash) liegt außerhalb der WinAnsi-Kodierung der
+    // jsPDF-Standardfonts (helvetica) und würde falsch dargestellt. Daher
+    // wird hier ein normaler Bindestrich verwendet (analog zu "Ω" → "Ohm").
+    const line = auditorname ? `${auditorname}, ${dateLabel}` : `-, ${dateLabel}`;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    doc.setTextColor('#000000');
+    doc.text(line, marginX, signatureY);
+
+    doc.setLineWidth(0.4);
+    doc.setDrawColor('#000000');
+    doc.line(marginX, signatureY + 6, marginX + 50, signatureY + 6);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor('#667970');
+    doc.text('Unterschrift Auditor', marginX, signatureY + 11);
+    doc.setTextColor('#000000');
 }
 
 /**
@@ -896,6 +997,9 @@ function addPageNumbers(doc: jsPDF): void {
  * "Kein Ergebnis" (mit Ergebnis-Tabelle), sowie Gerätelisten "Nicht auffindbar"
  * und "Außer Betrieb" (ohne Ergebnis-Tabelle). Jede Liste nur, wenn sie
  * Geräte enthält.
+ * Danach: Unterschriftenfeld für den Auditor ("<Prüfer>, DD.MM.YYYY" + ca.
+ * 50 mm lange Unterschriftenlinie), entweder am Ende der letzten
+ * inhaltlichen Seite oder auf einer neuen Seite, falls dort kein Platz mehr ist.
  * Jede Seite erhält am Seitenende eine zentrierte Seitenzahl ("Seite X von Y").
  * Weitere Seiten/Abschnitte können hier künftig ergänzt werden, z. B.:
  *
@@ -916,13 +1020,15 @@ export async function createReportPdf(
 ): Promise<Blob> {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const toc: TocEntry[] = [];
+    let lastY = 0;
     addCoverPage(doc, meta);
     addChartsPage(doc, chartSections, toc);
-    addResultsListPage(doc, 'Ergebnisse : Bestanden', passedDevices, toc);
-    addResultsListPage(doc, 'Ergebnisse : Nicht bestanden', failedDevices, toc);
-    addResultsListPage(doc, 'Ergebnisse : Kein Ergebnis', noResultDevices, toc);
-    addDeviceListPage(doc, 'Ergebnisse : Nicht auffindbar', notFoundDevices, toc);
-    addDeviceListPage(doc, 'Ergebnisse : Außer Betrieb', outOfServiceDevices, toc);
+    lastY = addResultsListPage(doc, 'Ergebnisse : Bestanden', passedDevices, toc) ?? lastY;
+    lastY = addResultsListPage(doc, 'Ergebnisse : Nicht bestanden', failedDevices, toc) ?? lastY;
+    lastY = addResultsListPage(doc, 'Ergebnisse : Kein Ergebnis', noResultDevices, toc) ?? lastY;
+    lastY = addDeviceListPage(doc, 'Ergebnisse : Nicht auffindbar', notFoundDevices, toc) ?? lastY;
+    lastY = addDeviceListPage(doc, 'Ergebnisse : Außer Betrieb', outOfServiceDevices, toc) ?? lastY;
+    addSignatureBlock(doc, meta, lastY);
     addTableOfContentsPage(doc, toc);
     addPageNumbers(doc);
     return doc.output('blob');

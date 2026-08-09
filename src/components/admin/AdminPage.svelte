@@ -42,6 +42,12 @@
     let fOrt = $state("");
     let fAktuellePruefung = $state("");
 
+    // Auditor-Felder (form fields)
+    let fAuditorName = $state("");
+    let fAuditorAnschrift = $state("");
+    let fAuditorOrt = $state("");
+    let fAuditorname = $state("");
+
     let saving = $state(false);
     let saveError = $state("");
 
@@ -70,12 +76,20 @@
             fAnschrift = metaData.anschrift;
             fOrt = metaData.ort;
             fAktuellePruefung = metaData.aktuellePruefung;
+            fAuditorName = metaData.auditor?.name ?? "";
+            fAuditorAnschrift = metaData.auditor?.anschrift ?? "";
+            fAuditorOrt = metaData.auditor?.ort ?? "";
+            fAuditorname = metaData.auditor?.auditorname ?? "";
         } else {
             fPruefObjekt = "";
             fNamen = "";
             fAnschrift = "";
             fOrt = "";
             fAktuellePruefung = "";
+            fAuditorName = "";
+            fAuditorAnschrift = "";
+            fAuditorOrt = "";
+            fAuditorname = "";
         }
         editing = true;
         saveError = "";
@@ -107,6 +121,12 @@
                 anschrift: fAnschrift.trim(),
                 ort: fOrt.trim(),
                 aktuellePruefung: trimmedAktuellePruefung,
+                auditor: {
+                    name: fAuditorName.trim(),
+                    anschrift: fAuditorAnschrift.trim(),
+                    ort: fAuditorOrt.trim(),
+                    auditorname: fAuditorname.trim(),
+                },
             });
             await saveMeta(m);
             metaData = m;
@@ -196,6 +216,23 @@
                         <dt>Aktuelle Prüfung</dt>
                         <dd>{metaData.aktuellePruefung || "–"}</dd>
                     </div>
+                    <h4 class="meta-subheading">Auditor</h4>
+                    <div class="meta-row">
+                        <dt>Name</dt>
+                        <dd>{metaData.auditor?.name || "–"}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>Anschrift</dt>
+                        <dd>{metaData.auditor?.anschrift || "–"}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>Ort</dt>
+                        <dd>{metaData.auditor?.ort || "–"}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>Prüfer</dt>
+                        <dd>{metaData.auditor?.auditorname || "–"}</dd>
+                    </div>
                 </dl>
                 <div class="tile-actions">
                     <Button variant="secondary" onclick={startEdit}>Bearbeiten</Button>
@@ -245,6 +282,23 @@
                             Ohne vorhandene Gerätedaten muss „Aktuelle Prüfung“ ausgefüllt werden, um mit dem Anlegen von Geräten fortfahren zu können.
                         </p>
                     {/if}
+                    <h4 class="form-subheading">Auditor</h4>
+                    <label class="field">
+                        <span>Name</span>
+                        <input type="text" bind:value={fAuditorName} />
+                    </label>
+                    <label class="field">
+                        <span>Anschrift</span>
+                        <input type="text" bind:value={fAuditorAnschrift} />
+                    </label>
+                    <label class="field">
+                        <span>Ort</span>
+                        <input type="text" bind:value={fAuditorOrt} />
+                    </label>
+                    <label class="field">
+                        <span>Prüfer</span>
+                        <input type="text" bind:value={fAuditorname} />
+                    </label>
                     {#if saveError}
                         <p class="save-error">{saveError}</p>
                     {/if}
@@ -459,6 +513,20 @@
         margin: 0;
         color: var(--color-text);
         word-break: break-word;
+    }
+
+    .meta-subheading {
+        margin: 0.4rem 0 0;
+        color: var(--color-primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .form-subheading {
+        margin: 0.4rem 0 0;
+        color: var(--color-primary);
+        font-size: 0.85rem;
+        font-weight: 700;
     }
 
     /* Form */

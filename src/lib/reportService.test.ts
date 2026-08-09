@@ -29,6 +29,12 @@ function makeMeta(overrides: Partial<Meta> = {}): Meta {
 		anschrift: 'Musterstr. 1',
 		ort: '12345 Musterstadt',
 		aktuellePruefung: 'Prüfung 2026',
+		auditor: {
+			name: 'Prüf-Firma GmbH',
+			anschrift: 'Prüfstr. 1',
+			ort: '99999 Prüfstadt',
+			auditorname: 'Erika Prüferin',
+		},
 		...overrides
 	} as Meta;
 }
@@ -421,6 +427,78 @@ describe('createReportPdf', () => {
 		);
 		expect(blob).toBeInstanceOf(Blob);
 		expect(blob.size).toBeGreaterThan(0);
+	});
+});
+
+describe('createReportPdf – Auditor auf dem Deckblatt', () => {
+	it('zeigt den Auditor-Block mit Firma, Anschrift, Ort und Prüfer', async () => {
+		const blob = await createReportPdf(makeMeta());
+		const texts = await extractPdfTexts(blob);
+
+		expect(texts).toContain('Auditor');
+		expect(texts).toContain('Prüf-Firma GmbH');
+		expect(texts).toContain('Prüfstr. 1');
+		expect(texts).toContain('99999 Prüfstadt');
+		expect(texts).toContain('Prüfer: Erika Prüferin');
+	});
+
+	it('lässt den Auditor-Block vollständig weg, wenn kein Auditor-Objekt vorhanden ist', async () => {
+		const blob = await createReportPdf(makeMeta({ auditor: undefined } as any));
+		const texts = await extractPdfTexts(blob);
+
+		expect(texts).not.toContain('Auditor');
+	});
+
+	it('lässt den Auditor-Block weg, wenn alle vier Werte leer sind', async () => {
+		const blob = await createReportPdf(
+			makeMeta({ auditor: { name: '', anschrift: '', ort: '', auditorname: '' } })
+		);
+		const texts = await extractPdfTexts(blob);
+
+		expect(texts).not.toContain('Auditor');
+	});
+
+	it('funktioniert ohne Meta-Daten (kein Auditor-Block, kein Fehler)', async () => {
+		const blob = await createReportPdf(undefined);
+		expect(blob).toBeInstanceOf(Blob);
+		const texts = await extractPdfTexts(blob);
+		expect(texts).not.toContain('Auditor');
+	});
+});
+
+describe('createReportPdf – Unterschriftenfeld', () => {
+	it('zeigt Prüfer-Name mit aktuellem Datum sowie die Beschriftung "Unterschrift Auditor"', async () => {
+		const blob = await createReportPdf(makeMeta());
+		const texts = await extractPdfTexts(blob);
+
+		const dd = String(new Date().getDate()).padStart(2, '0');
+		const mm = String(new Date().getMonth() + 1).padStart(2, '0');
+		const yyyy = new Date().getFullYear();
+		const expectedDate = `${dd}.${mm}.${yyyy}`;
+
+		expect(texts).toContain(`Erika Prüferin, ${expectedDate}`);
+		expect(texts).toContain('Unterschrift Auditor');
+	});
+
+	it('zeigt "-, DD.MM.YYYY", wenn kein Prüfer-Name erfasst ist', async () => {
+		const blob = await createReportPdf(
+			makeMeta({ auditor: { name: 'Firma', anschrift: '', ort: '', auditorname: '' } })
+		);
+		const texts = await extractPdfTexts(blob);
+
+		const hasDashDateLine = texts.some((t) => /^-, \d{2}\.\d{2}\.\d{4}$/.test(t));
+		expect(hasDashDateLine).toBe(true);
+	});
+
+	it('erzeugt kein Blob ohne Fehler, auch wenn viele Geräte-Seiten vorhanden sind', async () => {
+		const manyDevices: ReportDeviceEntry[] = Array.from({ length: 30 }, (_, i) =>
+			makeDeviceEntry({ serialNumber: `SN-${i}` })
+		);
+		const blob = await createReportPdf(makeMeta(), [], manyDevices);
+		expect(blob).toBeInstanceOf(Blob);
+
+		const texts = await extractPdfTexts(blob);
+		expect(texts).toContain('Unterschrift Auditor');
 	});
 });
 
