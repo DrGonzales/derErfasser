@@ -868,8 +868,9 @@ const BOTTOM_MARGIN_FOR_PAGE_NUMBER = 18;
 /**
  * Fügt am Ende des Berichts eine Unterschriftenzeile für den Auditor ein:
  * "<Prüfer>, DD.MM.YYYY" (oder "-, DD.MM.YYYY" ohne erfassten Prüfer),
- * darunter eine ca. 50 mm lange Linie als Unterschriftenfeld sowie die
- * Beschriftung "Unterschrift Auditor".
+ * direkt rechts daneben eine ca. 50 mm lange Linie als Unterschriftenfeld,
+ * z. B. "Heinz Meier, 09.09.2026 ______________________". Darunter
+ * (zentriert unter der Linie) die Beschriftung "Unterschrift Auditor".
  *
  * Passt der Block noch auf die aktuell letzte Seite (basierend auf
  * `lastContentY`, der y-Position nach dem letzten gezeichneten Abschnitt),
@@ -902,14 +903,19 @@ function addSignatureBlock(doc: jsPDF, meta: Meta | undefined, lastContentY: num
     doc.setTextColor('#000000');
     doc.text(line, marginX, signatureY);
 
+    // Unterschriftenlinie direkt rechts neben dem Text (statt darunter),
+    // z. B. "Heinz Meier, 09.09.2026 ______________________".
+    const textWidth = doc.getTextWidth(line);
+    const lineGap = 4;
+    const lineStartX = marginX + textWidth + lineGap;
     doc.setLineWidth(0.4);
     doc.setDrawColor('#000000');
-    doc.line(marginX, signatureY + 6, marginX + 50, signatureY + 6);
+    doc.line(lineStartX, signatureY, lineStartX + 50, signatureY);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
     doc.setTextColor('#667970');
-    doc.text('Unterschrift Auditor', marginX, signatureY + 11);
+    doc.text('Unterschrift Auditor', lineStartX + 25, signatureY + 5, { align: 'center' });
     doc.setTextColor('#000000');
 }
 
