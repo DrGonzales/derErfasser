@@ -15,6 +15,7 @@
     import Modal from "../shared/Modal.svelte";
     import Button from "../shared/Button.svelte";
     import ConfirmDialog from "../shared/ConfirmDialog.svelte";
+    import InfoDialog from "../shared/InfoDialog.svelte";
     import { cameraSupport } from "../../lib/stores/cameraSupport.svelte";
     import { BarcodeIcon, CloneIcon } from "../icons";
     import BarcodeScannerModal from "../shared/BarcodeScannerModal.svelte";
@@ -34,7 +35,7 @@
         onSave: (updated: DeviceModel) => void;
         onCancel: () => void;
         onDelete?: (() => void) | undefined;
-        onClone?: ((newRecordId: number) => void) | undefined;
+        onClone?: (() => void) | undefined;
     } = $props();
 
     const isNew = untrack(() => recordId == null);
@@ -95,6 +96,7 @@
     let confirmDeleteOpen = $state(false);
     let deleting = $state(false);
     let cloning = $state(false);
+    let cloneInfoOpen = $state(false);
 
     // Ungespeicherte Änderungen: Vergleich der aktuellen Formularwerte mit
     // dem beim Öffnen des Editors erfassten Snapshot. Zahlenfelder werden
@@ -217,17 +219,24 @@
 
             const clonedLocation = new Location({ locationName, building, room });
 
-            const newRecordId = await addRecord({
+            await addRecord({
                 device: clonedDevice,
                 location: clonedLocation,
             });
 
-            onClone?.(Number(newRecordId));
+            // Der Editor bleibt für das Original-Gerät geöffnet; lediglich
+            // ein Hinweis-Dialog bestätigt den erfolgreichen Klon-Vorgang.
+            cloneInfoOpen = true;
+            onClone?.();
         } catch (err) {
             error = err instanceof Error ? err.message : String(err);
         } finally {
             cloning = false;
         }
+    }
+
+    function closeCloneInfo() {
+        cloneInfoOpen = false;
     }
 </script>
 
@@ -401,6 +410,13 @@
     busy={deleting}
     onConfirm={confirmDelete}
     onCancel={cancelDelete}
+/>
+
+<InfoDialog
+    open={cloneInfoOpen}
+    title="Gerät geklont"
+    message="{manufacturer || '–'} - {model || '–'} wurden geklont."
+    onConfirm={closeCloneInfo}
 />
 
 <style>
