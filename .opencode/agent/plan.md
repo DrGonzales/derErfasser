@@ -87,12 +87,16 @@ Insbesondere prüfen:
 
 - aktuelle Svelte-Mechanismen
 - Svelte 5 Runes
-- SvelteKit
 - PWA APIs
 - Service Worker
 - Web APIs
 - TypeScript
 - Browser-Kompatibilität
+
+Hinweis: Dieses Projekt ist eine reine Vite/Svelte-5-SPA ohne SvelteKit
+(kein Routing-Framework, kein Server-Rendering). SvelteKit-spezifische
+Konzepte (Routing, Load-Funktionen, Server-Endpoints) sind hier nicht
+relevant.
 
 Erfinde keine APIs.
 
@@ -304,15 +308,16 @@ Untersuche zuerst:
 - vite.config.*
 - tsconfig.*
 - PWA-Konfiguration
-- src/
-- routes/
-- lib/
-- components/
-- stores/
-- services/
-- tests/
+- src/components/
+- src/lib/ (enthält Models, Stores (`*.svelte.ts`) und Services wie
+  `reportService.ts`, `db.ts`, `zipService.ts`, `importService.ts`,
+  `exportService.ts`)
+- Tests (`*.test.ts`, liegen direkt neben der getesteten Datei)
 
-Die tatsächliche Projektstruktur hat Vorrang vor dieser Liste.
+Die tatsächliche Projektstruktur hat Vorrang vor dieser Liste. Dieses
+Projekt ist eine reine Vite/Svelte-5-SPA ohne SvelteKit: es gibt kein
+`routes/`-Verzeichnis und kein separates `services/`- oder `stores/`-
+Verzeichnis; Services und Stores liegen beide direkt unter `src/lib/`.
 
 ---
 
