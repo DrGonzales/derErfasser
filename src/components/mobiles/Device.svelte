@@ -17,16 +17,33 @@
         recordId = null,
         onBack = undefined,
         onDeviceUpdated = undefined,
+        onClone = undefined,
+        startInEditor = false,
+        onEditorOpened = undefined,
     }: {
         device?: DeviceModel | null;
         location?: LocationModel | null;
         recordId?: number | null;
         onBack?: (() => void) | undefined;
         onDeviceUpdated?: (() => void) | undefined;
+        onClone?: ((newRecordId: number) => void) | undefined;
+        startInEditor?: boolean;
+        onEditorOpened?: (() => void) | undefined;
     } = $props();
 
     let device: DeviceModel | null = $state(untrack(() => deviceProp));
     let editing = $state(false);
+
+    // Wird von AppRoot gesetzt, wenn ein soeben geklontes Gerät sofort im
+    // Editor geöffnet werden soll. Nach dem Öffnen wird onEditorOpened
+    // aufgerufen, damit AppRoot das Flag zurücksetzt und der Editor sich
+    // nicht bei jedem Re-Render erneut öffnet.
+    $effect(() => {
+        if (startInEditor) {
+            editing = true;
+            onEditorOpened?.();
+        }
+    });
 
     function handleImageUpdated(detail: {
         device: DeviceModel;
@@ -115,6 +132,7 @@
             onSave={handleSave}
             onCancel={() => (editing = false)}
             onDelete={handleDelete}
+            {onClone}
         />
     {/if}
 {:else}

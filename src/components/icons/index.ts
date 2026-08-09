@@ -6,3 +6,4 @@ export { default as TrashIcon } from './TrashIcon.svelte';
 export { default as HouseIcon } from './HouseIcon.svelte';
 export { default as InspectIcon } from './InspectIcon.svelte';
 export { default as BarcodeIcon } from './BarcodeIcon.svelte';
+export { default as CloneIcon } from './CloneIcon.svelte';

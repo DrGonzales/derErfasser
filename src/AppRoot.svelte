@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { getRecords } from "./lib/db";
+    import { getRecord, getRecords } from "./lib/db";
     import {
         initLocationSuggestions,
         resetLocationSuggestions,
@@ -29,6 +29,9 @@
     // Barcode-Scan-Treffer automatisch geöffnet wurde. Steuert, ob beim
     // Zurück-Navigieren der Einträge-Filter zurückgesetzt werden soll.
     let clearFilterOnBack = $state(false);
+    // true, wenn nach dem Klonen eines Geräts unmittelbar in dessen
+    // DeviceEditor gewechselt werden soll.
+    let openEditorOnLoad = $state(false);
     let hasData = $state<boolean | null>(null);
     let showAdmin = $state(false);
     let showDashboard = $state(false);
@@ -84,6 +87,30 @@
 
     function handleDeviceUpdated() {
         uploadVersion += 1;
+    }
+
+    async function handleClone(newRecordId: number) {
+        const record = await getRecord(newRecordId);
+        if (!record) {
+            // Sollte praktisch nicht vorkommen, da der Datensatz gerade
+            // erst angelegt wurde. Sicherheitsnetz: einfach neu laden und
+            // zurück in die Übersicht.
+            uploadVersion += 1;
+            return;
+        }
+
+        selectedRecord = {
+            device: record.device,
+            location: record.location,
+            recordId: record.id,
+        };
+        openEditorOnLoad = true;
+        clearFilterOnBack = false;
+        uploadVersion += 1;
+    }
+
+    function handleEditorOpened() {
+        openEditorOnLoad = false;
     }
 
     function closeDevice() {
@@ -187,6 +214,9 @@
                         recordId={selectedRecord.recordId}
                         onBack={closeDevice}
                         onDeviceUpdated={handleDeviceUpdated}
+                        onClone={handleClone}
+                        startInEditor={openEditorOnLoad}
+                        onEditorOpened={handleEditorOpened}
                     />
                 {/if}
             {/if}

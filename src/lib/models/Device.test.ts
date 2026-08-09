@@ -28,4 +28,26 @@ describe('Device', () => {
 
 		expect(device.protectionClass).toBe('');
 	});
+
+	it('ist standardmäßig kein Klon (cloned = false)', () => {
+		const device = new Device({ manufacturer: 'ACME' });
+
+		expect(device.cloned).toBe(false);
+	});
+
+	it('übernimmt einen gesetzten cloned-Marker', () => {
+		const device = new Device({ cloned: true });
+
+		expect(device.cloned).toBe(true);
+	});
+
+	it('setzt bei Legacy-Datensätzen ohne cloned-Feld den Standardwert false', () => {
+		// Ältere, bereits gespeicherte Geräte kennen das Feld "cloned" noch
+		// nicht. Object.assign im Constructor darf den Klassen-Default dann
+		// nicht überschreiben.
+		const legacyPayload = { manufacturer: 'ACME' } as Partial<Device>;
+		const device = new Device(legacyPayload);
+
+		expect(device.cloned).toBe(false);
+	});
 });

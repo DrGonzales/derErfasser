@@ -16,7 +16,7 @@
     import Button from "../shared/Button.svelte";
     import ConfirmDialog from "../shared/ConfirmDialog.svelte";
     import { cameraSupport } from "../../lib/stores/cameraSupport.svelte";
-    import { BarcodeIcon } from "../icons";
+    import { BarcodeIcon, CloneIcon } from "../icons";
     import BarcodeScannerModal from "../shared/BarcodeScannerModal.svelte";
 
     let {
@@ -26,6 +26,7 @@
         onSave,
         onCancel,
         onDelete = undefined,
+        onClone = undefined,
     }: {
         device?: DeviceModel | null;
         location?: Location | null;
@@ -33,6 +34,7 @@
         onSave: (updated: DeviceModel) => void;
         onCancel: () => void;
         onDelete?: (() => void) | undefined;
+        onClone?: ((newRecordId: number) => void) | undefined;
     } = $props();
 
     const isNew = untrack(() => recordId == null);
@@ -49,14 +51,29 @@
 
     const protectionClassOptions = Object.values(ProtectionClass);
 
-    // Initialwerte einmalig aus den Props lesen (untrack = kein reaktives Tracking)
-    let type            = $state(untrack(() => device?.type ?? ""));
-    let manufacturer    = $state(untrack(() => device?.manufacturer ?? ""));
-    let model           = $state(untrack(() => device?.model ?? ""));
-    let serialNumber    = $state(untrack(() => device?.serialNumber ?? ""));
-    let protectionClass = $state<ProtectionClass | "">(untrack(() => device?.protectionClass ?? ""));
-    let ratedVoltage    = $state(untrack(() => device?.ratedVoltage ?? 0));
-    let ratedPower      = $state(untrack(() => device?.ratedPower ?? 0));
+    // Initialwerte einmalig aus den Props lesen (untrack = kein reaktives
+    // Tracking). Werden zusätzlich als Snapshot festgehalten, um weiter
+    // unten per Vergleich ungespeicherte Änderungen zu erkennen (hasChanges).
+    const initialValues = untrack(() => ({
+        type: device?.type ?? "",
+        manufacturer: device?.manufacturer ?? "",
+        model: device?.model ?? "",
+        serialNumber: device?.serialNumber ?? "",
+        protectionClass: device?.protectionClass ?? "",
+        ratedVoltage: device?.ratedVoltage ?? 0,
+        ratedPower: device?.ratedPower ?? 0,
+        locationName: location?.locationName ?? "",
+        building: location?.building ?? "",
+        room: location?.room ?? "",
+    }));
+
+    let type            = $state(initialValues.type);
+    let manufacturer    = $state(initialValues.manufacturer);
+    let model           = $state(initialValues.model);
+    let serialNumber    = $state(initialValues.serialNumber);
+    let protectionClass = $state<ProtectionClass | "">(initialValues.protectionClass);
+    let ratedVoltage    = $state(initialValues.ratedVoltage);
+    let ratedPower      = $state(initialValues.ratedPower);
 
     // Nachschlagen des Info-Objekts statt nur auf protectionClass (truthy)
     // zu prüfen: So schützt der {#if}-Guard im Template auch gegen alte,
@@ -68,15 +85,39 @@
     );
 
     // Location
-    let locationName = $state(untrack(() => location?.locationName ?? ""));
-    let building     = $state(untrack(() => location?.building ?? ""));
-    let room         = $state(untrack(() => location?.room ?? ""));
+    let locationName = $state(initialValues.locationName);
+    let building     = $state(initialValues.building);
+    let room         = $state(initialValues.room);
 
     let saving = $state(false);
     let error  = $state("");
     let showBarcodeScanner = $state(false);
     let confirmDeleteOpen = $state(false);
     let deleting = $state(false);
+    let cloning = $state(false);
+
+    // Ungespeicherte Änderungen: Vergleich der aktuellen Formularwerte mit
+    // dem beim Öffnen des Editors erfassten Snapshot. Zahlenfelder werden
+    // numerisch verglichen, damit z.B. eine leere Eingabe ("") nicht
+    // fälschlich als Änderung gegenüber 0 gewertet wird.
+    const hasChanges = $derived(
+        type !== initialValues.type ||
+            manufacturer !== initialValues.manufacturer ||
+            model !== initialValues.model ||
+            serialNumber !== initialValues.serialNumber ||
+            protectionClass !== initialValues.protectionClass ||
+            Number(ratedVoltage || 0) !== Number(initialValues.ratedVoltage || 0) ||
+            Number(ratedPower || 0) !== Number(initialValues.ratedPower || 0) ||
+            locationName !== initialValues.locationName ||
+            building !== initialValues.building ||
+            room !== initialValues.room,
+    );
+
+    // Klonen ist nur für bereits gespeicherte Geräte ohne ungespeicherte
+    // Änderungen möglich.
+    const canClone = $derived(
+        !isNew && !hasChanges && !saving && !deleting && !cloning,
+    );
 
     async function handleSubmit(e: SubmitEvent) {
         e.preventDefault();
@@ -93,6 +134,9 @@
                 protectionClass,
                 ratedVoltage: Number(ratedVoltage),
                 ratedPower:   Number(ratedPower),
+                // Der Klon-Marker gilt nur bis zur ersten gespeicherten
+                // Bearbeitung des geklonten Geräts und wird danach entfernt.
+                cloned: false,
             });
 
             const updatedLocation = new Location({ locationName, building, room });
@@ -144,6 +188,45 @@
             error = err instanceof Error ? err.message : String(err);
         } finally {
             deleting = false;
+        }
+    }
+
+    async function handleClone() {
+        if (!canClone) return;
+        cloning = true;
+        error = "";
+
+        try {
+            // Übernommen werden nur die Gerätestammdaten und die Location.
+            // Seriennummer, Ausmusterungs-Status, Bilder, PDFs und
+            // Prüfungen werden bewusst NICHT übernommen, da sie sich auf
+            // ein konkretes physisches Gerät bzw. dessen Prüfhistorie
+            // beziehen.
+            const clonedDevice = new DeviceModel({
+                type,
+                manufacturer,
+                model,
+                serialNumber: "",
+                protectionClass,
+                ratedVoltage: Number(ratedVoltage),
+                ratedPower: Number(ratedPower),
+                inspection: device?.inspection ?? true,
+                deactivated: false,
+                cloned: true,
+            });
+
+            const clonedLocation = new Location({ locationName, building, room });
+
+            const newRecordId = await addRecord({
+                device: clonedDevice,
+                location: clonedLocation,
+            });
+
+            onClone?.(Number(newRecordId));
+        } catch (err) {
+            error = err instanceof Error ? err.message : String(err);
+        } finally {
+            cloning = false;
         }
     }
 </script>
@@ -274,15 +357,29 @@
 
             <div class="editor-actions">
                 {#if canDelete}
-                    <Button variant="danger" onclick={requestDelete} disabled={saving}>
+                    <Button variant="danger" onclick={requestDelete} disabled={saving || cloning}>
                         Löschen
                     </Button>
                 {/if}
                 <div class="editor-actions-right">
-                    <Button variant="secondary" onclick={onCancel} disabled={saving}>
+                    <Button variant="secondary" onclick={onCancel} disabled={saving || cloning}>
                         Abbrechen
                     </Button>
-                    <Button variant="primary" type="submit" disabled={saving}>
+                    {#if !isNew}
+                        <Button
+                            variant="secondary"
+                            class="clone-btn"
+                            onclick={handleClone}
+                            disabled={!canClone}
+                            title={hasChanges
+                                ? "Klonen ist erst nach dem Speichern der Änderungen möglich"
+                                : "Gerät klonen"}
+                        >
+                            <CloneIcon size={18} />
+                            {cloning ? "Klonen…" : "Klonen"}
+                        </Button>
+                    {/if}
+                    <Button variant="primary" type="submit" disabled={saving || cloning}>
                         {saving ? "Speichern…" : "Speichern"}
                     </Button>
                 </div>
@@ -504,5 +601,11 @@
         display: flex;
         gap: 0.75rem;
         margin-left: auto;
+    }
+
+    :global(.clone-btn) {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
     }
 </style>

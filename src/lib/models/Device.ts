@@ -72,6 +72,11 @@ export class Device {
     ratedPower = 0;
     inspection = true
     deactivated = false;
+    // Markiert ein Gerät als Klon eines anderen Geräts. Wird beim Klonen
+    // gesetzt und nach der ersten gespeicherten Bearbeitung wieder auf
+    // false zurückgesetzt (siehe DeviceEditor.svelte). Dient in der
+    // Geräteübersicht (EntriesList.svelte) als Filterkriterium ("Klone").
+    cloned = false;
 
     pictures: ImageReference[] = [];
     pdfs: PdfReference[] = [];

@@ -12,7 +12,7 @@
     import InspectionEditor from "./InspectionEditor.svelte";
     import BackupButton from "../admin/BackupButton.svelte";
     import { cameraSupport } from "../../lib/stores/cameraSupport.svelte";
-    import { BarcodeIcon } from "../icons";
+    import { BarcodeIcon, CloneIcon } from "../icons";
     import BarcodeScannerModal from "../shared/BarcodeScannerModal.svelte";
 
     type Location = {
@@ -210,6 +210,25 @@
                 );
             }
 
+            // Klone-Filter: nur geklonte, noch nicht bearbeitete Geräte
+            // (ausgemusterte Klone werden hier wie sonst überall ausgeblendet).
+            if ($entriesStatusFilter === "cloned") {
+                if (isDeactivated) return false;
+                if (e.device?.cloned !== true) return false;
+                const q = $entriesFilter.trim().toLowerCase();
+                if (!q) return true;
+                const loc = e.location ?? {};
+                const device = e.device ?? {};
+                return (
+                    (device.manufacturer ?? "").toLowerCase().includes(q) ||
+                    (device.model ?? "").toLowerCase().includes(q) ||
+                    (device.serialNumber ?? "").toLowerCase().includes(q) ||
+                    (loc.locationName ?? "").toLowerCase().includes(q) ||
+                    (loc.building ?? "").toLowerCase().includes(q) ||
+                    (loc.room ?? "").toLowerCase().includes(q)
+                );
+            }
+
             // Ausgemusterte Geräte in allen anderen Ansichten ausblenden
             if (isDeactivated) return false;
 
@@ -301,6 +320,16 @@
                 onclick={() => entriesStatusFilter.set("all")}
                 aria-pressed={$entriesStatusFilter === "all"}>Alle</button
             >
+            <button
+                type="button"
+                class="chip chip--cloned"
+                class:chip--active={$entriesStatusFilter === "cloned"}
+                onclick={() => entriesStatusFilter.set("cloned")}
+                aria-pressed={$entriesStatusFilter === "cloned"}
+            >
+                <CloneIcon size={14} />
+                Klone
+            </button>
             <button
                 type="button"
                 class="chip chip--deactivated"
@@ -708,6 +737,27 @@
     .chip--all.chip--active:hover,
     .chip--all.chip--active:focus-visible {
         background: var(--color-text-secondary);
+    }
+
+    /* Blau: Klone */
+    .chip--cloned {
+        border-color: #93c5fd;
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+    .chip--cloned:hover,
+    .chip--cloned:focus-visible {
+        background: #dbeafe;
+        outline: none;
+    }
+    .chip--cloned.chip--active {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #fff;
+    }
+    .chip--cloned.chip--active:hover,
+    .chip--cloned.chip--active:focus-visible {
+        background: #1d4ed8;
     }
 
     /* Rot: Ausgemustert */
