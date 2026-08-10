@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
 
 permissions:
@@ -20,6 +21,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag is on release branch
+        run: |
+          git fetch origin release
+          if ! git merge-base --is-ancestor "${{ github.sha }}" origin/release; then
+            echo "Tag ${{ github.ref_name }} ist nicht auf branch 'release'. Abbruch."
+            exit 1
+          fi
 
       - name: Set up Node
         uses: actions/setup-node@v4
