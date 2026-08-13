@@ -210,9 +210,10 @@
                 );
             }
 
-            // Klone-Filter: nur geklonte, noch nicht bearbeitete Geräte
-            // (ausgemusterte Klone werden hier wie sonst überall ausgeblendet).
-            if ($entriesStatusFilter === "cloned") {
+            // Neu-Filter: nur neue (geklonte oder importierte), noch nicht
+            // bearbeitete Geräte (ausgemusterte werden hier wie sonst überall
+            // ausgeblendet).
+            if ($entriesStatusFilter === "neu") {
                 if (isDeactivated) return false;
                 if (e.device?.cloned !== true) return false;
                 const q = $entriesFilter.trim().toLowerCase();
@@ -270,6 +271,21 @@
     const MAX_VISIBLE = 250;
     const visible = $derived(sorted.slice(0, MAX_VISIBLE));
     const truncated = $derived(sorted.length > MAX_VISIBLE);
+
+    // "Neu"-Chip nur anzeigen, wenn es tatsächlich entsprechend geflaggte
+    // Geräte gibt (geklont oder per Excel-Import angelegt).
+    const hasNeuEntries = $derived(
+        entries.some((e) => e.device?.cloned === true),
+    );
+
+    // Wird der letzte "neue" Eintrag bearbeitet/entfernt, während der
+    // Neu-Filter aktiv ist, gäbe es sonst eine leere, versteckte Ansicht.
+    // In diesem Fall auf den Standard-Filter zurückfallen.
+    $effect(() => {
+        if ($entriesStatusFilter === "neu" && !hasNeuEntries) {
+            entriesStatusFilter.set("outdated");
+        }
+    });
 </script>
 
 <div class="wrap">
@@ -320,16 +336,18 @@
                 onclick={() => entriesStatusFilter.set("all")}
                 aria-pressed={$entriesStatusFilter === "all"}>Alle</button
             >
-            <button
-                type="button"
-                class="chip chip--cloned"
-                class:chip--active={$entriesStatusFilter === "cloned"}
-                onclick={() => entriesStatusFilter.set("cloned")}
-                aria-pressed={$entriesStatusFilter === "cloned"}
-            >
-                <CloneIcon size={14} />
-                Klone
-            </button>
+            {#if hasNeuEntries}
+                <button
+                    type="button"
+                    class="chip chip--neu"
+                    class:chip--active={$entriesStatusFilter === "neu"}
+                    onclick={() => entriesStatusFilter.set("neu")}
+                    aria-pressed={$entriesStatusFilter === "neu"}
+                >
+                    <CloneIcon size={14} />
+                    Neu
+                </button>
+            {/if}
             <button
                 type="button"
                 class="chip chip--deactivated"
@@ -389,7 +407,7 @@
                         class:inspect-btn--outdated={!item.isCurrent &&
                             !item.device?.deactivated &&
                             item.device?.cloned !== true}
-                        class:inspect-btn--cloned={item.device?.cloned ===
+                        class:inspect-btn--neu={item.device?.cloned ===
                             true && !item.device?.deactivated}
                         class:inspect-btn--deactivated={item.device
                             ?.deactivated}
@@ -742,24 +760,24 @@
         background: var(--color-text-secondary);
     }
 
-    /* Blau: Klone */
-    .chip--cloned {
+    /* Blau: Neu (geklont oder importiert) */
+    .chip--neu {
         border-color: #93c5fd;
         background: #eff6ff;
         color: #1d4ed8;
     }
-    .chip--cloned:hover,
-    .chip--cloned:focus-visible {
+    .chip--neu:hover,
+    .chip--neu:focus-visible {
         background: #dbeafe;
         outline: none;
     }
-    .chip--cloned.chip--active {
+    .chip--neu.chip--active {
         background: #2563eb;
         border-color: #2563eb;
         color: #fff;
     }
-    .chip--cloned.chip--active:hover,
-    .chip--cloned.chip--active:focus-visible {
+    .chip--neu.chip--active:hover,
+    .chip--neu.chip--active:focus-visible {
         background: #1d4ed8;
     }
 
@@ -907,15 +925,15 @@
         outline: none;
     }
 
-    /* Geklont → blau (nach Muster .chip--cloned) */
-    .inspect-btn--cloned {
+    /* Neu (geklont oder importiert) → blau (nach Muster .chip--neu) */
+    .inspect-btn--neu {
         background: #eff6ff;
         border-right-color: #93c5fd;
         color: #1d4ed8;
     }
 
-    .inspect-btn--cloned:hover,
-    .inspect-btn--cloned:focus-visible {
+    .inspect-btn--neu:hover,
+    .inspect-btn--neu:focus-visible {
         background: #2563eb;
         color: #fff;
         outline: none;

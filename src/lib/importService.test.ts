@@ -223,4 +223,21 @@ describe('importRows', () => {
 			'Zeile 2: „Bemessungsspannung“: Wert „nicht-numerisch“ ist keine gültige Zahl, wurde als 0 übernommen.'
 		]);
 	});
+
+	it('markiert importierte Geräte mit cloned = true, damit sie über den "Neu"-Filter auffindbar sind', async () => {
+		addRecord.mockResolvedValue(1);
+		const mappedRows = mapRowsToDevices(
+			[
+				['ACME', 'X-1000'],
+				['Contoso', 'Y-2000']
+			],
+			{ manufacturer: 0, model: 1 }
+		);
+
+		await importRows(mappedRows);
+
+		expect(addRecord).toHaveBeenCalledTimes(2);
+		expect(addRecord.mock.calls[0][0].device.cloned).toBe(true);
+		expect(addRecord.mock.calls[1][0].device.cloned).toBe(true);
+	});
 });

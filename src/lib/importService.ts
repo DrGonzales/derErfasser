@@ -186,7 +186,10 @@ export async function importRows(
 		const rowLabel = `Zeile ${mappedRow.rowIndex + 2}`; // +2: 1-basiert + Kopfzeile
 
 		try {
-			const device = new Device(mappedRow.device);
+			// Per Excel importierte Geräte werden wie geklonte Geräte als
+			// "neu" markiert (siehe Device.cloned), damit sie in der
+			// Geräteübersicht über den "Neu"-Filter auffindbar sind.
+			const device = new Device({ ...mappedRow.device, cloned: true });
 			const location = new Location(mappedRow.location);
 			await addRecord({ device, location });
 			rememberLocation(location);

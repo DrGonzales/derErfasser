@@ -257,7 +257,12 @@
             <div class="field-group">
                 <label for="ed-serial">Seriennummer</label>
                 <div class="input-with-scan">
-                    <input id="ed-serial" type="text" bind:value={serialNumber} />
+                    <input
+                        id="ed-serial"
+                        type="text"
+                        bind:value={serialNumber}
+                        class:input--warning={serialNumber.trim() === ""}
+                    />
                     {#if cameraSupport.hasCamera}
                         <button
                             type="button"
@@ -270,7 +275,7 @@
                     {/if}
                 </div>
             </div>
-            <fieldset class="field-group">
+            <fieldset class="field-group" class:field-group--warning={protectionClass === ""}>
                 <legend>Schutzklasse</legend>
                 <div class="radio-row">
                     {#each protectionClassOptions as opt (opt)}
@@ -460,6 +465,16 @@
     .field-group input:focus {
         border-color: var(--color-primary);
         outline: 3px solid var(--focus-ring);
+    }
+
+    .field-group input.input--warning {
+        border-color: var(--color-danger);
+    }
+
+    fieldset.field-group--warning {
+        background: var(--color-danger-bg);
+        border-radius: 8px;
+        padding: 0.75rem;
     }
 
     .input-with-scan {
