@@ -36,6 +36,20 @@ $ARGUMENTS
 Merke dir die final ermittelte Version als `<version>` für die folgenden
 Schritte.
 
+### 2a. Version in package.json übernehmen
+
+- Lese das aktuelle `version`-Feld aus der `package.json` im Projektroot.
+- Vergleiche es semantisch (major.minor.patch) mit `<version>` (ohne
+  führendes `v`). Ist die übergebene/ermittelte Version **kleiner** als die
+  aktuelle `package.json`-Version: abbrechen mit Hinweis auf möglichen
+  Versions-/Tag-Fehler (Downgrade-Schutz, kein automatisches Zurücksetzen).
+- Ist sie **größer**: aktualisiere das `version`-Feld in `package.json` auf
+  den neuen Wert (ohne `v`-Präfix). Diese Änderung wird noch nicht separat
+  committet, sondern zusammen mit den Doku-Änderungen in Schritt 5
+  committet.
+- Ist sie **gleich**: keine Änderung an `package.json` nötig (No-op).
+- `package-lock.json` wird dabei bewusst **nicht** angefasst.
+
 ## 3. Änderungsumfang für die Doku ermitteln
 
 Ermittle den relevanten Änderungsumfang seit dem letzten bestehenden Tag bis
@@ -56,9 +70,10 @@ Schritt 3 ermittelten Kontext auf:
 
 ## 5. Commit
 
-Committe die Doku-Änderungen (`CHANGELOG.md`, `ANWENDERHANDBUCH.md` und ggf.
-neu referenzierte Bilder) mit einer passenden Commit-Message, z. B.
-`Dokumentation für Release <version>`.
+Committe die Versions- und Doku-Änderungen (`package.json` falls in Schritt
+2a aktualisiert, `CHANGELOG.md`, `ANWENDERHANDBUCH.md` und ggf. neu
+referenzierte Bilder) mit einer passenden Commit-Message, z. B.
+`Release <version>: Version & Dokumentation`.
 
 ## 6. Tag setzen
 
@@ -76,6 +91,7 @@ Ein separater Push von `main` selbst erfolgt **nicht**.
 
 ## 8. Zusammenfassung
 
-Fasse am Ende kurz zusammen: verwendete Version, welcher Changelog-Eintrag
-und welcher Handbuch-Abschnitt hinzugefügt/geändert wurden, sowie dass Commit,
+Fasse am Ende kurz zusammen: verwendete Version, ob `package.json` aktualisiert
+wurde (und von welcher auf welche Version), welcher Changelog-Eintrag und
+welcher Handbuch-Abschnitt hinzugefügt/geändert wurden, sowie dass Commit,
 Tag und Push auf `release` erfolgreich waren.
