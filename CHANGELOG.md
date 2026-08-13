@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 13.08.2026 - "Klone"-Filter wird zu "Neu", auch für importierte Geräte
+
+Der bisherige Filter-Chip „Klone" in der Geräteliste heißt jetzt „Neu" und zeigt neben geklonten Geräten jetzt auch Geräte an, die per Excel-Import neu angelegt wurden; beide werden weiterhin blau markiert, bis sie einmal bearbeitet wurden. Der Chip erscheint nur noch, wenn es tatsächlich neue Geräte gibt, und wechselt automatisch zurück zum Filter „Offen", wenn das letzte neu markierte Gerät bearbeitet wurde. Zusätzlich werden im Geräte-Editor ein leeres Seriennummer-Feld und eine fehlende Schutzklasse jetzt farblich hervorgehoben, damit sie leichter auffallen.
+
 ## 09.08.2026 - Neue Funktion "Gerät klonen"
 
 Im Geräte-Editor gibt es einen neuen „Klonen"-Button, der bei bereits gespeicherten Geräten ohne ungespeicherte Änderungen angezeigt wird. Beim Klicken wird sofort eine Kopie des Geräts angelegt, die Typ, Hersteller, Modell, Schutzklasse, Nennspannung, Nennleistung und Standort übernimmt. Die Seriennummer bleibt leer und muss neu vergeben werden; Ausmusterungsstatus, Bilder, PDFs und Prüfhistorie werden bewusst nicht übernommen. Nach dem Klonen bleibt der Nutzer im Editor und erhält eine Bestätigungsmeldung. In der Geräteübersicht gibt es zudem einen neuen Filter-Chip „Klone", über den frisch geklonte, noch nicht bearbeitete Geräte gefunden werden können.

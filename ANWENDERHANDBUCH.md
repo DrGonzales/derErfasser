@@ -82,8 +82,8 @@ In der Geräteliste unten rechts auf den runden **„+“-Button** (FAB) tippen.
 - **Typ**
 - **Hersteller**
 - **Modell**
-- **Seriennummer** – Ist eine Kamera am Gerät vorhanden, erscheint neben diesem Feld zusätzlich ein **Barcode-Symbol**. Ein Tipp darauf öffnet einen Kamera-Dialog; der erkannte Barcode oder QR-Code wird automatisch als Seriennummer übernommen, ohne dass er von Hand abgetippt werden muss.
-- **Schutzklasse** – Auswahl über drei Schaltflächen (Schutzklasse I, II oder III)
+- **Seriennummer** – Ist eine Kamera am Gerät vorhanden, erscheint neben diesem Feld zusätzlich ein **Barcode-Symbol**. Ein Tipp darauf öffnet einen Kamera-Dialog; der erkannte Barcode oder QR-Code wird automatisch als Seriennummer übernommen, ohne dass er von Hand abgetippt werden muss. Solange das Feld leer ist, wird es mit einem roten Rahmen hervorgehoben; sobald ein Wert eingetragen wird, verschwindet dieser wieder.
+- **Schutzklasse** – Auswahl über drei Schaltflächen (Schutzklasse I, II oder III). Solange keine Schutzklasse ausgewählt wurde, ist dieser Bereich rötlich hinterlegt; nach der Auswahl verschwindet die Hervorhebung.
 - **Nennspannung (V)**
 - **Nennleistung (W)**
 
@@ -96,6 +96,8 @@ Sowie der **Standort** des Geräts:
 - **Raum**
 
 Für die Standortfelder schlägt die App bereits verwendete Werte in einem Dropdown vor. Es kann trotzdem jederzeit ein neuer, freier Text eingegeben werden.
+
+> **Hinweis:** Die rote Hervorhebung bei leerer Seriennummer bzw. fehlender Schutzklasse ist nur ein optischer Hinweis. Das Gerät lässt sich auch ohne diese Angaben speichern.
 
 Mit „Speichern“ wird das Gerät angelegt.
 
@@ -153,9 +155,9 @@ Beim Klick auf „Klonen" wird sofort ein neues Gerät als Kopie angelegt und er
 Der Nutzer bleibt im Bearbeitungsformular des **Original-Geräts**; es öffnet sich kein neuer Editor für den Klon. Stattdessen zeigt ein Bestätigungsdialog die Meldung „<Hersteller> – <Modell> wurden geklont." mit einem „Ok"-Button an.
 
 **Klone in der Geräteliste finden:**
-Geklonte Geräte, die noch nicht bearbeitet oder gespeichert wurden, lassen sich in der Geräteliste über einen neuen Filter-Chip **„Klone"** (blau, mit Klon-Symbol) gezielt finden und sortieren. Der Nutzer kann dort alle frisch geklonten Geräte auf einen Blick sehen, um ihnen beispielsweise eine Seriennummer zuzuweisen.
+Geklonte Geräte, die noch nicht bearbeitet oder gespeichert wurden, lassen sich in der Geräteliste über einen Filter-Chip **„Neu“** (blau, mit Klon-Symbol) gezielt finden und sortieren. Über denselben Filter-Chip erscheinen außerdem Geräte, die per Excel-Import neu angelegt wurden (siehe [Geräte aus Excel importieren](#geräte-aus-excel-importieren)). Der Nutzer kann dort alle frisch geklonten oder importierten Geräte auf einen Blick sehen, um ihnen beispielsweise eine Seriennummer zuzuweisen. Der Chip „Neu“ wird nur angezeigt, wenn tatsächlich entsprechend markierte Geräte vorhanden sind.
 
-Sobald ein geklontes Gerät einmal bearbeitet und gespeichert wurde (z. B. nach dem Eintragen einer Seriennummer), verschwindet es automatisch aus dieser Klon-Filteransicht – es gilt dann als reguläres, vollständig erfasstes Gerät.
+Sobald ein geklontes oder importiertes Gerät einmal bearbeitet und gespeichert wurde (z. B. nach dem Eintragen einer Seriennummer), verschwindet es automatisch aus dieser Filteransicht – es gilt dann als reguläres, vollständig erfasstes Gerät. War der Filter „Neu“ gerade aktiv und wurde dabei das letzte so markierte Gerät bearbeitet, springt die Ansicht automatisch zurück zum Filter „Offen“, damit keine leere Liste angezeigt wird.
 
 ## Geräteliste – Filtern und Sortieren
 
@@ -167,7 +169,7 @@ Die Geräteliste bietet folgende Werkzeuge:
   - **Abgearbeitet** – Geräte, die in der aktuellen Prüfrunde bereits geprüft wurden
   - **Alle** – alle aktiven (nicht ausgemusterten) Geräte
   - **Ausgemustert** – nur ausgemusterte Geräte (siehe [Eine Prüfung durchführen](#eine-prüfung-durchführen))
-  - **Klone** – geklonte Geräte, die noch nicht bearbeitet oder gespeichert wurden (siehe [Gerät klonen](#gerät-klonen))
+  - **Neu** – geklonte oder per Excel-Import neu angelegte Geräte, die noch nicht bearbeitet oder gespeichert wurden; wird nur angezeigt, wenn solche Geräte vorhanden sind (siehe [Gerät klonen](#gerät-klonen))
 - **Sortier-Chips** – Sortierung nach Hersteller, Modell, Seriennummer, Standort, Gebäude oder Raum. Ein erneuter Klick auf denselben Chip dreht die Sortierrichtung um.
 - **Ergebnis-Zähler** – zeigt an, wie viele Geräte nach Anwendung der Filter sichtbar sind (im Verhältnis zur Gesamtzahl).
 
@@ -296,6 +298,7 @@ Der Import läuft in vier Schritten ab:
 - Für jede importierte Zeile wird ein **neues** Gerät angelegt – auch wenn Hersteller, Modell oder Seriennummer mit einem bereits vorhandenen Gerät übereinstimmen. Es findet keine automatische Zusammenführung mit bestehenden Geräten statt.
 - Schlägt der Import einzelner Zeilen fehl, werden die übrigen, fehlerfreien Zeilen trotzdem angelegt (kein Abbruch des gesamten Imports).
 - Neu importierte Standorte stehen anschließend sofort als Vorschlag zur Verfügung, wenn ein Gerät manuell angelegt oder bearbeitet wird (siehe [Geräte verwalten](#geräte-verwalten)).
+- Neu importierte Geräte werden – ebenso wie geklonte Geräte – als „neu“ markiert und lassen sich über den Filter-Chip „Neu“ in der Geräteliste auffinden, bis sie einmal bearbeitet und gespeichert wurden (siehe [Gerät klonen](#gerät-klonen)).
 
 ## Geräte als Excel exportieren
 
