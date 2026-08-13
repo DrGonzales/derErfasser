@@ -112,6 +112,7 @@
             <thead>
                 <tr>
                     <th>Datum</th>
+                    <th>Prüfung</th>
                     <th>Gerätezustand</th>
                     <th>Ergebnis</th>
                 </tr>
@@ -135,6 +136,7 @@
                         }}
                     >
                         <td>{insp.inspectionDate}</td>
+                        <td>{insp.inspectionName}</td>
                         <td>{@render statusIcon(insp.status)}</td>
                         <td>{@render resultIcon(insp.overallResult)}</td>
                     </tr>
