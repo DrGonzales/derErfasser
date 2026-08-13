@@ -210,7 +210,7 @@ Wird bei einer späteren Prüfung ein anderer Gerätezustand gewählt, wird die 
 
 ### Historie vergangener Prüfungen
 
-In der Geräte-Detailansicht listet der Bereich „Inspektionen“ alle bisherigen Prüfungen des Geräts, sortiert nach Datum. Die Prüfung der aktuellen Prüfrunde ist farblich hervorgehoben. Ein Klick auf eine vergangene Prüfung öffnet sie in einer reinen Übersichtsansicht (nicht mehr bearbeitbar), ein Klick auf die aktuelle Prüfung öffnet sie zur Bearbeitung.
+In der Geräte-Detailansicht listet der Bereich „Inspektionen“ alle bisherigen Prüfungen des Geräts, sortiert nach Datum. Die Tabelle zeigt zu jeder Prüfung das Datum, den Namen der Prüfung, den Gerätezustand und das Ergebnis. Die Prüfung der aktuellen Prüfrunde ist farblich hervorgehoben. Ein Klick auf eine vergangene Prüfung öffnet sie in einer reinen Übersichtsansicht (nicht mehr bearbeitbar), ein Klick auf die aktuelle Prüfung öffnet sie zur Bearbeitung.
 
 ## Prozessübersicht: Abarbeitung und Prüfung
 

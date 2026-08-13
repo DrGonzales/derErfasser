@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 13.08.2026 - Prüfungsname in mobiler Prüfungsliste
+
+In der mobilen Ansicht der Prüfungsliste wird jetzt zusätzlich der Name der jeweiligen Prüfung angezeigt, zusammen mit Datum, Gerätezustand und Ergebnis. So lässt sich einfacher erkennen, zu welcher Prüfung ein Eintrag gehört.
+
 ## 13.08.2026 - "Klone"-Filter wird zu "Neu", auch für importierte Geräte
 
 Der bisherige Filter-Chip „Klone" in der Geräteliste heißt jetzt „Neu" und zeigt neben geklonten Geräten jetzt auch Geräte an, die per Excel-Import neu angelegt wurden; beide werden weiterhin blau markiert, bis sie einmal bearbeitet wurden. Der Chip erscheint nur noch, wenn es tatsächlich neue Geräte gibt, und wechselt automatisch zurück zum Filter „Offen", wenn das letzte neu markierte Gerät bearbeitet wurde. Zusätzlich werden im Geräte-Editor ein leeres Seriennummer-Feld und eine fehlende Schutzklasse jetzt farblich hervorgehoben, damit sie leichter auffallen.
