@@ -21,7 +21,7 @@
     }: {
         device?: DeviceModel | null;
         location?: LocationModel | null;
-        recordId?: number | null;
+        recordId?: number | string | null;
         onBack?: (() => void) | undefined;
         onDeviceUpdated?: (() => void) | undefined;
         onClone?: (() => void) | undefined;
@@ -32,7 +32,7 @@
 
     function handleImageUpdated(detail: {
         device: DeviceModel;
-        recordId: number;
+        recordId: number | string;
     }) {
         device = detail.device;
         onDeviceUpdated?.();
@@ -40,7 +40,7 @@
 
     function handlePdfsUpdated(detail: {
         device: DeviceModel;
-        recordId: number;
+        recordId: number | string;
     }) {
         device = detail.device;
         onDeviceUpdated?.();

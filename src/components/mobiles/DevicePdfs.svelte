@@ -10,8 +10,8 @@
         onUpdated = undefined,
     }: {
         device: DeviceModel;
-        recordId?: number | null;
-        onUpdated?: (detail: { device: DeviceModel; recordId: number }) => void;
+        recordId?: number | string | null;
+        onUpdated?: (detail: { device: DeviceModel; recordId: number | string }) => void;
     } = $props();
 
     let pdfs = $derived(device.pdfs ?? []);

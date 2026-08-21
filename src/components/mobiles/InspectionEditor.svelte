@@ -29,7 +29,7 @@
         onCancel,
     }: {
         device: DeviceModel;
-        recordId: number;
+        recordId: number | string;
         inspection?: Inspection | null;
         readonly?: boolean;
         onSave: (updatedDevice: DeviceModel) => void;

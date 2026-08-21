@@ -23,7 +23,7 @@
     let selectedRecord: {
         device: any;
         location?: any;
-        recordId: number;
+        recordId: number | string;
     } | null = $state(null);
     // true, wenn die aktuell offene Geräteansicht durch einen eindeutigen
     // Barcode-Scan-Treffer automatisch geöffnet wurde. Steuert, ob beim
@@ -70,7 +70,7 @@
         record: {
             device: any;
             location?: any;
-            recordId: number;
+            recordId: number | string;
         },
         opts?: { fromScan?: boolean },
     ) {
@@ -90,6 +90,14 @@
         // Ein Klon wurde im Hintergrund angelegt (der Editor zeigt
         // weiterhin das Original-Gerät). Die Einträge-Liste muss beim
         // nächsten Öffnen den neuen Datensatz enthalten.
+        uploadVersion += 1;
+    }
+
+    function handleMergeCompleted() {
+        // Das Backup-Zusammenführen läuft im Admin-Bereich ab und zeigt dort
+        // seinen Ergebnisbericht. Die Einträge-Liste soll die übernommenen
+        // Geräte erst beim nächsten Öffnen laden — daher nur der
+        // Versions-Bump ohne Ansichtwechsel (anders als bei Restore/Import).
         uploadVersion += 1;
     }
 
@@ -181,6 +189,7 @@
                     onRestored={handleRestored}
                     onMetaReady={handleMetaReady}
                     onDataCleared={handleDataCleared}
+                    onMerged={handleMergeCompleted}
                 />
             {:else}
                 <div hidden={!!selectedRecord}>

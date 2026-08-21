@@ -8,6 +8,7 @@
         rememberInspectionName,
     } from "../../lib/stores/inspectionNameSuggestions.svelte";
     import RestoreButton from "./RestoreButton.svelte";
+    import BackupMerge from "./BackupMerge.svelte";
     import ChangelogModal from "./ChangelogModal.svelte";
     import HelpModal from "./HelpModal.svelte";
     import ImportModal from "./ImportModal.svelte";
@@ -21,11 +22,13 @@
         onRestored,
         onMetaReady,
         onDataCleared,
+        onMerged,
     }: {
         hasData: boolean;
         onRestored: () => void;
         onMetaReady?: () => void;
         onDataCleared?: () => void;
+        onMerged?: () => void;
     } = $props();
 
     let metaData = $state<Meta | undefined>(undefined);
@@ -64,6 +67,9 @@
 
     // Excel-Import-Anzeige
     let importOpen = $state(false);
+
+    // Backup-Zusammenführen als eigene Ansicht innerhalb der Administration
+    let mergeOpen = $state(false);
 
     onMount(async () => {
         metaData = await getMeta();
@@ -177,6 +183,9 @@
 </script>
 
 <div class="admin-page">
+    {#if mergeOpen}
+        <BackupMerge onBack={() => (mergeOpen = false)} onMerged={onMerged} />
+    {:else}
     <h2>Administration</h2>
 
     {#if !hasData}
@@ -329,7 +338,23 @@
             <RestoreButton onRestored={onRestored} />
         </section>
 
-        <!-- ── Kachel 3: Geräte aus Excel importieren/exportieren ── -->
+        <!-- ── Kachel 3: Backup zusammenführen ──────── -->
+        <section class="tile panel-card">
+            <h3>Backup zusammenführen</h3>
+            <p class="tile-hint">
+                Prüfungen mehrerer Prüfer am selben Prüfobjekt in einem
+                Datenstand vereinen: Backup einer anderen Person laden —
+                neue Geräte und noch nicht vorhandene Inspectionen werden
+                übernommen, vorhandene Daten bleiben unverändert.
+            </p>
+            <div class="tile-actions">
+                <Button variant="secondary" onclick={() => (mergeOpen = true)}>
+                    Zusammenführen öffnen
+                </Button>
+            </div>
+        </section>
+
+        <!-- ── Kachel 4: Geräte aus Excel importieren/exportieren ── -->
         <section class="tile panel-card">
             <h3>Geräte aus Excel importieren</h3>
             <p>
@@ -352,10 +377,10 @@
             </p>
         </section>
 
-        <!-- ── Kachel 4: App installieren ────────────── -->
+        <!-- ── Kachel 5: App installieren ────────────── -->
         <InstallAppTile />
 
-        <!-- ── Kachel 5: Daten löschen ──────────────── -->
+        <!-- ── Kachel 6: Daten löschen ──────────────── -->
         <section class="tile panel-card tile--danger">
             <h3>Daten löschen</h3>
             <p class="warn-hint">
@@ -391,6 +416,7 @@
             Changelog
         </button>
     </div>
+    {/if}
 </div>
 
 {#if helpOpen}

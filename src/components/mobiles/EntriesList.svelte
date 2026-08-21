@@ -24,7 +24,7 @@
     type EntryRow = {
         location?: Location;
         device: any;
-        recordId: number;
+        recordId: number | string;
         isCurrent: boolean;
     };
 

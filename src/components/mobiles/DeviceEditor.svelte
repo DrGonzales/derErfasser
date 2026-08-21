@@ -31,7 +31,7 @@
     }: {
         device?: DeviceModel | null;
         location?: Location | null;
-        recordId?: number | null;
+        recordId?: number | string | null;
         onSave: (updated: DeviceModel) => void;
         onCancel: () => void;
         onDelete?: (() => void) | undefined;

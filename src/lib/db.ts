@@ -1,5 +1,5 @@
 const DB_NAME = 'der-erfasser-db';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 const STORE_NAME = 'records';
 const IMAGE_STORE_NAME = 'images';
 const META_STORE_NAME = 'meta';
@@ -27,7 +27,11 @@ export type NewRecord = {
 };
 
 export type StoredRecord = {
-  id: number;
+  // Neue Records erhalten eine selbst erzeugte UUID (crypto.randomUUID),
+  // bereits vorhandene Records aus älteren Installationen besitzen noch die
+  // frühere numerische IndexedDB-autoIncrement-id. Beide Formen bleiben
+  // gültig (Koexistenz), es findet keine Migration von Bestandsdaten statt.
+  id: number | string;
   createdAt: number;
   updatedAt: number;
 } & NewRecord;
@@ -40,9 +44,13 @@ function openDatabase(): Promise<IDBDatabase> {
       const db = request.result;
 
       if (!db.objectStoreNames.contains(STORE_NAME)) {
+        // Neue Installationen benötigen keinen autoIncrement mehr: die id
+        // wird jetzt selbst als UUID erzeugt (siehe addRecord). Bereits
+        // bestehende Object Stores (ältere Installationen) werden hier
+        // nicht angefasst, ihre bisherige autoIncrement-Konfiguration und
+        // ihre numerischen ids bleiben unverändert gültig.
         const store = db.createObjectStore(STORE_NAME, {
-          keyPath: 'id',
-          autoIncrement: true
+          keyPath: 'id'
         });
         store.createIndex('createdAt', 'createdAt');
       }
@@ -123,6 +131,7 @@ export async function getRecords(): Promise<StoredRecord[]> {
 export function addRecord(record: NewRecord): Promise<IDBValidKey> {
   const payload = {
     ...record,
+    id: crypto.randomUUID?.() ?? `rec-${Math.random().toString(36).slice(2)}`,
     device: record.device ? JSON.parse(JSON.stringify(record.device)) : undefined,
     location: record.location ? JSON.parse(JSON.stringify(record.location)) : undefined,
     metadata: record.metadata ? JSON.parse(JSON.stringify(record.metadata)) : undefined,
@@ -189,7 +198,7 @@ export async function deleteImage(id: string): Promise<undefined> {
   return withObjectStore<undefined>(IMAGE_STORE_NAME, 'readwrite', (store) => store.delete(id));
 }
 
-export function deleteRecord(id: number): Promise<undefined> {
+export function deleteRecord(id: number | string): Promise<undefined> {
   return withStore<undefined>('readwrite', (store) => store.delete(id));
 }
 
@@ -244,7 +253,7 @@ export function clearRecords(): Promise<undefined> {
   return withStore<undefined>('readwrite', (store) => store.clear());
 }
 
-export async function getRecord(id: number): Promise<StoredRecord | undefined> {
+export async function getRecord(id: number | string): Promise<StoredRecord | undefined> {
   const rec = await withStore<StoredRecord | undefined>('readonly', (store) => store.get(id) as IDBRequest<StoredRecord | undefined>);
 
   if (!rec) return undefined;
@@ -256,7 +265,7 @@ export async function getRecord(id: number): Promise<StoredRecord | undefined> {
  * Update an existing device record, or add a new device record if none exists.
  * If `recordId` is null the function creates a new record for the device.
  */
-export async function upsertDevice(recordId: number | null, deviceData: Partial<Device> & { id?: string }, locationData?: Partial<Location>): Promise<IDBValidKey> {
+export async function upsertDevice(recordId: number | string | null, deviceData: Partial<Device> & { id?: string }, locationData?: Partial<Location>): Promise<IDBValidKey> {
   const incoming = new Device({ ...deviceData, inspection: true });
   const payload: NewRecord = {
     device: incoming,
@@ -280,6 +289,31 @@ export async function upsertDevice(recordId: number | null, deviceData: Partial<
   raw.updatedAt = Date.now();
 
   return withStore<IDBValidKey>('readwrite', (store) => store.put(raw));
+}
+
+/**
+ * Übernimmt einen vollständigen Datensatz (z. B. aus einem Backup-Merge)
+ * unverändert mit seiner ursprünglichen id in die Datenbank. Im Gegensatz zu
+ * addRecord wird keine neue id erzeugt und createdAt/updatedAt bleiben
+ * erhalten; existiert die id bereits, wird der Datensatz ersetzt.
+ */
+export function importRecord(record: StoredRecord): Promise<IDBValidKey> {
+  const payload = {
+    ...record,
+    device: record.device ? JSON.parse(JSON.stringify(record.device)) : undefined,
+    location: record.location ? JSON.parse(JSON.stringify(record.location)) : undefined,
+    metadata: record.metadata ? JSON.parse(JSON.stringify(record.metadata)) : undefined,
+  };
+
+  return withStore<IDBValidKey>('readwrite', (store) => store.put(payload));
+}
+
+/**
+ * Übernimmt ein gespeichertes Bild/PDF (z. B. aus einem Backup-Merge)
+ * unverändert mit seiner ursprünglichen id in den Image-Store.
+ */
+export function importImage(image: StoredImage): Promise<IDBValidKey> {
+  return withObjectStore<IDBValidKey>(IMAGE_STORE_NAME, 'readwrite', (store) => store.put(image));
 }
 
 export async function getMeta(): Promise<Meta | undefined> {

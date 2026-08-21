@@ -17,6 +17,7 @@ Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs
 - [Dashboard](#dashboard)
 - [PDF-Bericht erzeugen](#pdf-bericht-erzeugen)
 - [Backup und Wiederherstellung](#backup-und-wiederherstellung)
+- [Backup zusammenführen](#backup-zusammenführen)
 - [Geräte aus Excel importieren](#geräte-aus-excel-importieren)
 - [Geräte als Excel exportieren](#geräte-als-excel-exportieren)
 - [Daten löschen](#daten-löschen)
@@ -270,6 +271,41 @@ Im Administrationsbereich lässt sich unter „Backup wiederherstellen“ eine z
 
 > **Achtung:** Beim Wiederherstellen werden alle vorhandenen Daten (Geräte, Bilder, PDFs, Prüfobjekt-Informationen) vollständig überschrieben.
 
+Sollen die Daten eines Backups dagegen **zusätzlich** in den vorhandenen Bestand übernommen werden, statt alles zu ersetzen, steht dafür die Funktion „Backup zusammenführen“ zur Verfügung (siehe [Backup zusammenführen](#backup-zusammenführen)).
+
+### Backup zusammenführen
+
+Im Administrationsbereich steht unter der Kachel **„Backup zusammenführen“** eine Funktion zur Verfügung, mit der sich ein Backup **zusätzlich** in den vorhandenen Datenbestand übernehmen lässt – im Gegensatz zum „Backup wiederherstellen“, das alle vorhandenen Daten vollständig überschreibt (siehe [Backup wiederherstellen](#backup-wiederherstellen)).
+
+Die Funktion ist dafür gedacht, dass **mehrere Prüfer gleichzeitig am selben Prüfobjekt arbeiten** können: Jeder Prüfer erfasst seine Prüfungen auf seinem eigenen Gerät. Anschließend werden die Backups der Beteiligten zu einem gemeinsamen Datenstand zusammengeführt, sodass keine Erfassung verloren geht. Ein typischer Ablauf:
+
+1. Jeder Prüfer erfasst seine Prüfungen wie gewohnt in seiner App.
+2. Jeder Prüfer erstellt ein Backup und gibt die Datei an die Person weiter, die den zusammengeführten Datenstand führen soll (siehe [Backup erstellen](#backup-erstellen)).
+3. Diese Person führt die empfangenen Backups **einzeln nacheinander** in ihren Datenstand zusammen.
+4. Der Ergebnisbericht zeigt bei jedem Vorgang, was übernommen wurde. Der vereinigte Stand kann anschließend erneut als Backup exportiert und an alle Beteiligten verteilt werden.
+
+Auf der Kachel auf den Button **„Zusammenführen öffnen“** tippen. Es öffnet sich eine eigene Seite im gleichen Aufbau wie der Administrationsbereich, oben mit einem Zurück-Button zur Übersicht. Dort die gewünschte Backup-ZIP-Datei auswählen und den Vorgang starten.
+
+Die Zusammenführung funktioniert nur, wenn die Prüfobjekt-Angaben im Backup und in der App vorhanden sind und in allen Feldern übereinstimmen (Prüfobjekt, Namen, Anschrift, Ort, Aktuelle Prüfung sowie die Auditor-Angaben). Stimmen diese Angaben nicht überein, bricht der Vorgang mit einer Fehlermeldung ab, ohne dass etwas geändert wird. So wird verhindert, dass versehentlich Daten zweier verschiedener Prüfobjekte vermischt werden.
+
+> **Empfehlung:** Vor dem Zusammenführen ein Backup des aktuellen Datenstands erstellen (siehe [Backup erstellen](#backup-erstellen)), damit der Stand vor dem Vorgang gesichert ist.
+
+Beim Zusammenführen gilt:
+
+- Geräte, die im Backup neu sind, werden vollständig übernommen – inklusive Standort, Bilder, PDFs und allen Prüfungen.
+- Bei Geräten, die bereits vorhanden sind, werden nur Prüfungen übernommen, deren Prüfungsname dort noch nicht existiert – inklusive der zu diesen Prüfungen gehörenden Bilder und PDFs. Prüfungen mit einem bereits vorhandenen Prüfungsnamen werden übersprungen.
+- Wurde im Backup ein Gerät mit einer übernommenen Prüfung als „Außer Betrieb“ geführt, wird das vorhandene Gerät ebenfalls als ausgemustert markiert (siehe [Automatische Ausmusterung](#automatische-ausmusterung)).
+- Bereits vorhandene Bilder und PDFs werden nicht überschrieben.
+- Dasselbe Backup kann mehrfach zusammengeführt werden, ohne dass Duplikate entstehen.
+
+Nach Abschluss des Vorgangs bleibt die Seite geöffnet und zeigt einen Ergebnisbericht an: eine Kennzahlenzeile (wie viele Geräte eingefügt, wie viele Prüfungen zusammengeführt und wie viele nicht übernommen wurden) sowie drei Tabellen mit jeweils einer Zeile je Prüfung bzw. Gerät:
+
+- **Eingefügte Geräte** – Typ, Hersteller, Modell und Seriennummer jedes neu übernommenen Geräts,
+- **Zusammengeführte Inspectionen** – Prüfungsname und Datum jeder Prüfung, die an bereits vorhandenen Geräten ergänzt wurde,
+- **Nicht übernommene Inspectionen** – Prüfungsname und Datum jeder übersprungenen Prüfung.
+
+Die übernommenen Geräte erscheinen beim nächsten Öffnen in der Geräteliste (siehe [Geräteliste – Filtern und Sortieren](#geräteliste--filtern-und-sortieren)).
+
 ### Mehrere Klienten oder Standorte verwalten
 
 Da jedes Backup einen vollständigen, eigenständigen Datenstand (ein Prüfobjekt mit allen zugehörigen Geräten) enthält, lässt sich die App auch für **mehrere unabhängige Kunden, Prüfobjekte oder Standorte** einsetzen, ohne dass sich die Daten gegenseitig überschneiden:
@@ -343,3 +379,6 @@ Ein Backup (ZIP-Datei) erstellen und auf dem neuen Gerät über „Backup wieder
 
 **Kann ich mit mehreren Prüfrunden gleichzeitig arbeiten?**
 Die App bezieht sich immer auf die im Prüfobjekt eingestellte „Aktuelle Prüfung“. Um eine neue Prüfrunde zu beginnen, im Administrationsbereich unter „Prüfobjekt“ das Feld „Aktuelle Prüfung“ auf einen neuen Namen ändern. Bereits erfasste Prüfungen vorheriger Runden bleiben in der Historie jedes Geräts erhalten.
+
+**Kann ich ein Backup hinzufügen, ohne meine vorhandenen Daten zu überschreiben?**
+Ja. Im Administrationsbereich unter „Backup zusammenführen“ (siehe [Backup zusammenführen](#backup-zusammenführen)). Dabei wird das Backup zusätzlich in den vorhandenen Bestand übernommen; bereits vorhandene Geräte, Bilder und PDFs bleiben unverändert. Voraussetzung ist, dass die Prüfobjekt-Angaben in beiden Datenständen übereinstimmen.

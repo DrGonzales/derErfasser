@@ -18,7 +18,7 @@
         onDeviceUpdated = undefined,
     }: {
         device: DeviceModel;
-        recordId?: number | null;
+        recordId?: number | string | null;
         onDeviceUpdated?: (updatedDevice: DeviceModel) => void;
     } = $props();
 

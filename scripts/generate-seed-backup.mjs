@@ -229,7 +229,7 @@ async function main() {
     for (let i = 1; i <= DEVICE_COUNT; i++) {
         const { device, location } = createDevice(i);
         records.push({
-            id: i,
+            id: crypto.randomUUID(),
             createdAt: now - randomInt(0, 1000 * 60 * 60 * 24 * 365),
             updatedAt: now,
             device,

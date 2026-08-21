@@ -2,7 +2,7 @@
 
 # Project Description
 
-Diese Anwendung ist eine **Progressive Web App (PWA)** zur Erfassung, Verwaltung und Archivierung von Messdaten für **elektrische Sicherheitsprüfungen**.
+**derErfasser** ist eine **Progressive Web App (PWA)** zur Erfassung, Verwaltung und Archivierung von Prüfdaten für **ortsveränderliche elektrische Geräte** (elektrische Sicherheitsprüfungen).
 
 Die Anwendung wird von Prüfern direkt vor Ort eingesetzt und muss daher auch ohne Internetverbindung zuverlässig funktionieren.
 
@@ -14,31 +14,39 @@ Die Anwendung wird von Prüfern direkt vor Ort eingesetzt und muss daher auch oh
 * Es dürfen **keine Daten, Skripte oder sonstige Ressourcen** während der Laufzeit aus dem Internet geladen werden.
 * Alle Funktionen müssen auch ohne Netzwerkverbindung verfügbar sein.
 * Datenschutz und Datensicherheit haben höchste Priorität.
+* Alle Daten bleiben ausschließlich lokal auf dem Gerät des Nutzers.
 
 ---
 
 # Features
-* Umsetzung als PWA
-* Erfassung von Messdaten
-* Speicherung aller Daten in der **IndexedDB**
-* Speicherung von:
-  * JSON-Dokumenten
-  * Bildern
-* Import von Projekten über ZIP-Dateien
-* Export von Projekten als ZIP-Dateien
-* Arbeiten mit mehreren Projekten
-* Vollständige Offline-Nutzung
+
+* Umsetzung als PWA (installierbar, offline-fähig)
+* Verwaltung ortsveränderlicher Geräte: Stammdaten, Schutzklasse, Nennspannung/-leistung, Standort
+* Prüfungen mit Messwerten und Grenzwert-Hinweisen je Schutzklasse
+* Automatische Ausmusterung über den Gerätezustand „Außer Betrieb"
+* Gerät klonen für baugleiche Geräte
+* Dashboard mit Kennzahlen sowie PDF-Berichte
+* Excel-Import (mit Spaltenzuordnung) und Excel-Export der Geräteliste
+* Backup als ZIP-Datei:
+  * Restore (überschreibt den kompletten Datenbestand)
+  * additives Zusammenführen eines Backups in den bestehenden Datenstand
+* Barcode-Scan für Seriennummern (Kamera)
+* Bilder und PDF-Anhänge pro Gerät und Prüfung
+* Eingabe-Vorschläge für Standorte und Prüfungsnamen
+* Admin-Bereich: Prüfobjekt-Daten (Meta), Backup wiederherstellen/zusammenführen, Excel-Import/-Export, Daten löschen
 
 ---
 
 # Technology Stack
 
-* Node.js >= 14.x
-* npm
-* Svelte
+* Node.js >= 20 (LTS)
+* Svelte 5 mit **Runes** (`$state`, `$derived`, `$props`, `$effect`)
 * TypeScript
+* Vite
 * IndexedDB
-* Progressive Web App (PWA)
+* PWA via `vite-plugin-pwa`
+* JSZip (Backup-ZIP), SheetJS `xlsx` (Excel), jsPDF (Berichte), `@zxing/browser` (Barcode)
+* Vitest (Tests), svelte-check (Typisierung)
 
 ---
 
@@ -52,9 +60,14 @@ Die Anwendung wird von Prüfern direkt vor Ort eingesetzt und muss daher auch oh
 * Bestehenden Code möglichst erweitern statt neu schreiben.
 * Vorhandene Namenskonventionen beibehalten.
 * Änderungen sollen möglichst klein und nachvollziehbar sein.
-* Nutze Svelte best practices
-* achte auf kleine überschaubere Componenten
-* keine UI frameworks, natives HTML und CSS
+* Nutze Svelte-5-Best-Practices:
+  * Runes verwenden (`$state`, `$derived`, `$props`), keine Legacy-Reaktivität (`export let`, `$:`)
+  * `onclick={...}` statt `on:click={...}`
+  * Keyed Each-Blöcke (`{#each ... as item (item.id)}`)
+  * Keine UI-Frameworks, natives HTML und CSS
+* Fachlogik gehört in Services unter `src/lib/` (Muster: `zipService`, `importService`, `backupMergeService`), nicht in Komponenten.
+* Schwere Bibliotheken (JSZip, SheetJS, jsPDF) werden bewusst erst bei Bedarf dynamisch nachgeladen (`await import(...)`), um das initiale Bundle schlank zu halten.
+
 ---
 
 # Offline Requirements
@@ -81,15 +94,13 @@ Alle benötigten Ressourcen müssen lokal Bestandteil des Projekts sein.
 
 # Data Storage
 
-Alle Daten werden lokal in der IndexedDB gespeichert.
+Alle Daten werden lokal in der IndexedDB gespeichert (Datenbank `der-erfasser-db`) mit drei Object Stores:
 
-Die Datenbank enthält unter anderem:
+* `records` – Geräte-Datensätze `{ id, createdAt, updatedAt, device, location?, metadata? }`; `id` ist eine UUID (ältere Installationen können noch numerische Auto-Increment-Ids haben, beide Formen bleiben gültig)
+* `images` – Bilder und PDFs als Blobs (`StoredImage`), referenziert per Id aus `device.pictures/pdfs` bzw. `inspection.pictures/pdfs`
+* `meta` – Prüfobjekt-Daten als Singleton (`id: "singleton"`)
 
-* Projekte
-* Messdaten
-* JSON-Dokumente
-* Bilder
-* Einstellungen
+Zugriff ausschließlich über den DB-Layer `src/lib/db.ts`. Domänen-Modelle (Device, Location, Inspection, Meta, …) liegen unter `src/lib/models/`.
 
 Es dürfen keine Benutzerdaten auf externe Server übertragen werden.
 
@@ -97,64 +108,39 @@ Es dürfen keine Benutzerdaten auf externe Server übertragen werden.
 
 # Import / Export
 
-Der Datenaustausch erfolgt ausschließlich über ZIP-Dateien.
+Der Datenaustausch erfolgt über ZIP-Backups und Excel-Dateien.
 
-Agenten sollen darauf achten, dass:
+* Backup-ZIP-Aufbau: `records.json`, optional `meta.json`, Ordner `images/` mit Anhängen (`{id}.{ext}`).
+* **Restore** überschreibt den kompletten Datenbestand.
+* **Backup zusammenführen** ist additiv: Voraussetzung sind identische Meta-Daten auf beiden Seiten; Geräte werden anhand ihrer Record-Id zugeordnet, Inspectionen anhand ihres Prüfungsnamens (Details siehe `docs/specs/backup-zusammenfuehren.md`).
+* Excel-Import mit interaktiver Spaltenzuordnung; Export enthält die Geräteliste ohne Bilder/PDFs.
+* Bestehende Exportformate kompatibel halten; Importfunktionen fehlertolerant umsetzen; Datenintegrität gewährleisten.
 
-* bestehende Exportformate kompatibel bleiben
-* Importfunktionen möglichst fehlertolerant arbeiten
-* Datenintegrität gewährleistet ist
-
----
-
-# Performance
-
-Beim Arbeiten mit vielen Messungen oder Bildern soll die Anwendung flüssig bleiben.
-
-Beim Implementieren neuer Funktionen ist darauf zu achten:
-
-* unnötige Speicherbelegung vermeiden
-* Bilder nur bei Bedarf laden
-* große Datenmengen effizient verarbeiten
-* unnötige Neuberechnungen vermeiden
-
----
-
-# Error Handling
-
-* Fehler verständlich protokollieren.
-* Keine stillschweigenden Fehler.
-* Benutzern verständliche Fehlermeldungen anzeigen.
-* Datenverlust vermeiden.
-
----
-
-# User Interface
-
-* Die Oberfläche soll einfach und übersichtlich bleiben.
-* Mobile Geräte und Tablets haben Priorität.
-* Große Schaltflächen für Touch-Bedienung.
-* Gute Lesbarkeit.
-* Dunkles und helles Design unterstützen.
-* auf Modilgeräte optimiert.
 ---
 
 # Testing
 
-Neue Funktionen sollten nach Möglichkeit getestet werden.
+Tests laufen mit Vitest (`npm test`), Typisierung mit svelte-check (`npm run check`). Beide Befehle müssen nach Änderungen grün sein.
 
-Besonders wichtig sind:
-
-* IndexedDB
-* Import
-* Export
-* Offline-Betrieb
-* Bildspeicherung
-* Datenmigration
+* Service-Logik wird mit Unit-Tests abgedeckt; das `./db`-Modul wird dabei per `vi.mock` gemockt (Muster: `src/lib/importService.test.ts`, `src/lib/backupMergeService.test.ts`).
+* `fake-indexeddb` ist für DB-nahe Tests verfügbar.
+* Besonders wichtig sind: IndexedDB-Zugriff, Backup-Restore/Zusammenführen, Excel-Import/-Export, Bild-/PDF-Speicherung, Modell-Konstruktoren.
 
 ---
 
 # Project Structure
+
+```
+src/
+├── lib/            Fachlogik: db.ts, Services, models/, stores/
+├── components/
+│   ├── mobiles/    Fachmodul Geräte-Erfassung und -Prüfung
+│   ├── dashboard/  Kennzahlen
+│   ├── admin/      Administration (Meta, Backup, Import/Export)
+│   └── shared/     modulübergreifende Bausteine (Modal, Button, …)
+docs/
+└── specs/          Spezifikationen je Feature (siehe unten)
+```
 
 Der Ordner `Plan` dient ausschließlich der Planung und Dokumentation.
 
@@ -180,6 +166,55 @@ Neue Fach-Module (z. B. für RCD-Prüfungen) folgen demselben Muster: ein
 flacher Ordner unter `src/components/`, benannt nach der fachlichen Domäne,
 ohne Barrel-Export. Generische Bausteine (`images/`, `icons/`, `shared/`)
 werden von mehreren Fach-Modulen gemeinsam genutzt statt dupliziert.
+
+Größere Funktionsbereiche werden als eigene Ansichtskomponente gekapselt
+(Muster: `admin/BackupMerge.svelte` wird aus der Administration über einen
+Button geöffnet) statt sie in bestehende Seiten einzubetten.
+
+---
+
+# Dokumentation
+
+* `docs/specs/*.md` – technische Spezifikationen je Feature (ein Dokument pro
+  Feature, Muster: `geraet-klonen.md`, `backup-zusammenfuehren.md`,
+  `ausmusterung.md`). Kopf mit Status/Stand/betroffenen Komponenten, danach
+  Zweck, Regeln, Sonderfälle und Fehlerverhalten. Definiertes Verhalten wird
+  explizit als solches dokumentiert.
+* `ANWENDERHANDBUCH.md` – nutzerorientierte Anleitung (kein technischer Inhalt).
+* `CHANGELOG.md` – pflegt der Subagent `changelog-writer` (siehe unten).
+
+---
+
+# User Interface
+
+* Die Oberfläche soll einfach und übersichtlich bleiben.
+* Mobile Geräte und Tablets haben Priorität.
+* Große Schaltflächen für Touch-Bedienung.
+* Gute Lesbarkeit.
+* Dunkles und helles Design unterstützen.
+* Auf Mobilgeräte optimiert.
+
+---
+
+# Error Handling
+
+* Fehler verständlich protokollieren.
+* Keine stillschweigenden Fehler.
+* Benutzern verständliche Fehlermeldungen anzeigen (deutsch).
+* Datenverlust vermeiden — schreibende Operationen nur nach erfolgreicher Validierung (Beispiel: Backup-Zusammenführung bricht beim Meta-Abgleich ab, bevor etwas geschrieben wird).
+
+---
+
+# Performance
+
+Beim Arbeiten mit vielen Messungen oder Bildern soll die Anwendung flüssig bleiben.
+
+Beim Implementieren neuer Funktionen ist darauf zu achten:
+
+* unnötige Speicherbelegung vermeiden
+* Bilder/Blobs nur bei Bedarf laden
+* große Datenmengen effizient verarbeiten (bei langen Schleifen den Hauptthread periodisch freigeben, Muster: `zipService.ts`)
+* unnötige Neuberechnungen vermeiden
 
 ---
 

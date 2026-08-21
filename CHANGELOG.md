@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 21.08.2026 - Backup zusammenführen
+
+In der Administration gibt es eine neue Kachel „Backup zusammenführen“. Anders als beim „Backup wiederherstellen“, das alle vorhandenen Daten überschreibt, werden hier die Daten aus einer Backup-Datei zusätzlich in den bestehenden Bestand übernommen: Neue Geräte kommen komplett dazu, bei bereits vorhandenen Geräten werden nur Prüfungen ergänzt, die es dort noch nicht gibt – jeweils inklusive ihrer Bilder und PDFs. Vorher wird geprüft, ob die Angaben zum Prüfobjekt auf beiden Seiten übereinstimmen; ist das nicht der Fall, bricht der Vorgang mit einer Fehlermeldung ab, ohne etwas zu ändern. Nach dem Zusammenführen zeigt die Seite einen Bericht mit den eingefügten Geräten sowie den übernommenen und nicht übernommenen Prüfungen, und dasselbe Backup kann beliebig oft zusammengeführt werden, ohne dass Duplikate entstehen.
+
 ## 13.08.2026 - Prüfungsname in mobiler Prüfungsliste
 
 In der mobilen Ansicht der Prüfungsliste wird jetzt zusätzlich der Name der jeweiligen Prüfung angezeigt, zusammen mit Datum, Gerätezustand und Ergebnis. So lässt sich einfacher erkennen, zu welcher Prüfung ein Eintrag gehört.
