@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 23.08.2026 - Anwenderhandbuch als eigene Seite
+
+Das Anwenderhandbuch öffnet sich nicht mehr als Popup-Fenster, sondern als eigene Seite mit Inhaltsverzeichnis in der Seitenleiste; über die klickbaren Kapitel-Links springt man direkt zum gewünschten Abschnitt, eine „Zurück"-Leiste bleibt dabei immer sichtbar. Zusätzlich wurden drei neue Kapitel ergänzt: „Prüfrunden und Prüfhistorie", „Arbeiten mit mehreren Prüfern" und „Excel-Import und Massendaten". Außerdem wurde die Breite von Geräteliste, Verwaltung, Dashboard und Anwenderhandbuch vereinheitlicht, sodass alle Seiten gleich breit und einheitlich aussehen, und der „Bericht erzeugen"-Button im Dashboard steht jetzt an erster Stelle in einer eigenen Kachel mit kurzem Hinweistext.
+
 ## 21.08.2026 - Backup zusammenführen
 
 In der Administration gibt es eine neue Kachel „Backup zusammenführen“. Anders als beim „Backup wiederherstellen“, das alle vorhandenen Daten überschreibt, werden hier die Daten aus einer Backup-Datei zusätzlich in den bestehenden Bestand übernommen: Neue Geräte kommen komplett dazu, bei bereits vorhandenen Geräten werden nur Prüfungen ergänzt, die es dort noch nicht gibt – jeweils inklusive ihrer Bilder und PDFs. Vorher wird geprüft, ob die Angaben zum Prüfobjekt auf beiden Seiten übereinstimmen; ist das nicht der Fall, bricht der Vorgang mit einer Fehlermeldung ab, ohne etwas zu ändern. Nach dem Zusammenführen zeigt die Seite einen Bericht mit den eingefügten Geräten sowie den übernommenen und nicht übernommenen Prüfungen, und dasselbe Backup kann beliebig oft zusammengeführt werden, ohne dass Duplikate entstehen. So lassen sich die Erfassungen mehrerer Prüfer, die gleichzeitig am selben Prüfobjekt arbeiten, zu einem gemeinsamen Datenstand vereinen; vorhandene Bilder und PDFs werden dabei nie überschrieben, und wurde ein Gerät im Backup mit einer übernommenen Prüfung außer Betrieb gesetzt, wird es beim Zusammenführen ebenfalls ausgemustert.
