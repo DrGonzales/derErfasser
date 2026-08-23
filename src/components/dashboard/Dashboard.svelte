@@ -265,14 +265,6 @@
 <div class="dashboard-page">
     <div class="dashboard-header">
         <h2>Dashboard</h2>
-        <ReportButton
-            {chartSections}
-            {passedDevices}
-            {failedDevices}
-            {noResultDevices}
-            {notFoundDevices}
-            {outOfServiceDevices}
-        />
     </div>
 
     {#if !loaded}
@@ -281,6 +273,22 @@
         <p class="empty-hint">Keine Gerätedaten vorhanden.</p>
     {:else}
         <div class="dashboard-grid">
+            <!-- ── Kachel: Bericht ─────────────────────── -->
+            <section class="tile panel-card">
+                <h3>Bericht</h3>
+                <p class="tile-hint">Erzeugt einen Prüfbericht als PDF-Datei.</p>
+                <div class="tile-actions">
+                    <ReportButton
+                        {chartSections}
+                        {passedDevices}
+                        {failedDevices}
+                        {noResultDevices}
+                        {notFoundDevices}
+                        {outOfServiceDevices}
+                    />
+                </div>
+            </section>
+
             <!-- ── Kachel: Übersicht ─────────────────── -->
             <section class="tile panel-card">
                 <h3>Übersicht für {aktuellePruefung || "aktuelle Prüfung"}</h3>
@@ -453,9 +461,8 @@
 
 <style>
     .dashboard-page {
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 0 1rem;
+        max-width: 1100px;
+        margin: 1rem auto;
     }
 
     h2 {
@@ -480,11 +487,11 @@
     }
 
     .empty-hint {
-        background: #fff8e1;
-        border-left: 4px solid #f59e0b;
+        background: var(--color-warning-bg);
+        border-left: 4px solid var(--color-warning);
         padding: 0.75rem 1rem;
         border-radius: 0 6px 6px 0;
-        color: #78350f;
+        color: var(--color-warning);
         margin: 0;
         font-size: 0.9rem;
     }
@@ -513,6 +520,19 @@
         color: var(--color-muted);
         font-size: 0.9rem;
         margin: 0;
+    }
+
+    .tile-actions {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 0.25rem;
+    }
+
+    .tile-hint {
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--color-muted);
     }
 
     /* ── Übersicht / Prüfstatus Stats ─────────────── */

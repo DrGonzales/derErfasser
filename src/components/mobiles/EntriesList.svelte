@@ -650,9 +650,9 @@
         gap: 0.25rem;
         padding: 0 0.75rem;
         min-height: 34px;
-        border: 1px solid #b8c9b8;
+        border: 1px solid var(--color-border-subtle);
         border-radius: 99px;
-        background: #f2f7f2;
+        background: var(--color-surface-muted);
         color: var(--color-text-strong);
         font: inherit;
         font-size: 0.8rem;

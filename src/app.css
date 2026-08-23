@@ -201,11 +201,11 @@ textarea:focus {
 .file-drop {
   min-height: 112px;
   place-items: center;
-  border: 1px dashed #91a69d;
+  border: 1px dashed var(--color-border-subtle);
   border-radius: 8px;
   padding: 18px;
   text-align: center;
-  background: #f8faf7;
+  background: var(--color-surface-muted);
 }
 
 .file-drop input {
