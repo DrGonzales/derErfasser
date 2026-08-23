@@ -14,11 +14,14 @@ Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs
 - [Geräteliste – Filtern und Sortieren](#geräteliste--filtern-und-sortieren)
 - [Eine Prüfung durchführen](#eine-prüfung-durchführen)
 - [Prozessübersicht: Abarbeitung und Prüfung](#prozessübersicht-abarbeitung-und-prüfung)
+- [Prüfrunden und Prüfhistorie](#prüfrunden-und-prüfhistorie)
 - [Dashboard](#dashboard)
 - [PDF-Bericht erzeugen](#pdf-bericht-erzeugen)
 - [Backup und Wiederherstellung](#backup-und-wiederherstellung)
 - [Backup zusammenführen](#backup-zusammenführen)
+- [Arbeiten mit mehreren Prüfern](#arbeiten-mit-mehreren-prüfern)
 - [Geräte aus Excel importieren](#geräte-aus-excel-importieren)
+- [Excel-Import und Massendaten](#excel-import-und-massendaten)
 - [Geräte als Excel exportieren](#geräte-als-excel-exportieren)
 - [Daten löschen](#daten-löschen)
 - [Changelog](#changelog)
@@ -225,6 +228,279 @@ Der Status eines Geräts ("Offen" oder "Abgearbeitet") wird nicht fest gespeiche
 - Ein „Nicht bestanden“-Ergebnis führt zu keiner automatischen Statusänderung; es wird lediglich im Dashboard und im PDF-Bericht separat ausgewiesen.
 - Alte Prüfungen bleiben dauerhaft als Historie erhalten (siehe [Historie vergangener Prüfungen](#historie-vergangener-prüfungen)).
 
+Eine vertiefte Erklärung, wie Prüfrunden und Prüfhistorie genau zusammenwirken, findet sich im Abschnitt [Prüfrunden und Prüfhistorie](#prüfrunden-und-prüfhistorie).
+
+## Prüfrunden und Prüfhistorie
+
+Jedes Prüfobjekt arbeitet mit einer **Prüfrunde**. Die Prüfrunde legt fest, zu welcher Prüfung die erfassten Prüfergebnisse gehören.
+
+Der Wert der Prüfrunde ist dabei ein wichtiger Bestandteil der Prüfung. Er wird verwendet, um die Prüfungen eines Gerätes eindeutig einer Prüfrunde zuzuordnen.
+
+Beispielsweise können Prüfrunden so bezeichnet werden:
+
+```text
+2026
+2026-Q1
+2026-Q2
+Jahresprüfung 2026
+Nachprüfung 2026
+```
+
+Die Bezeichnung kann frei gewählt werden. Wichtig ist, dass für eine zusammengehörige Prüfung immer derselbe Wert verwendet wird.
+
+### Aktuelle Prüfung
+
+Im Prüfobjekt wird festgelegt, welche Prüfrunde die **aktuelle Prüfung** ist.
+
+Beispielsweise:
+
+```text
+Aktuelle Prüfung: 2026
+```
+
+Alle Prüfungen, die während dieser Prüfrunde durchgeführt werden, werden unter diesem Wert gespeichert.
+
+Wird später eine neue Prüfrunde gestartet, beispielsweise:
+
+```text
+Aktuelle Prüfung: 2027
+```
+
+werden die neu durchgeführten Prüfungen der Prüfrunde **2027** zugeordnet.
+
+Die bereits vorhandenen Prüfungen der Prüfrunde **2026** bleiben dabei erhalten.
+
+> **Wichtig:** Das Ändern der aktuellen Prüfrunde löscht keine vorhandenen Prüfungen. Es wird lediglich festgelegt, unter welchem Wert neue Prüfungen angelegt werden.
+
+### Neue Geräte
+
+Ein neu angelegtes Gerät besitzt zunächst **keine Prüfung**.
+
+Das Gerät wird zunächst nur mit seinen Gerätedaten angelegt.
+
+Beispielsweise:
+
+```text
+Gerät:
+Steckdosenleiste
+Seriennummer: SL-00125
+Lokation: Büro 12
+
+Prüfungen:
+keine
+```
+
+Erst wenn für das Gerät eine Prüfung durchgeführt und gespeichert wurde, besitzt das Gerät eine Prüfung für die aktuelle Prüfrunde.
+
+Beispiel:
+
+```text
+Aktuelle Prüfung: 2026
+
+Gerät:
+Steckdosenleiste
+Seriennummer: SL-00125
+
+Prüfungen:
+2026
+```
+
+### Prüfungen über mehrere Prüfrunden
+
+Ein Gerät kann im Laufe seiner Lebensdauer mehrere Prüfungen besitzen.
+
+Beispielsweise:
+
+```text
+Gerät
+│
+├── Prüfung 2024
+├── Prüfung 2025
+└── Prüfung 2026
+```
+
+Die Prüfungen bilden damit die **Prüfhistorie** des Gerätes.
+
+Wird die aktuelle Prüfrunde von `2025` auf `2026` geändert, wird die Prüfung von 2025 nicht überschrieben.
+
+Wird das Gerät anschließend geprüft, entsteht eine zusätzliche Prüfung für 2026.
+
+Damit bleiben die Ergebnisse der vergangenen Prüfrunden erhalten und können weiterhin eingesehen werden.
+
+### Filter „Abgearbeitet" und „Offen"
+
+Die Filter **„Abgearbeitet"** und **„Offen"** beziehen sich auf die **aktuelle Prüfrunde**.
+
+Dabei wird geprüft, ob für das Gerät eine Prüfung mit dem Wert der aktuellen Prüfrunde vorhanden ist.
+
+Beispiel:
+
+```text
+Aktuelle Prüfung: 2026
+```
+
+Gerät A besitzt:
+
+```text
+Prüfungen:
+2025
+2026
+```
+
+Gerät A ist damit für die aktuelle Prüfrunde **abgearbeitet**.
+
+Gerät B besitzt dagegen:
+
+```text
+Prüfungen:
+2025
+```
+
+Für die aktuelle Prüfrunde `2026` existiert noch keine Prüfung.
+
+Gerät B ist damit **offen**.
+
+Ein neu angelegtes Gerät besitzt zunächst überhaupt keine Prüfung und wird deshalb ebenfalls als **offen** angezeigt.
+
+### Beispiel
+
+Der Gerätebestand enthält drei Geräte:
+
+| Gerät | Prüfungen | Aktuelle Prüfrunde | Status |
+|---|---|---|---|
+| Gerät A | 2025, 2026 | 2026 | Abgearbeitet |
+| Gerät B | 2025 | 2026 | Offen |
+| Gerät C | keine | 2026 | Offen |
+
+Nach der Prüfung von Gerät B:
+
+| Gerät | Prüfungen | Aktuelle Prüfrunde | Status |
+|---|---|---|---|
+| Gerät A | 2025, 2026 | 2026 | Abgearbeitet |
+| Gerät B | 2025, 2026 | 2026 | Abgearbeitet |
+| Gerät C | keine | 2026 | Offen |
+
+Der Filter **„Abgearbeitet"** zeigt damit die Geräte, für die bereits eine Prüfung zur aktuellen Prüfrunde vorhanden ist.
+
+Der Filter **„Offen"** zeigt die Geräte, für die noch keine Prüfung zur aktuellen Prüfrunde vorhanden ist.
+
+### Neue Prüfrunde beginnen
+
+Um eine neue Prüfrunde zu beginnen, wird der Wert der aktuellen Prüfung geändert.
+
+Beispiel:
+
+```text
+Bisher:
+Aktuelle Prüfung: 2026
+
+Danach:
+Aktuelle Prüfung: 2027
+```
+
+Die vorhandenen Prüfungen bleiben erhalten.
+
+Für die neue Prüfrunde sind zunächst alle Geräte offen, für die noch keine Prüfung mit dem Wert `2027` vorhanden ist.
+
+Beispiel:
+
+```text
+Gerät A
+├── 2026
+└── 2027   ← neu geprüft
+
+Gerät B
+└── 2026
+
+Gerät C
+└── keine
+```
+
+Bei der Prüfrunde `2027` sind damit Gerät A abgearbeitet und Gerät B sowie Gerät C offen.
+
+### Bedeutung für die Prüfplanung
+
+Die Prüfrunde kann damit auch verwendet werden, um den Fortschritt einer Prüfung zu verfolgen.
+
+Beispielsweise:
+
+```text
+Aktuelle Prüfrunde: 2026
+
+Gesamt:        100 Geräte
+Abgearbeitet:   72 Geräte
+Offen:          28 Geräte
+```
+
+Der Filter **„Offen"** zeigt dabei genau die Geräte, für die in der aktuellen Prüfrunde noch keine Prüfung angelegt wurde.
+
+Dies ermöglicht es, die noch ausstehenden Geräte gezielt abzuarbeiten.
+
+### Prüfhistorie eines Gerätes
+
+Die Prüfhistorie bleibt unabhängig von der aktuellen Prüfrunde am Gerät erhalten.
+
+Beispielsweise:
+
+```text
+Steckdosenleiste
+Seriennummer: SL-00125
+
+Prüfhistorie:
+2024  → bestanden
+2025  → bestanden
+2026  → bestanden
+```
+
+Wird die aktuelle Prüfrunde auf `2027` geändert, bleiben die drei vorhandenen Prüfungen erhalten:
+
+```text
+2024
+2025
+2026
+```
+
+Das Gerät wird lediglich für die neue Prüfrunde `2027` als offen betrachtet, solange noch keine Prüfung für diese Prüfrunde vorhanden ist.
+
+### Wichtig für die Arbeit mit Prüfrunden
+
+Die Bezeichnung der Prüfrunde sollte mit Bedacht gewählt werden.
+
+Wenn mehrere Prüfer am selben Prüfobjekt arbeiten, müssen sie für dieselbe Prüfrunde **denselben Wert für die aktuelle Prüfung** verwenden.
+
+Beispielsweise müssen alle beteiligten Geräte verwenden:
+
+```text
+2026
+```
+
+und nicht beispielsweise:
+
+```text
+2026
+Prüfung 2026
+Jahresprüfung 2026
+2026-01
+```
+
+Diese Werte werden als unterschiedliche Prüfrunden behandelt.
+
+> **Wichtig:** Der Wert der Prüfrunde ist der Schlüssel für die Zuordnung der Prüfungen. Unterschiedliche Bezeichnungen für dieselbe fachliche Prüfrunde führen daher zu unterschiedlichen Prüfungen.
+
+### Zusammenfassung
+
+Die wichtigsten Zusammenhänge sind:
+
+- Jedes Prüfobjekt besitzt immer eine **aktuelle Prüfrunde**.
+- Der Wert der aktuellen Prüfrunde wird zur Zuordnung neu angelegter Prüfungen verwendet.
+- Ein neu angelegtes Gerät besitzt zunächst **keine Prüfung**.
+- Ein Gerät kann Prüfungen aus mehreren Prüfrunden besitzen.
+- Die bisherigen Prüfungen werden beim Start einer neuen Prüfrunde nicht gelöscht.
+- **„Abgearbeitet"** bedeutet, dass für das Gerät eine Prüfung mit dem Wert der aktuellen Prüfrunde vorhanden ist.
+- **„Offen"** bedeutet, dass für das Gerät noch keine Prüfung mit dem Wert der aktuellen Prüfrunde vorhanden ist.
+- Die Prüfhistorie eines Gerätes bleibt über mehrere Prüfrunden erhalten.
+- Bei der Zusammenarbeit mehrerer Prüfer muss für dieselbe Prüfrunde derselbe Wert verwendet werden.
+
 ## Dashboard
 
 Über das Diagramm-Symbol im Kopfbereich der App gelangt man zum **Dashboard**. Es zeigt eine Übersicht zur aktuell eingestellten Prüfung:
@@ -306,6 +582,8 @@ Nach Abschluss des Vorgangs bleibt die Seite geöffnet und zeigt einen Ergebnisb
 
 Die übernommenen Geräte erscheinen beim nächsten Öffnen in der Geräteliste (siehe [Geräteliste – Filtern und Sortieren](#geräteliste--filtern-und-sortieren)).
 
+Eine ausführlichere Anleitung zum praktischen Ablauf mit mehreren Prüfern findet sich im Abschnitt [Arbeiten mit mehreren Prüfern](#arbeiten-mit-mehreren-prüfern).
+
 ### Mehrere Klienten oder Standorte verwalten
 
 Da jedes Backup einen vollständigen, eigenständigen Datenstand (ein Prüfobjekt mit allen zugehörigen Geräten) enthält, lässt sich die App auch für **mehrere unabhängige Kunden, Prüfobjekte oder Standorte** einsetzen, ohne dass sich die Daten gegenseitig überschneiden:
@@ -315,6 +593,134 @@ Da jedes Backup einen vollständigen, eigenständigen Datenstand (ein Prüfobjek
 3. Die App zeigt danach ausschließlich die Geräte und Prüfobjekt-Angaben des geladenen Backups an.
 
 > **Achtung:** Die App verwaltet immer nur **einen** Datenstand gleichzeitig. Vor jedem Wechsel unbedingt zuerst ein Backup des aktuellen Klienten erstellen, da das Laden eines anderen Backups die aktuell angezeigten Daten vollständig überschreibt. Es empfiehlt sich, die Backup-Dateien sprechend zu benennen und pro Klient an einem festen Ort (z. B. einem eigenen Ordner) zu archivieren.
+
+## Arbeiten mit mehreren Prüfern
+
+Da die App vollständig offline arbeitet und die Daten ausschließlich lokal auf dem jeweiligen Gerät gespeichert werden, können mehrere Prüfer unabhängig voneinander am selben Prüfobjekt arbeiten.
+
+Die Backups der einzelnen Prüfer können anschließend über **„Backup zusammenführen"** zu einem gemeinsamen Datenstand zusammengeführt werden (siehe [Backup zusammenführen](#backup-zusammenführen)).
+
+### Gemeinsamen Ausgangsstand verteilen
+
+Sollen mehrere Prüfer am selben Prüfobjekt arbeiten, sollte zunächst auf einem Gerät der gemeinsame Ausgangsstand vorbereitet werden.
+
+1. Den gewünschten Datenstand öffnen.
+2. Über **„Backup herunterladen"** ein Backup erstellen.
+3. Die Backup-ZIP-Datei an die beteiligten Prüfer weitergeben.
+4. Die Prüfer laden das Backup über **„Backup wiederherstellen"** auf ihrem jeweiligen Gerät.
+
+Nach dem Wiederherstellen verfügen alle Prüfer über denselben Ausgangsstand und können unabhängig voneinander arbeiten.
+
+> **Hinweis:** Beim Wiederherstellen wird der vorhandene Datenbestand vollständig überschrieben. Das Backup daher nur auf einem Gerät wiederherstellen, auf dem der vorhandene Datenbestand nicht benötigt wird. Vorher gegebenenfalls ein eigenes Backup erstellen.
+
+### Prüfungen durchführen
+
+Jeder Prüfer arbeitet anschließend auf seinem eigenen Gerät und erfasst die ihm zugewiesenen Prüfungen.
+
+Zum Beispiel können die Prüfer unterschiedliche Bereiche eines Prüfobjekts bearbeiten:
+
+- Prüfer 1 prüft das Erdgeschoss.
+- Prüfer 2 prüft das Obergeschoss.
+- Prüfer 3 prüft die Werkstatt.
+
+Die Geräte und Prüfungen werden dabei wie gewohnt erfasst. Auch Bilder und PDFs können den Geräten bzw. Prüfungen hinzugefügt werden.
+
+Da die App vollständig offline funktioniert, ist während der Erfassung keine Internetverbindung erforderlich.
+
+### Backups der Prüfer erstellen
+
+Nach Abschluss der Arbeiten erstellt jeder Prüfer über **„Backup herunterladen"** ein eigenes Backup.
+
+Das Backup enthält immer den vollständigen Datenbestand des jeweiligen Geräts, nicht nur die während der aktuellen Arbeit neu erfassten Prüfungen.
+
+Die Backups sollten deshalb eindeutig zugeordnet werden können. Der von der App erzeugte Dateiname enthält bereits das Prüfobjekt sowie Datum und Uhrzeit der Erstellung.
+
+> **Empfehlung:** Bei mehreren Prüfern die Backups nach Möglichkeit direkt nach Abschluss der Arbeiten weitergeben und nicht über längere Zeit aufbewahren, bevor sie zusammengeführt werden.
+
+### Backups zusammenführen
+
+Die Backups werden anschließend auf einem Gerät zu einem gemeinsamen Datenstand zusammengeführt.
+
+1. Das Gerät mit dem gemeinsamen Datenstand öffnen.
+2. Vor dem Zusammenführen über **„Backup herunterladen"** ein Backup des aktuellen Datenstands erstellen.
+3. Im Administrationsbereich **„Backup zusammenführen"** öffnen.
+4. Das Backup eines Prüfers auswählen.
+5. Den Vorgang starten.
+6. Den angezeigten Ergebnisbericht prüfen.
+7. Die weiteren Backups **einzeln nacheinander** zusammenführen.
+
+Die Funktionsweise der Zusammenführung ist im Abschnitt [Backup zusammenführen](#backup-zusammenführen) beschrieben.
+
+> **Wichtig:** Die Backups sollten nicht gleichzeitig zusammengeführt werden. Jedes Backup wird einzeln verarbeitet. Nach jedem Vorgang zeigt die App einen Ergebnisbericht an.
+
+### Beispiel
+
+Ein Prüfobjekt enthält 100 Geräte. Zwei Prüfer teilen sich die Arbeit.
+
+Beide Prüfer erhalten zunächst ein Backup mit den 100 Geräten.
+
+**Prüfer 1** prüft die Geräte 1 bis 50 und erstellt anschließend ein Backup.
+
+**Prüfer 2** prüft die Geräte 51 bis 100 und erstellt ebenfalls ein Backup.
+
+Anschließend werden beide Backups nacheinander in den gemeinsamen Datenbestand übernommen.
+
+Da die Prüfer unterschiedliche Geräte bearbeitet haben, werden die jeweiligen Prüfungen zu den bereits vorhandenen Geräten hinzugefügt.
+
+Der gemeinsame Datenbestand enthält danach die Prüfungen beider Prüfer.
+
+### Bereits vorhandene Geräte
+
+Die Zusammenführung kann auch verwendet werden, wenn mehrere Prüfer Prüfungen an Geräten durchführen, die bereits im gemeinsamen Datenbestand vorhanden sind.
+
+Bei einem bereits vorhandenen Gerät werden Prüfungen übernommen, deren **Prüfungsname** im vorhandenen Gerät noch nicht existiert.
+
+Prüfungen mit einem bereits vorhandenen Prüfungsnamen werden nicht erneut übernommen.
+
+> **Wichtig:** Die Funktion „Backup zusammenführen" ist keine automatische Synchronisation. Änderungen an derselben Prüfung werden nicht miteinander verglichen oder automatisch zusammengeführt. Für die Zusammenarbeit sollten die Prüfer daher möglichst unterschiedliche Geräte bzw. Prüfungen bearbeiten.
+
+### Ergebnis kontrollieren
+
+Nach jedem Zusammenführen zeigt die App einen Ergebnisbericht an.
+
+Dort wird angezeigt:
+
+- wie viele Geräte eingefügt wurden,
+- wie viele Prüfungen zusammengeführt wurden,
+- wie viele Prüfungen nicht übernommen wurden.
+
+Zusätzlich werden die einzelnen Vorgänge in den Tabellen **„Eingefügte Geräte"**, **„Zusammengeführte Inspectionen"** und **„Nicht übernommene Inspectionen"** aufgeführt.
+
+Der Ergebnisbericht sollte nach jedem Zusammenführen kontrolliert werden.
+
+### Gemeinsamen Datenstand wieder verteilen
+
+Nach dem Zusammenführen kann der vollständige Datenstand über **„Backup herunterladen"** erneut gesichert werden.
+
+Dieses Backup kann anschließend wieder auf die Geräte der beteiligten Prüfer verteilt werden.
+
+Dabei ist zu beachten:
+
+> **Achtung:** Das Wiederherstellen des gemeinsamen Backups überschreibt den vorhandenen Datenbestand auf dem jeweiligen Gerät vollständig.
+
+Daher sollte das gemeinsame Backup erst verteilt werden, wenn alle benötigten Backups der einzelnen Prüfer zusammengeführt wurden.
+
+### Empfohlener Ablauf
+
+Für die Zusammenarbeit mehrerer Prüfer ergibt sich damit folgender Ablauf:
+
+1. Gemeinsamen Ausgangsstand vorbereiten.
+2. Backup des Ausgangsstands erstellen.
+3. Backup an die Prüfer verteilen.
+4. Prüfer stellen das Backup auf ihren Geräten wieder her.
+5. Prüfer führen ihre Prüfungen unabhängig voneinander durch.
+6. Jeder Prüfer erstellt nach Abschluss ein eigenes Backup.
+7. Gemeinsamen Datenstand sichern.
+8. Backups der Prüfer einzeln nacheinander zusammenführen.
+9. Nach jedem Vorgang den Ergebnisbericht kontrollieren.
+10. Nach Abschluss ein Backup des gemeinsamen Datenstands erstellen.
+
+> **Empfehlung:** Die ursprünglichen Backups der einzelnen Prüfer sollten bis zur Kontrolle des zusammengeführten Datenstands aufbewahrt werden. Dadurch kann bei einem Fehler jederzeit auf den jeweiligen Ausgangsstand zurückgegriffen werden.
 
 ## Geräte aus Excel importieren
 
@@ -334,7 +740,274 @@ Der Import läuft in vier Schritten ab:
 - Für jede importierte Zeile wird ein **neues** Gerät angelegt – auch wenn Hersteller, Modell oder Seriennummer mit einem bereits vorhandenen Gerät übereinstimmen. Es findet keine automatische Zusammenführung mit bestehenden Geräten statt.
 - Schlägt der Import einzelner Zeilen fehl, werden die übrigen, fehlerfreien Zeilen trotzdem angelegt (kein Abbruch des gesamten Imports).
 - Neu importierte Standorte stehen anschließend sofort als Vorschlag zur Verfügung, wenn ein Gerät manuell angelegt oder bearbeitet wird (siehe [Geräte verwalten](#geräte-verwalten)).
-- Neu importierte Geräte werden – ebenso wie geklonte Geräte – als „neu“ markiert und lassen sich über den Filter-Chip „Neu“ in der Geräteliste auffinden, bis sie einmal bearbeitet und gespeichert wurden (siehe [Gerät klonen](#gerät-klonen)).
+- Neu importierte Geräte werden – ebenso wie geklonte Geräte – als „neu" markiert und lassen sich über den Filter-Chip „Neu" in der Geräteliste auffinden, bis sie einmal bearbeitet und gespeichert wurden (siehe [Gerät klonen](#gerät-klonen)).
+
+Eine ausführlichere Anleitung zur Vorbereitung großer Gerätebestände in Excel findet sich im Abschnitt [Excel-Import und Massendaten](#excel-import-und-massendaten).
+
+## Excel-Import und Massendaten
+
+Der Excel-Import ermöglicht es, eine größere Anzahl von Geräten in einem Arbeitsschritt in die App zu übernehmen.
+
+Dies ist insbesondere dann hilfreich, wenn viele gleichartige Geräte erfasst werden müssen, beispielsweise:
+
+- Steckdosenleisten
+- Verlängerungsleitungen
+- Netzteile
+- Ladegeräte
+- ortsveränderliche Geräte mit ähnlichen Stammdaten
+- Geräte, deren Seriennummern und Lokationen bereits bekannt sind
+
+Statt jedes Gerät einzeln anzulegen, können die Daten zunächst in Excel vorbereitet und anschließend importiert werden.
+
+### Vorbereitung der Excel-Datei
+
+Für den Import wird eine Excel-Datei mit den entsprechenden Spalten benötigt.
+
+Die Spalten der Excel-Datei entsprechen den Feldern, die beim Anlegen eines Gerätes in der App verwendet werden.
+
+Dabei sollte jede Zeile genau **ein Gerät** darstellen.
+
+Beispiel:
+
+| Bezeichnung | Hersteller | Typ | Seriennummer | Lokation |
+|---|---|---|---|---|
+| Steckdosenleiste | Brennenstuhl | Premium-Line | STL-00001 | Büro 1 |
+| Steckdosenleiste | Brennenstuhl | Premium-Line | STL-00002 | Büro 1 |
+| Steckdosenleiste | Brennenstuhl | Premium-Line | STL-00003 | Büro 2 |
+| Steckdosenleiste | Brennenstuhl | Premium-Line | STL-00004 | Büro 2 |
+
+Die gemeinsamen Angaben können dabei für viele Geräte identisch sein.
+
+### Massendaten vorbereiten
+
+Bei größeren Mengen empfiehlt es sich, zunächst ein einzelnes Gerät vollständig zu beschreiben und anschließend die wiederkehrenden Angaben in Excel für die weiteren Zeilen zu übernehmen.
+
+Beispielsweise müssen bei 200 identischen Steckdosenleisten nicht jedes Mal Hersteller und Typ manuell eingetragen werden.
+
+In Excel können die Werte einfach nach unten kopiert werden.
+
+```text
+Hersteller       Typ             Seriennummer    Lokation
+Brennenstuhl     Premium-Line    STL-00001       Büro 1
+Brennenstuhl     Premium-Line    STL-00002       Büro 1
+Brennenstuhl     Premium-Line    STL-00003       Büro 1
+...
+Brennenstuhl     Premium-Line    STL-00200       Büro 5
+```
+
+Dadurch lassen sich auch größere Mengen von Geräten schnell vorbereiten.
+
+### Seriennummern in Excel erzeugen
+
+Wenn für die Geräte noch keine Seriennummern vorhanden sind, können diese für die Erfassung in Excel erzeugt werden.
+
+Eine einfache Möglichkeit ist eine fortlaufende Nummer.
+
+Beispielsweise:
+
+```text
+STL-00001
+STL-00002
+STL-00003
+STL-00004
+...
+STL-00200
+```
+
+In Excel kann dafür beispielsweise folgende Formel verwendet werden:
+
+```excel
+="STL-"&TEXT(ZEILE(A1);"00000")
+```
+
+Beim Herunterziehen der Formel entstehen automatisch fortlaufende Nummern.
+
+Die verwendete Nummerierung sollte dabei so gewählt werden, dass die erzeugten Seriennummern innerhalb des Datenbestands eindeutig sind.
+
+> **Wichtig:** Die auf diese Weise erzeugten Seriennummern sind keine vom Hersteller vergebenen Seriennummern. Sie dienen lediglich als eigene eindeutige Kennzeichnung der Geräte.
+
+Eine solche Kennzeichnung kann beispielsweise verwendet werden, wenn ein Gerät keine Hersteller-Seriennummer besitzt oder die vorhandene Seriennummer für die praktische Erfassung nicht geeignet ist.
+
+### Eigene Inventarnummern verwenden
+
+Für die praktische Prüfung kann es sinnvoll sein, eine eigene Nummerierung zu verwenden.
+
+Beispielsweise:
+
+```text
+SL-2026-00001
+SL-2026-00002
+SL-2026-00003
+```
+
+Dabei kann die Nummerierung Informationen über den Bestand enthalten.
+
+Zum Beispiel:
+
+```text
+SL    = Steckdosenleiste
+2026  = Jahr der Erfassung
+00001 = fortlaufende Nummer
+```
+
+Die genaue Struktur kann frei gewählt werden.
+
+> **Hinweis:** Bei einer eigenen Nummerierung sollte die Nummer einmalig vergeben werden und anschließend dauerhaft demselben Gerät zugeordnet bleiben.
+
+### Lokationen in Excel vorbereiten
+
+Auch Lokationen können bereits vor dem Import in Excel festgelegt werden.
+
+Beispielsweise:
+
+```text
+Gebäude 1 / Erdgeschoss / Büro 01
+Gebäude 1 / Erdgeschoss / Büro 02
+Gebäude 1 / Erdgeschoss / Büro 03
+Gebäude 1 / Obergeschoss / Büro 01
+```
+
+Wenn mehrere Geräte dieselbe Lokation haben, kann der entsprechende Wert für alle Geräte übernommen werden.
+
+Beispiel:
+
+| Seriennummer | Lokation |
+|---|---|
+| STL-00001 | Gebäude 1 / EG / Büro 01 |
+| STL-00002 | Gebäude 1 / EG / Büro 01 |
+| STL-00003 | Gebäude 1 / EG / Büro 01 |
+| STL-00004 | Gebäude 1 / EG / Büro 02 |
+
+Damit steht die Lokation bereits bei der ersten Erfassung zur Verfügung und muss nicht für jedes Gerät einzeln eingetragen werden.
+
+### Lokationen automatisch erzeugen
+
+Bei großen Beständen können auch die Lokationen mit Excel-Formeln erzeugt werden.
+
+Beispielsweise kann eine Liste der Räume vorbereitet werden:
+
+```text
+Büro 01
+Büro 02
+Büro 03
+Büro 04
+...
+```
+
+Anschließend können diese Werte den Geräten zugeordnet werden.
+
+Bei einem regelmäßigen Aufbau, beispielsweise zehn Steckdosenleisten pro Büro, kann die Lokation auch anhand der laufenden Nummer automatisch erzeugt werden.
+
+Damit lassen sich beispielsweise 100 Geräte auf zehn Räume verteilen, ohne jede Lokation einzeln eingeben zu müssen.
+
+### Kombination aus Seriennummer und Lokation
+
+Besonders effektiv ist die Kombination aus automatisch erzeugter Seriennummer und vorbereiteter Lokation.
+
+Beispiel:
+
+| Bezeichnung | Seriennummer | Lokation |
+|---|---|---|
+| Steckdosenleiste | SL-00001 | Büro 01 |
+| Steckdosenleiste | SL-00002 | Büro 01 |
+| Steckdosenleiste | SL-00003 | Büro 01 |
+| Steckdosenleiste | SL-00004 | Büro 02 |
+| Steckdosenleiste | SL-00005 | Büro 02 |
+| Steckdosenleiste | SL-00006 | Büro 02 |
+
+Nach dem Import sind die Geräte bereits mit den vorbereiteten Stammdaten angelegt.
+
+Die eigentliche Prüfung kann anschließend direkt in der App durchgeführt werden.
+
+### Beispiel: 100 Steckdosenleisten
+
+Angenommen, in einem Gebäude sollen 100 Steckdosenleisten geprüft werden.
+
+Die Geräte sind baugleich und besitzen keine für die Prüfung verwendete Seriennummer.
+
+In Excel werden zunächst die erforderlichen Daten vorbereitet:
+
+```text
+Bezeichnung:     Steckdosenleiste
+Hersteller:      Beispielhersteller
+Typ:             Beispieltyp
+Seriennummer:    SL-00001 bis SL-00100
+Lokation:        Büro 01 bis Büro 20
+```
+
+Anschließend wird die Excel-Datei importiert.
+
+Die 100 Geräte stehen danach in der App zur Verfügung und können einzeln geprüft werden.
+
+### Excel als Vorbereitung der Erfassung
+
+Der Excel-Import sollte insbesondere für die **Vorbereitung von Stammdaten** verwendet werden.
+
+Die eigentliche Prüfung erfolgt anschließend in der App.
+
+Das hat den Vorteil, dass die wiederkehrenden Informationen nicht während der Prüfung manuell eingegeben werden müssen.
+
+Der Ablauf kann beispielsweise so aussehen:
+
+```text
+Excel
+  │
+  ├── Geräte erzeugen
+  ├── Seriennummern vergeben
+  ├── Lokationen zuordnen
+  └── Stammdaten vorbereiten
+          │
+          ▼
+     Excel-Import
+          │
+          ▼
+        App
+          │
+          ├── Geräte prüfen
+          ├── Messwerte erfassen
+          ├── Bilder hinzufügen
+          └── Prüfung abschließen
+```
+
+### Vor dem Import kontrollieren
+
+Vor dem Import sollte die Excel-Datei kontrolliert werden.
+
+Insbesondere sollte geprüft werden:
+
+- Ist jede Zeile einem Gerät zugeordnet?
+- Sind Pflichtfelder ausgefüllt?
+- Sind Seriennummern eindeutig?
+- Sind Lokationen korrekt geschrieben?
+- Gibt es versehentlich doppelte Geräte?
+- Sind die Spalten den richtigen Feldern zugeordnet?
+- Enthalten die Zellen unerwünschte Leerzeichen oder zusätzliche Zeichen?
+
+Bei großen Datenmengen ist eine Kontrolle in Excel wesentlich einfacher als eine nachträgliche Korrektur in der App.
+
+### Empfehlung bei großen Datenmengen
+
+Bei sehr großen Datenmengen empfiehlt es sich, den Import zunächst mit einer kleinen Anzahl von Geräten zu testen.
+
+Beispielsweise können zunächst fünf bis zehn Geräte importiert und anschließend kontrolliert werden.
+
+Erst wenn die Zuordnung der Spalten und die erzeugten Daten korrekt sind, sollte der vollständige Datenbestand importiert werden.
+
+> **Achtung:** Vor einem größeren Import sollte ein Backup des aktuellen Datenbestands erstellt werden. Dadurch kann bei Bedarf auf den vorherigen Stand zurückgegriffen werden.
+
+### Zusammenspiel mit dem Arbeiten mit mehreren Prüfern
+
+Der Excel-Import kann auch mit dem [Arbeiten mit mehreren Prüfern](#arbeiten-mit-mehreren-prüfern) kombiniert werden.
+
+Beispielsweise kann der vollständige Gerätebestand zunächst über Excel erzeugt und importiert werden.
+
+Anschließend wird der Datenbestand als Backup an die beteiligten Prüfer verteilt.
+
+Die Prüfer führen ihre Prüfungen unabhängig voneinander durch und erstellen anschließend jeweils ein Backup.
+
+Die einzelnen Backups können danach über **„Backup zusammenführen"** wieder zu einem gemeinsamen Datenbestand zusammengeführt werden.
+
+Damit eignet sich der Excel-Import insbesondere für die **Vorbereitung großer Gerätebestände**, während **Backup und Backup zusammenführen** für die anschließende Zusammenarbeit mehrerer Prüfer verwendet werden können.
 
 ## Geräte als Excel exportieren
 

@@ -214,13 +214,13 @@
 <style>
     main {
         padding: 1rem;
-        max-width: 900px;
+        max-width: 1100px;
         margin: 0 auto;
     }
 
     .loading {
         text-align: center;
         padding: 3rem;
-        color: #667970;
+        color: var(--color-muted);
     }
 </style>

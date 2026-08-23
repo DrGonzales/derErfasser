@@ -10,7 +10,7 @@
     import RestoreButton from "./RestoreButton.svelte";
     import BackupMerge from "./BackupMerge.svelte";
     import ChangelogModal from "./ChangelogModal.svelte";
-    import HelpModal from "./HelpModal.svelte";
+    import HelpPage from "./HelpPage.svelte";
     import ImportModal from "./ImportModal.svelte";
     import ExportButton from "./ExportButton.svelte";
     import InstallAppTile from "./InstallAppTile.svelte";
@@ -183,7 +183,9 @@
 </script>
 
 <div class="admin-page">
-    {#if mergeOpen}
+    {#if helpOpen}
+        <HelpPage onBack={() => (helpOpen = false)} />
+    {:else if mergeOpen}
         <BackupMerge onBack={() => (mergeOpen = false)} onMerged={onMerged} />
     {:else}
     <h2>Administration</h2>
@@ -419,10 +421,6 @@
     {/if}
 </div>
 
-{#if helpOpen}
-    <HelpModal onClose={() => (helpOpen = false)} />
-{/if}
-
 {#if changelogOpen}
     <ChangelogModal onClose={() => (changelogOpen = false)} />
 {/if}
@@ -453,9 +451,8 @@
 
 <style>
     .admin-page {
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 0 1rem;
+        max-width: 1100px;
+        margin: 1rem auto;
     }
 
     .changelog-link {
@@ -603,11 +600,11 @@
 
     /* Hints */
     .empty-hint {
-        background: #fff8e1;
-        border-left: 4px solid #f59e0b;
+        background: var(--color-warning-bg);
+        border-left: 4px solid var(--color-warning);
         padding: 0.75rem 1rem;
         border-radius: 0 6px 6px 0;
-        color: #78350f;
+        color: var(--color-warning);
         margin: 0 0 1.25rem;
         font-size: 0.9rem;
     }
