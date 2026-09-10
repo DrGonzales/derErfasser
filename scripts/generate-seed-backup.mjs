@@ -22,8 +22,8 @@ import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-const DEVICE_COUNT = 1000;
-const OUTPUT_FILENAME = 'seed-backup.zip';
+const DEVICE_COUNT = Number(process.env.SEED_DEVICE_COUNT ?? 1000);
+const OUTPUT_FILENAME = process.env.SEED_OUTPUT_FILENAME ?? 'seed-backup.zip';
 
 // ── Zufalls-Helfer ──────────────────────────────────────────────────────
 

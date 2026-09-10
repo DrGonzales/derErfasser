@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="Prüftool – einfache, offlinefähige Prüfdokumentation für ortsveränderliche elektrische Geräte.">
+  <meta name="theme-color" content="#182b0c">
+  <title>Prüftool – Sicherheitsprüfungen einfach dokumentieren</title>
+  <link rel="icon" type="image/svg+xml" href="https://github.com/DrGonzales/derErfasser/blob/main/public/icon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a class="brand" href="#">
+          <span class="brand-mark" aria-hidden="true">
+            <img src="logo.svg" alt="" width="22" height="22">
+          </span>
+          <span>Prüftool</span>
+        </a>
+        <div class="navlinks">
+          <a href="#funktionen">Funktionen</a>
+          <a href="#demodaten">Demo-Daten</a>
+          <a href="#ablauf">Ablauf</a>
+          <a href="#excel">Excel & Prüfer</a>
+          <a href="#datenschutz">Datenschutz</a>
+          <a href="#dokumentation">Dokumentation</a>
+        </div>
+        <a class="btn btn-primary" href="https://drgonzales.github.io/derErfasser/" target="_blank" rel="noopener">App
+          öffnen ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow"><span class="dot"></span> Offlinefähige PWA</span>
+          <h1>Prüfungen dokumentieren.<br><span style="color:var(--primary)">Einfach. Lokal. Nachvollziehbar.</span>
+          </h1>
+          <p>
+            Prüftool unterstützt kleine Handwerksbetriebe, Hausmeisterservices und Werkstätten
+            bei der regelmäßigen Prüfung ortsveränderlicher elektrischer Geräte nach
+            <strong>DGUV Vorschrift 3</strong> und <strong>DIN VDE 0701-0702</strong> –
+            von der Geräteerfassung über die Prüfrunde bis zum fertigen PDF-Bericht.
+            Vollständig offline, ohne Cloud oder Server: Alle Daten bleiben lokal und die
+            Prüfhistorie jedes Geräts lückenlos über Jahre nachvollziehbar.
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://drgonzales.github.io/derErfasser/" target="_blank"
+              rel="noopener">Jetzt ausprobieren ↗</a>
+            <a class="btn btn-ghost" href="https://github.com/DrGonzales/derErfasser" target="_blank" rel="noopener">Auf
+              GitHub ansehen</a>
+          </div>
+          <div class="trust">
+            <span><b>✓</b> 100 % offline nutzbar</span>
+            <span><b>✓</b> Keine Registrierung</span>
+            <span><b>✓</b> Keine Cloud</span>
+          </div>
+        </div>
+
+        <div class="app-card" aria-label="Vorschau der Prüftool-Oberfläche">
+          <div class="window">
+            <div class="windowbar"><i></i><i></i><i></i></div>
+            <img class="mock-shot" src="screenshots/hero-dashboard.png" alt="">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="funktionen">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Alles an einem Ort</span>
+          <h2>Vom ersten Gerät bis zum fertigen Prüfbericht.</h2>
+          <p>Prüftool bildet den kompletten Ablauf einer Prüfrunde ab – ohne Server, ohne Datenbankinstallation und ohne
+            unnötige Verwaltungssoftware.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-img"><img src="screenshots/geraeteverwaltung.png"
+                alt="Geräteverwaltung"></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="3" width="16" height="18" rx="2" />
+                <path d="M8 7h8M8 11h8M8 15h5" />
+              </svg></div>
+            <h3>Geräteverwaltung</h3>
+            <p>Typ, Hersteller, Modell, Seriennummer, Schutzklasse, Leistung und Standort übersichtlich erfassen.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-img"><img src="screenshots/messwerte.png"
+                alt="Messwerte dokumentieren"></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v18M5 8h14M5 16h14" />
+                <circle cx="12" cy="12" r="9" />
+              </svg></div>
+            <h3>Messwerte dokumentieren</h3>
+            <p>Sicht- und Funktionsprüfung sowie Schutzleiter-, Isolations-, Ersatzableit- und Berührungsstrom erfassen.
+            </p>
+          </article>
+          <article class="feature">
+            <div class="feature-img"><img src="screenshots/dashboard.png"
+                alt="Dashboard"></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19V5M4 19h16" />
+                <path d="m7 15 3-4 3 2 5-7" />
+              </svg></div>
+            <h3>Dashboard</h3>
+            <p>Fortschritt, offene Prüfungen, Ergebnisse und Gerätezustände auf einen Blick.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-img"><img src="screenshots/pdf-berichte.png"
+                alt="PDF-Prüfberichte"></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2h9l4 4v16H6z" />
+                <path d="M14 2v5h5M9 13h6M9 17h6" />
+              </svg></div>
+            <h3>PDF-Prüfberichte</h3>
+            <p>Mit einem Klick vollständige Berichte mit Deckblatt, Zusammenfassung, Diagrammen und Prüfergebnissen
+              erzeugen.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-img"><img
+                src="screenshots/backup.png"
+                alt="Backup & Wiederherstellung"></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v12" />
+                <path d="m7 10 5 5 5-5" />
+                <path d="M5 21h14" />
+              </svg></div>
+            <h3>Backup & Wiederherstellung</h3>
+            <p>Geräte, Prüfhistorie, Bilder und Dokumente als ZIP sichern und auf einem anderen Rechner
+              wiederherstellen.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-img"><img
+                src="screenshots/pruefrunden.png"
+                alt="Prüfrunden & Historie"></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 7h16v13H4z" />
+                <path d="M8 4v6M16 4v6M7 14h10" />
+              </svg></div>
+            <h3>Prüfrunden & Historie</h3>
+            <p>Neue Prüfrunden anlegen, ohne alte Ergebnisse zu überschreiben. Die Historie eines Geräts bleibt
+              erhalten.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="demodaten">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Direkt ausprobieren</span>
+          <h2>Mit Beispieldaten starten.</h2>
+          <p>Ein fertiges Demo-Datenset mit 12 Beispielgeräten (verschiedene Hersteller, Typen und teils mehreren
+            Prüfrunden) macht es einfach, Prüftool ohne eigene Geräte zu testen.</p>
+        </div>
+        <article class="feature">
+          <h3>Demo-Datenset laden</h3>
+          <p>Die ZIP-Datei enthält Beispielgeräte samt Prüfhistorie und lässt sich genauso wie ein normales Backup in
+            die App einspielen.</p>
+          <div class="badges">
+            <a class="btn btn-primary" href="demodatenset.zip" download>Demo-Datenset herunterladen (.zip)</a>
+          </div>
+          <div class="steps-team">
+            <div class="team-step"><span class="num">1</span>Prüftool öffnen</div>
+            <div class="team-step"><span class="num">2</span>Im Administrationsbereich zu „Backup wiederherstellen“
+              wechseln</div>
+            <div class="team-step"><span class="num">3</span>Heruntergeladene <code>demodatenset.zip</code> auswählen
+            </div>
+            <div class="team-step"><span class="num">4</span>Geräte, Dashboard und Prüfberichte mit Beispieldaten
+              erkunden</div>
+          </div>
+          <p class="warn-hint">⚠ Achtung: Bestehende Daten (Geräte, Bilder und Prüfobjekt-Informationen) werden dabei
+            vollständig überschrieben – am besten auf einer Test-Instanz einspielen.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="ablauf" class="workflow">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" style="background:#16240c;color:#c9e0b4">Ein klarer Ablauf</span>
+          <h2>Von der Erfassung zur Dokumentation.</h2>
+          <p>Die Oberfläche ist auf einen praktischen Prüfeinsatz ausgelegt – auch direkt vor Ort.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <h3>Geräte erfassen</h3>
+            <p>Stammdaten, Standort, Bilder und Dokumente hinzufügen.</p>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <h3>Prüfrunde starten</h3>
+            <p>Eine aktuelle Prüfrunde festlegen und offene Geräte abarbeiten.</p>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <h3>Prüfung dokumentieren</h3>
+            <p>Prüfergebnisse und Messwerte direkt am Gerät erfassen.</p>
+          </div>
+          <div class="step">
+            <div class="num">4</div>
+            <h3>Bericht erstellen</h3>
+            <p>Ergebnisse auswerten und einen vollständigen PDF-Bericht erzeugen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="excel">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Daten & Team</span>
+          <h2>Importieren, exportieren, gemeinsam prüfen.</h2>
+          <p>Große Gerätebestände in wenigen Schritten aus Excel übernehmen und mehrere Prüfer unabhängig voneinander an
+            demselben Prüfobjekt arbeiten lassen – ganz ohne Server.</p>
+        </div>
+        <div class="team-grid">
+          <article class="feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6M9 13h6M9 17h3" />
+              </svg></div>
+            <h3>Excel-Import & Export</h3>
+            <p>Geräte aus Excel- (xlsx, xls) oder CSV-Dateien in vier Schritten anlegen oder als fertige Tabelle
+              exportieren – ideal für viele gleichartige Geräte.</p>
+            <div class="badges">
+              <span class="badge">1 · Datei wählen</span>
+              <span class="badge">2 · Spalten zuordnen</span>
+              <span class="badge">3 · Vorschau</span>
+              <span class="badge">4 · Ergebnis</span>
+            </div>
+            <ul class="feature-list">
+              <li><b>Massendaten</b> – hunderte Geräte in einem Schritt übernehmen</li>
+              <li>Seriennummern per Excel-Formel erzeugen (z. B. <code>STL-00001</code> … <code>STL-00200</code>)</li>
+              <li>Eigene Inventarnummern und vorbereitete Lokationen verwenden</li>
+              <li>Fehlerhafte Zeilen werden gemeldet, ohne den Import abzubrechen</li>
+              <li>Neue Geräte sofort über den Filter-Chip „Neu“ auffinden</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg></div>
+            <h3>Arbeiten mit mehreren Prüfern</h3>
+            <p>Jeder Prüfer arbeitet offline auf seinem eigenen Gerät. Die Ergebnisse werden anschließend über
+              „Backup zusammenführen“ zu einem gemeinsamen Datenstand vereint.</p>
+            <div class="steps-team">
+              <div class="team-step"><span class="num">1</span>Gemeinsamen Ausgangsstand vorbereiten</div>
+              <div class="team-step"><span class="num">2</span>Backup erstellen &amp; an Prüfer verteilen</div>
+              <div class="team-step"><span class="num">3</span>Prüfungen einzeln und offline durchführen</div>
+              <div class="team-step"><span class="num">4</span>Backups nacheinander zusammenführen</div>
+              <div class="team-step"><span class="num">5</span>Ergebnisbericht prüfen</div>
+              <div class="team-step"><span class="num">6</span>Gemeinsamen Stand wieder verteilen</div>
+            </div>
+            <ul class="feature-list">
+              <li>Keine automatische Synchronisation – möglichst unterschiedliche Geräte bearbeiten</li>
+              <li>Für dieselbe Prüfrunde immer denselben Wert verwenden</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="datenschutz">
+      <div class="container privacy">
+        <div>
+          <span class="eyebrow">Datenschutz by Design</span>
+          <h2 style="font-size:clamp(2rem,4vw,3.1rem);line-height:1.08;letter-spacing:-.04em">Deine Prüfdaten bleiben
+            bei dir.</h2>
+          <p style="color:var(--muted);font-size:1.05rem">
+            Nach dem ersten Laden funktioniert die PWA vollständig ohne Internetverbindung.
+            Geräte, Bilder, PDFs und Prüfobjekt-Daten werden lokal im Browser gespeichert.
+          </p>
+        </div>
+        <div class="privacy-box">
+          <div class="highlight">Keine Cloud. Kein Konto. Kein eigener Server nötig.</div>
+          <ul>
+            <li><span class="check">✓</span><span>Lokale Speicherung im Browser (IndexedDB)</span></li>
+            <li><span class="check">✓</span><span>Offline-Nutzung nach dem ersten Laden</span></li>
+            <li><span class="check">✓</span><span>Installation als PWA optional</span></li>
+            <li><span class="check">✓</span><span>ZIP-Backups für Sicherung und Übertragung</span></li>
+            <li><span class="check">✓</span><span>Keine Registrierung erforderlich</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="dokumentation" style="padding-top:25px">
+      <div class="container">
+        <div class="cta-card">
+          <div>
+            <h2>Prüftool selbst ausprobieren.</h2>
+            <p>Direkt im Browser starten, als PWA installieren oder den Quellcode auf GitHub ansehen.</p>
+          </div>
+          <div class="actions" style="margin:0">
+            <a class="btn btn-primary" style="background:#fff;color:#3f7a2e"
+              href="https://drgonzales.github.io/derErfasser/" target="_blank" rel="noopener">App starten ↗</a>
+            <a class="btn" style="color:#fff;border-color:#52647c;background:transparent"
+              href="https://github.com/DrGonzales/derErfasser/blob/main/ANWENDERHANDBUCH.md" target="_blank"
+              rel="noopener">Anwenderhandbuch</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>Prüftool · Offlinefähige Prüfdokumentation</span>
+      <span>
+        <a href="https://github.com/DrGonzales/derErfasser" target="_blank" rel="noopener">GitHub</a>
+        · <a href="https://drgonzales.github.io/derErfasser/" target="_blank" rel="noopener">App</a>
+        · <a href="https://github.com/DrGonzales/derErfasser/blob/main/ANWENDERHANDBUCH.md" target="_blank"
+          rel="noopener">Dokumentation</a>
+      </span>
+    </div>
+  </footer>
+</body>
+
+</html>
