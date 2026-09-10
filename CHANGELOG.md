@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 10.09.2026 - Automatisches Release mit ZIP-Attachment, nginx Docker-Anleitung
+
+Der GitHub Actions Workflow erstellt jetzt automatisch ein Release mit ZIP-Archiv beim Push eines Tags auf den `release`-Branch. Die README enthält ein neues Kapitel zur Nutzung des Release-ZIPs mit einem nginx Docker-Image. Zusätzlich wurden Änderungen aus früheren Commits übernommen: Anwenderhandbuch als Vollseite, Layout-Vereinheitlichung, Bericht-Kachel im Dashboard, Version & Dokumentation.
+
 ## 23.08.2026 - Anwenderhandbuch als eigene Seite
 
 Das Anwenderhandbuch öffnet sich nicht mehr als Popup-Fenster, sondern als eigene Seite mit Inhaltsverzeichnis in der Seitenleiste; über die klickbaren Kapitel-Links springt man direkt zum gewünschten Abschnitt, eine „Zurück"-Leiste bleibt dabei immer sichtbar. Zusätzlich wurden drei neue Kapitel ergänzt: „Prüfrunden und Prüfhistorie", „Arbeiten mit mehreren Prüfern" und „Excel-Import und Massendaten". Außerdem wurde die Breite von Geräteliste, Verwaltung, Dashboard und Anwenderhandbuch vereinheitlicht, sodass alle Seiten gleich breit und einheitlich aussehen, und der „Bericht erzeugen"-Button im Dashboard steht jetzt an erster Stelle in einer eigenen Kachel mit kurzem Hinweistext.
