@@ -152,6 +152,16 @@ Eine ausführliche Beschreibung inklusive Ablaufdiagramm befindet sich im [Anwen
 [https://drgonzales.github.io/derErfasser/] 
 
 
+## Release
+
+Das ZIP-Archiv im Repository enthält den aktuellen Release-Build der App. Zum Betreiben mit einem nginx Docker-Image:
+
+```bash
+docker run -d -p 8080:80 --name erfasser -v $(pwd)/dist:/usr/share/nginx/html:ro nginx:alpine
+```
+
+Die App ist dann unter `http://localhost:8080` erreichbar.
+
 ## Start
 
 ```bash
