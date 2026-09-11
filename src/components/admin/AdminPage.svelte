@@ -16,6 +16,7 @@
     import InstallAppTile from "./InstallAppTile.svelte";
     import ConfirmDialog from "../shared/ConfirmDialog.svelte";
     import Button from "../shared/Button.svelte";
+    import Combobox from "../shared/Combobox.svelte";
 
     let {
         hasData,
@@ -44,6 +45,9 @@
     let fAnschrift = $state("");
     let fOrt = $state("");
     let fAktuellePruefung = $state("");
+    // Wert der aktuellen Prüfrunde beim Laden, um sie in der Vorschlagsliste
+    // als "aktuell" zu markieren (Badge in der Combobox).
+    let loadedAktuellePruefung = $state("");
 
     // Auditor-Felder (form fields)
     let fAuditorName = $state("");
@@ -82,6 +86,7 @@
             fAnschrift = metaData.anschrift;
             fOrt = metaData.ort;
             fAktuellePruefung = metaData.aktuellePruefung;
+            loadedAktuellePruefung = metaData.aktuellePruefung;
             fAuditorName = metaData.auditor?.name ?? "";
             fAuditorAnschrift = metaData.auditor?.anschrift ?? "";
             fAuditorOrt = metaData.auditor?.ort ?? "";
@@ -275,18 +280,14 @@
                     </label>
                     <label class="field">
                         <span>Aktuelle Prüfung{!hasData ? " *" : ""}</span>
-                        <input
-                            type="text"
-                            list="aktuelle-pruefung-options"
-                            autocomplete="off"
+                        <Combobox
+                            id="aktuelle-pruefung"
                             bind:value={fAktuellePruefung}
+                            options={inspectionNameSuggestions.names}
                             required={!hasData}
+                            initialValue={loadedAktuellePruefung}
+                            placeholder="Vorhandene Prüfung wählen oder neue eingeben"
                         />
-                        <datalist id="aktuelle-pruefung-options">
-                            {#each inspectionNameSuggestions.names as suggestion (suggestion)}
-                                <option value={suggestion}></option>
-                            {/each}
-                        </datalist>
                     </label>
                     {#if !hasData}
                         <p class="field-hint">
