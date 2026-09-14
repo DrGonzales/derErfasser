@@ -252,6 +252,8 @@ Die Bezeichnung kann frei gewählt werden. Wichtig ist, dass für eine zusammeng
 
 Im Prüfobjekt wird festgelegt, welche Prüfrunde die **aktuelle Prüfung** ist.
 
+Beim Bearbeiten der Prüfobjekt-Daten zeigt das Feld „Aktuelle Prüfung“ beim Klicken eine Liste aller bereits vorhandenen Prüfrunden zur Auswahl an. Die Liste lässt sich durch Eintippen filtern. Die bisher aktive Prüfrunde ist in dieser Liste zusätzlich mit dem Hinweis „aktuell“ gekennzeichnet. Soll eine neue Prüfrunde begonnen werden, kann statt einer Auswahl aus der Liste auch einfach ein neuer, noch nicht vorhandener Name eingetippt werden.
+
 Beispielsweise:
 
 ```text
