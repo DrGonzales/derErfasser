@@ -269,6 +269,31 @@ Dabei gilt:
 
 ---
 
+# Commit-Nachrichten
+
+Commit-Nachrichten in diesem Projekt folgen ab sofort dem
+**Conventional-Commits-Schema** mit deutschem Text:
+
+```
+type(scope): kurzer deutscher Text
+
+Optionaler Body mit fachlicher Beschreibung.
+```
+
+Übliche Types: `feat`, `fix`, `refactor`, `docs`, `test`, `style`, `perf`,
+`build`, `ci`, `chore`. Der `scope` ist optional und benennt das betroffene
+Modul (z. B. `admin`, `mobiles`, `dashboard`, `db`, `import`, `backup`).
+
+Die Formulierung der Commit-Message erfolgt über den spezialisierten
+Subagenten **`conventional-commit`**
+(`.opencode/agents/conventional-commit.md`), der per Task-Aufruf ausgelöst
+wird. Der Agent ermittelt Type/Scope/Text aus dem Änderungsumfang (Diff)
+und gibt ausschließlich den fertigen Message-Text zurück — er führt selbst
+keinen `git commit` aus, das Committen bleibt dem aufrufenden Kontext
+vorbehalten.
+
+---
+
 # Goal
 
 Das Ziel ist eine robuste, schnelle und vollständig offline nutzbare Anwendung zur Dokumentation elektrischer Sicherheitsprüfungen mit langfristig wartbarem Quellcode.
