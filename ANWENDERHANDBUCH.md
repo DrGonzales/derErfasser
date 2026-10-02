@@ -25,6 +25,7 @@ Die App funktioniert **vollständig offline**. Alle Daten (Geräte, Bilder, PDFs
 - [Geräte als Excel exportieren](#geräte-als-excel-exportieren)
 - [Daten löschen](#daten-löschen)
 - [Changelog](#changelog)
+- [Impressum und Datenschutz](#impressum-und-datenschutz)
 - [Häufige Fragen](#häufige-fragen)
 
 ## Erste Schritte
@@ -1041,10 +1042,22 @@ Im Administrationsbereich steht unter „Daten löschen“ die Möglichkeit zur 
 
 Im Administrationsbereich befindet sich unten der Link **„Changelog“**. Er zeigt eine Liste aller Änderungen und neuen Funktionen der App an – direkt in der App, auch ohne Internetverbindung.
 
+## Impressum und Datenschutz
+
+In der Fußzeile des Administrationsbereichs steht neben „Anleitung“ und „Changelog“ zusätzlich der Link **„Impressum“**. Ein Klick darauf öffnet ein Fenster mit dem Titel **„Impressum & Datenschutz“** mit den rechtlichen Hinweisen als Fließtext:
+
+- **Impressum** – die Angaben gemäß § 5 DDG (Betreiber, Anschrift, Kontakt-E-Mail) sowie die Verantwortlichkeit für den Inhalt und ein entsprechender Hinweis,
+- **Datenschutzerklärung** – zehn nummerierte Abschnitte, unter anderem zur lokalen Speicherung im Browser, dazu dass die Messdaten nicht übermittelt werden, dass keine Cookies und Tracker eingesetzt werden, zur technischen Bereitstellung sowie zu den eigenen Rechten,
+- **Haftungsausschluss** – unter anderem, dass die App keine verbindliche Bewertung vornimmt, dass die Prüfung eigenverantwortlich erfolgt, zur Haftungsbeschränkung sowie zum Urheberrecht.
+
+Verlassen wird das Fenster über den Button **„Schließen“** oder über das **X** oben rechts.
+
+> **Hinweis:** Beim Anzeigen der rechtlichen Hinweise werden keine Daten gespeichert und nichts übertragen – es werden lediglich die bereits hinterlegten Rechtstexte angezeigt.
+
 ## Häufige Fragen
 
 **Werden meine Daten irgendwohin übertragen?**
-Nein. Alle Daten bleiben ausschließlich lokal auf diesem Gerät in der Datenbank des Browsers (IndexedDB) gespeichert. Die App benötigt keine Internetverbindung und lädt keine Inhalte aus dem Internet nach.
+Nein. Alle Daten bleiben ausschließlich lokal auf diesem Gerät in der Datenbank des Browsers (IndexedDB) gespeichert. Die App benötigt keine Internetverbindung und lädt keine Inhalte aus dem Internet nach. Auch die rechtlichen Hinweise werden nur angezeigt, nicht übertragen (siehe [Impressum und Datenschutz](#impressum-und-datenschutz)).
 
 **Was bedeutet „Ausgemustert“?**
 Ein ausgemustertes Gerät gilt als außer Betrieb und wird in den normalen Ansichten der Geräteliste nicht mehr angezeigt. Es bleibt aber vollständig erhalten und ist über den Filter „Ausgemustert“ weiterhin einsehbar.

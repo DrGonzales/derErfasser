@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 02.10.2026 - Rechtliche Hinweise in der Verwaltung und auf der Webseite
+
+In der Verwaltung steht unten jetzt der Link „Impressum“, über den sich die rechtlichen Hinweise in einem Fenster anzeigen lassen: das Impressum, die Datenschutzerklärung und den Haftungsausschluss. Das Fenster wird über „Schließen“ oder das Kreuz wieder verlassen. Dabei werden keine Daten gespeichert oder übertragen, es werden lediglich die vorhandenen Rechtstexte angezeigt. Dieselben Hinweise sind nun auch als eigene Seite auf der Webseite erreichbar; die Startseite verlinkt sie in der Navigation und in der Fußzeile.
+
 ## 14.09.2026 - Neue Auswahl für "Aktuelle Prüfung", Marketing-Seite mit echten Screenshots
 
 Das Feld „Aktuelle Prüfung“ in der Verwaltung zeigt vorhandene Prüfungen jetzt über eine eigene, filterbare Auswahlliste an, die auf allen Browsern und Geräten gleich funktioniert; die bisher aktive Prüfung ist zusätzlich mit einem „aktuell“-Kennzeichen markiert, und eine neue Prüfung kann weiterhin frei eingetippt werden. Auf der Marketing-Webseite wurden die bisherigen Mockup-Bilder durch echte Screenshots der Anwendung ersetzt, außerdem gibt es einen neuen Abschnitt zu einem Demo-Datensatz.
