@@ -11,6 +11,7 @@
     import BackupMerge from "./BackupMerge.svelte";
     import ChangelogModal from "./ChangelogModal.svelte";
     import HelpPage from "./HelpPage.svelte";
+    import LegalNoticeModal from "./LegalNoticeModal.svelte";
     import ImportModal from "./ImportModal.svelte";
     import ExportButton from "./ExportButton.svelte";
     import InstallAppTile from "./InstallAppTile.svelte";
@@ -68,6 +69,9 @@
 
     // Anleitung-Anzeige
     let helpOpen = $state(false);
+
+    // Rechtliche Hinweise (Impressum, Datenschutz, Haftungsausschluss)
+    let legalOpen = $state(false);
 
     // Excel-Import-Anzeige
     let importOpen = $state(false);
@@ -418,12 +422,23 @@
         >
             Changelog
         </button>
+        <button
+            type="button"
+            class="changelog-link"
+            onclick={() => (legalOpen = true)}
+        >
+            Impressum
+        </button>
     </div>
     {/if}
 </div>
 
 {#if changelogOpen}
     <ChangelogModal onClose={() => (changelogOpen = false)} />
+{/if}
+
+{#if legalOpen}
+    <LegalNoticeModal onClose={() => (legalOpen = false)} />
 {/if}
 
 {#if importOpen}
