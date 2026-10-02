@@ -2,7 +2,7 @@
 
 # Prüftool -- Die einfache Prüfdokumentation für ortsveränderliche elektrische Geräte
 
-**Prüfool** ist eine vollständig **offlinefähige Webanwendung** zur
+**Prüftool** ist eine vollständig **offlinefähige Webanwendung** zur
 Erfassung und Verwaltung von Sicherheitsprüfungen an
 **ortsveränderlichen elektrischen Geräten**. Die Anwendung richtet sich
 insbesondere an **kleine Handwerksbetriebe, Hausmeisterservices,
@@ -25,7 +25,7 @@ Anforderungen der **DGUV Vorschrift 3** sowie die **DIN VDE 0701-0702**,
 welche die Prüfung nach Instandsetzung und die Wiederholungsprüfung
 elektrischer Geräte beschreibt.
 
-derErfasser unterstützt den gesamten Ablauf einer Prüfrunde -- von der
+Prüftool unterstützt den gesamten Ablauf einer Prüfrunde -- von der
 Geräteerfassung bis zum fertigen Prüfbericht.
 
 ## Funktionen
