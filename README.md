@@ -154,9 +154,17 @@ Eine ausführliche Beschreibung inklusive Ablaufdiagramm befindet sich im [Anwen
 
 ## Release
 
-Das ZIP-Archiv im Repository enthält den aktuellen Release-Build der App. Zum Betreiben mit einem nginx Docker-Image:
+Ein Release entsteht über den OpenCode-Befehl `/release`. Er aktualisiert
+`package.json`, `CHANGELOG.md` und `ANWENDERHANDBUCH.md`, committet, setzt den
+Tag und pusht nach `main`, `release` und `origin`.
+
+Der Tag-Push löst den Workflow
+(`.github/workflows/deploy-pages.yml`) aus. Er erzeugt aus `dist/` ein
+ZIP-Archiv `der-erfasser-<version>.zip` und hängt es an das GitHub Release an.
+Zum Betreiben mit einem nginx Docker-Image:
 
 ```bash
+# ZIP aus dem GitHub Release herunterladen und entpacken, dann:
 docker run -d -p 8080:80 --name erfasser -v $(pwd)/dist:/usr/share/nginx/html:ro nginx:alpine
 ```
 
@@ -178,13 +186,18 @@ npm run preview
 
 ## Deployment
 
-Die App wird bei jedem Push auf `main` automatisch per GitHub Actions
-(`.github/workflows/deploy-pages.yml`) auf **GitHub Pages** unter
-`https://<user>.github.io/derErfasser/` veröffentlicht. Da GitHub Pages
-Projekt-Seiten unter einem Unterordner ausliefert, baut der Workflow mit
-`BASE_PATH=/derErfasser/`, wodurch alle Asset-, Icon- und PWA-Manifest-Pfade
-entsprechend präfixiert werden (siehe `vite.config.ts`). Lokal lässt sich
-dieser Build mit folgendem Script nachvollziehen:
+Veröffentlicht wird ausschließlich über **GitHub Pages** unter
+`https://drgonzales.github.io/derErfasser/`. Der Workflow
+`.github/workflows/deploy-pages.yml` läuft nur, wenn ein Tag der Form
+`v*.*.*` gepusht wird (manuell startbar über „Run workflow"). Ein Push auf
+`main` veröffentlicht nichts — der `release`-Branch dient als
+Release-Zweig: Der Workflow bricht ab, wenn der gepushte Tag nicht im
+`release`-Branch enthalten ist.
+
+Da GitHub Pages Projekt-Seiten unter einem Unterordner ausliefert, baut der
+Workflow mit `BASE_PATH=/derErfasser/`, wodurch alle Asset-, Icon- und
+PWA-Manifest-Pfade entsprechend präfixiert werden (siehe `vite.config.ts`).
+Lokal lässt sich dieser Build mit folgendem Script nachvollziehen:
 
 ```bash
 npm run build:pages
