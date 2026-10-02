@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden hier dokumentiert.
 
+## 14.09.2026 - Neue Auswahl für "Aktuelle Prüfung", Marketing-Seite mit echten Screenshots
+
+Das Feld „Aktuelle Prüfung“ in der Verwaltung zeigt vorhandene Prüfungen jetzt über eine eigene, filterbare Auswahlliste an, die auf allen Browsern und Geräten gleich funktioniert; die bisher aktive Prüfung ist zusätzlich mit einem „aktuell“-Kennzeichen markiert, und eine neue Prüfung kann weiterhin frei eingetippt werden. Auf der Marketing-Webseite wurden die bisherigen Mockup-Bilder durch echte Screenshots der Anwendung ersetzt, außerdem gibt es einen neuen Abschnitt zu einem Demo-Datensatz.
+
 ## 10.09.2026 - Automatisches Release mit ZIP-Attachment, nginx Docker-Anleitung
 
 Der GitHub Actions Workflow erstellt jetzt automatisch ein Release mit ZIP-Archiv beim Push eines Tags auf den `release`-Branch. Die README enthält ein neues Kapitel zur Nutzung des Release-ZIPs mit einem nginx Docker-Image. Zusätzlich wurden Änderungen aus früheren Commits übernommen: Anwenderhandbuch als Vollseite, Layout-Vereinheitlichung, Bericht-Kachel im Dashboard, Version & Dokumentation.
