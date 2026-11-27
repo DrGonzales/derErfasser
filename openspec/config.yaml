@@ -1,0 +1,39 @@
+schema: spec-driven
+
+context: |
+  Language: Deutsch
+  All artifacts must be written in Deutsch.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+  Der Erfasser ist eine vollständig offlinefähige PWA zur Dokumentation elektrischer
+  Sicherheitsprüfungen; alle Daten bleiben lokal in IndexedDB (`der-erfasser-db`).
+  Zur Laufzeit darf nichts aus dem Internet geladen werden: keine CDNs, externen APIs,
+  Cloud-Datenbanken, Telemetrie, Tracking, Analytics oder externen Schriften/Bilder/Skripte.
+  TypeScript, ES-Module, Svelte 5 mit Runes, Vite; Fachlogik liegt in Services unter
+  `src/lib/`, Komponenten bleiben Darstellung und Interaktion; schwere Bibliotheken
+  werden dynamisch geladen.
+  Fehler verständlich auf Deutsch melden, keine stillen Fehler, schreibende Operationen
+  erst nach Validierung. Mobil/Tablet, Touch-Bedienung, hell/dunkel und Performance
+  sind zu berücksichtigen.
+
+rules:
+  specs:
+    - Nur beobachtbares Verhalten beschreiben, keine Datei-, Klassen- oder Funktionsnamen.
+    - Jede Anforderung braucht mindestens ein Szenario mit WHEN und THEN; SHALL oder MUST verwenden.
+    - Offline-Betrieb, lokale Speicherung und Datenintegrität auch bei Fehlern berücksichtigen.
+  design:
+    - Auswirkungen auf Offline-Fähigkeit, Bundle-Größe und bestehende Datenstände prüfen.
+    - Getroffene Entscheidungen knapp begründen.
+  tasks:
+    - Als nachvollziehbare Checkboxen `- [ ] X.Y ...` schreiben.
+    - Bei Code-Änderungen `npm test` und `npm run check` als Verifikation einplanen.
+
+operations:
+  apply:
+    guidance:
+      - Nach Änderungen `npm test` und `npm run check` ausführen.
+      - Keine externen Dienste oder Ressourcen zur Laufzeit einführen.
+      - Bestehende Strukturen erweitern und Änderungen klein halten.
+  archive:
+    guidance:
+      - Spezifikationen gegen `agents.md` und `docs/specs/` abgleichen.
+      - Bei nutzerrelevanten Änderungen den Changelog über den Subagenten `changelog-writer` ergänzen.

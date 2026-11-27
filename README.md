@@ -147,6 +147,22 @@ ohne unnötigen Verwaltungsaufwand.**
 
 Eine ausführliche Beschreibung inklusive Ablaufdiagramm befindet sich im [Anwenderhandbuch](./ANWENDERHANDBUCH.md) (auch direkt in der App unter „Anleitung“ abrufbar).
 
+## Spezifikationen mit OpenSpec
+
+Das Verhalten der Anwendung ist in `openspec/specs/` als OpenSpec-Spezifikationen
+(`schema: spec-driven`) beschrieben. Die Baseline wurde aus `agents.md` und den
+bestehenden Feature-Specs unter `docs/specs/` verdichtet; die dortigen Detaildokumente
+bleiben erhalten.
+
+Die OpenSpec-Skills liegen in `.agents/skills/` und sind in OpenCode verfügbar:
+
+| Befehl | Zweck |
+| --- | --- |
+| `/openspec-propose "<Idee>"` | Change Proposal mit Spezifikation, Design und Tasks anlegen |
+| `/openspec-apply-change` | Tasks eines Changes umsetzen |
+| `/openspec-archive-change` | Change archivieren und die Specs aktualisieren |
+| `npx @fission-ai/openspec@latest validate --all` | alle Changes und Specs prüfen |
+
 ## Link zum Prüftool 
 
 [https://drgonzales.github.io/derErfasser/] 
